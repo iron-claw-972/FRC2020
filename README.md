@@ -2,6 +2,8 @@
 
 This is the 2020 repository of the FRC team 972 Ironclaw.
 
+The project board for this repository is located [here](https://github.com/iron-claw-972/FRC2020/projects/1). Feel free to assign yourself to tasks and to complete them.
+
 # Code Structure
 
 Overall the code structure is very basic and may be in some need of revising. Under ~\src\main\java\frc\robot there are two directories, described below. In addion there are two files, robot.java and main.java, which control robot functions at the highest level.
