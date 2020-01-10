@@ -57,7 +57,8 @@ dependencies {
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
 
-    testImplementation 'junit:junit:4.12'
+    testCompile 'junit:junit:4.12'
+    testCompile"org.mockito:mockito-core:2.+"
 
     // Enable simulation gui support. Must check the box in vscode to enable support
     // upon debugging
