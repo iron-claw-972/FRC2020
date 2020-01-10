@@ -1,4 +1,4 @@
-package main.java.frc.robot.util;
+package frc.robot.util;
 
 public class PID {
     /**Variable Declarations*/
@@ -20,7 +20,7 @@ public class PID {
 	
 	//Runs through one step of the PID
 	//@param double setpoint_(goal value), double actual (current value), double timeFrame (time since last run)
-	public double Update(double setpoint, double actual, double timeFrame) {
+	public double update(double setpoint, double actual, double timeFrame) {
 		//Actual PID math
 		double present = setpoint - actual;
 		integral += present * timeFrame;

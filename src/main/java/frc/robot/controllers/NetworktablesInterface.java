@@ -1,4 +1,4 @@
-package main.java.frc.robot;
+package frc.robot.controllers;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -6,7 +6,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 
 
 
-public class Limelight {
+public class NetworktablesInterface {
 
     public double tx; 
     public double ty;
@@ -17,8 +17,8 @@ public class Limelight {
     NetworkTableEntry xEntry = table.getEntry("tx");
     NetworkTableEntry yEntry = table.getEntry("tx");
 
-    public Limelight(){
-        inst.startClientTeam(TEAM);  // where TEAM=190, 294, etc, or use inst.startClient("hostname") or similar
+    public NetworktablesInterface(){
+        inst.startClientTeam(972);  // where TEAM=190, 294, etc, or use inst.startClient("hostname") or similar
         inst.startDSClient();  // recommended if running on DS computer; this gets the robot IP from the DS
     }
 
