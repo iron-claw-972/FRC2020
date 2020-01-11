@@ -36,9 +36,9 @@ http://devsite.ctr-electronics.com/maven/release/com/ctre/phoenix/Phoenix-latest
 
 
 ### TASKS:
--[ ] Shooter
-   -[ ] Visison Allignment
-    -[ ] Mount Camera
-    -[ ] Get Distance Sensor
-      -[ ] Find/Calculate optimal distance and speed of rotation
--[ ] Delta Timer for PID
+- [ ] Shooter
+   - [ ] Visison Allignment
+    - [ ] Mount Camera
+    - [ ] Get Distance Sensor
+      - [ ] Find/Calculate optimal distance and speed of rotation
+- [ ] Delta Timer for PID
