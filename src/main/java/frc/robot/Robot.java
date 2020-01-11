@@ -1,8 +1,14 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+<<<<<<< Updated upstream
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+=======
+import frc.robot.controllers.RobotController;
+import frc.robot.controllers.VisionAllignment;
+import frc.robot.util.Context;
+>>>>>>> Stashed changes
 
 public class Robot extends TimedRobot {
 
@@ -31,8 +37,17 @@ public class Robot extends TimedRobot {
 
   }
 
+  
+  VisionAllignment va = new VisionAllignment();
   @Override
+<<<<<<< Updated upstream
   public void teleopPeriodic() {
     
+=======
+  public void teleopPeriodic()
+  {
+    Context.robotController.ntInterface.run();
+    va.loop();
+>>>>>>> Stashed changes
   }
 }
