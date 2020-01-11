@@ -15,6 +15,7 @@ public class RobotController
         autoDrive = new AutoDrive();
         navX = new NavX();
         zmqServer = new ZMQServer();
+        zmqServer.start();
         ntInterface = new NetworktablesInterface();
 
         Context.robotController = this;
