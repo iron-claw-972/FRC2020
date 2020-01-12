@@ -16,27 +16,47 @@ public class ShooterController {
     private double startTime;
 
     private double desiredVelocity;
-    private double setVelocity;
     private double currentVelocity;
+    private double setVelocity;
+    private double setCurrent;
 
     private TalonSRX shooterTalon;
+
+    private final double minCurrent = 0;
+    private final double speedToCurrentRate = 0;
 
     public ShooterController() {
         shooterTalon = new TalonSRX(1);
         shooterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
-        velocityPID = new PID(0, 0, 0);
+        velocityPID = new PID(0, 0, 0); //need tuning
+        startTime = System.currentTimeMillis();
     }
 
-    public void updateParameters() {
-        currentVelocity = shooterTalon.getSensorCollection().getQuadratureVelocity();
+    private void updateParameters() {
+        currentVelocity = encoderVelocity();
         lastTime = time;
         time = Context.getRelativeTime(startTime);
         deltaTime = time - lastTime;
         setVelocity = velocityPID.update(desiredVelocity, currentVelocity, deltaTime);
     }
 
-    public void updateVelocity() {
-        //wait for motor power converter object
+    private void updateVelocity() {
+        setCurrent = speedConverter(setVelocity);
+        shooterTalon.set(ControlMode.PercentOutput, setCurrent);
+    }
+
+    public void loop() {
+        updateParameters();
+        updateVelocity();
+    }
+
+    private double speedConverter(double speed) {
+        return Math.signum(speed) * (Math.abs(speed) * speedToCurrentRate + minCurrent);
+        //speedToCurrentRate, minCurrent calculated via linear regression (best fit)
+    }
+
+    private int encoderVelocity() {
+        return shooterTalon.getSensorCollection().getQuadratureVelocity();
     }
 
 
