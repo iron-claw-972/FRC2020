@@ -36,4 +36,8 @@ public class Context {
     public static final double kA = 5;
     public static final double kStatic = 5;
     public static final double kV = 5;
+
+    public static double getRelativeTime(double relativePoint) {
+        return System.currentTimeMillis() - relativePoint;
+    }
 }
