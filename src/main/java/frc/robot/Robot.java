@@ -1,13 +1,12 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.controllers.RobotController;
-import frc.robot.util.Context;
+import frc.robot.util.*;
 
 public class Robot extends TimedRobot {
   public RobotController robotController;
-  public Joystick joy = new Joystick(Context.joystickID);
+  public DriverJoystick joy = new DriverJoystick();
 
   public double origTime;
   public double robotStartTime;

@@ -23,6 +23,8 @@ public class Context {
     
     //----- Human Input Device Values -----
     public static final int joystickID = 0;
+    public static final int throttleAxisID = 1;
+    public static final int yawAxisID = 5;
     public static final double joystickMaxDeadband = 0.05;
 
     //----- Robotcontroller Static Reference -----
