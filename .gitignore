@@ -60,3 +60,7 @@ gradle-app.setting
 
 ### FRC Specific ###
 .kotlin-for-frc
+
+# .DS_Store handling
+.DS_Store
+
