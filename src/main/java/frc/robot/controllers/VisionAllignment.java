@@ -10,7 +10,7 @@ public class VisionAllignment
 {
     public double tx;
     public double ty;
-    public PID headingPID = new PID(0.05, 0.0,0.0);
+    public PID headingPID = new PID(0.1, 0.0,2);
 
     double pastTime = System.currentTimeMillis()-20;
     double currentTime = System.currentTimeMillis();
