@@ -2,8 +2,12 @@ package frc.robot.util;
 
 import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
 
+import frc.robot.controllers.JoystickDeadbandManager;
+import frc.robot.controllers.NavX;
 import frc.robot.controllers.RobotController;
 import frc.robot.controllers.VisionAllignment;
+
+import edu.wpi.first.wpilibj.Joystick;
 
 // import static org.firstinspires.ftc.teamcode.drive.DriveConstants.BASE_CONSTRAINTS;
 // import static org.firstinspires.ftc.teamcode.drive.DriveConstants.TRACK_WIDTH;
@@ -24,12 +28,18 @@ public class Context {
     //----- Human Input Device Values -----
     public static final int joystickID = 0;
     public static final double joystickMaxDeadband = 0.05;
+    public static JoystickDeadbandManager ManagedJoystick = new JoystickDeadbandManager(new Joystick(joystickID));
 
     //----- Robotcontroller Static Reference -----
     public static RobotController robotController;
 
     //----- Vision Alignment System -----
     public static VisionAllignment visionAllignment = new VisionAllignment();
+    // ^^ Constants ^^
+    public static final double alignmentTimeout = 3000; //after how many milliseconds stop the alignment loop and abort
+    public static final double alignmentThreshold = 0.5; //within how many degrees can we say "good enough" aligning the robot
+
+    public static final double maxTurnPower = 1.0; // SAFETY
 
     //----- Acme Robotics Tank Drive -----
     // maxVel, maxAccel, maxJerk, maxAngVel, maxAngAccel, maxAngJerk

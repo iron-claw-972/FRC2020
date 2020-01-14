@@ -5,16 +5,15 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.controllers.RobotController;
 import frc.robot.util.Context;
 
-public class Robot extends TimedRobot {
-  public RobotController robotController;
-  public Joystick joy = new Joystick(Context.joystickID);
+public class Robot extends TimedRobot
+{
 
   public double origTime;
   public double robotStartTime;
 
   @Override
   public void robotInit() {
-    robotController = new RobotController();
+    Context.robotController = new RobotController();
     robotStartTime = System.currentTimeMillis()/1000.0;
   }
 
@@ -39,10 +38,27 @@ public class Robot extends TimedRobot {
     Context.robotController.drivetrain.resetEncoders();
   }
 
+  boolean align = false;
   @Override
   public void teleopPeriodic()
   {
     Context.robotController.ntInterface.run();
-    Context.visionAllignment.loop();
+    double joyX = Context.ManagedJoystick.getAxisDeadBandManaged(1);
+    double joyY = Context.ManagedJoystick.getAxisDeadBandManaged(0);
+
+    if(Context.ManagedJoystick.getRawButtonPressed(4))
+    {
+      align = !align;
+    }
+    if(joyX != 0 || joyY != 0)
+    {
+      align = false;
+    }
+    if(align)
+    {
+      Context.visionAllignment.loop();
+    }
+
+    Context.robotController.drivetrain.arcadeDrive(joyY, joyX);
   }
 }
