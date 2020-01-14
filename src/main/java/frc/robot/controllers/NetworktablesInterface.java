@@ -10,12 +10,14 @@ public class NetworktablesInterface {
 
     public double tx; 
     public double ty;
+    public boolean targetAcquired;
     public double distance;
 
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable table = inst.getTable("limelight");
     NetworkTableEntry xEntry = table.getEntry("tx");
     NetworkTableEntry yEntry = table.getEntry("tx");
+    NetworkTableEntry targetStatus = table.getEntry("tv");
     NetworkTableEntry robotHeartbeat = table.getEntry("robotHeartbeat");
     // TODO: Find way to get limelight hearbeat to confirm connection
 
@@ -27,6 +29,8 @@ public class NetworktablesInterface {
     public void run(){
         tx = xEntry.getDouble(0.0);
         ty = yEntry.getDouble(0.0);
+        if(targetStatus.getDouble(0) >= 0.0) targetAcquired = true;
+        else targetAcquired = false;
         robotHeartbeat.setNumber(System.currentTimeMillis());
         System.out.println("tx: " + tx + " ty: " + ty);
     }
