@@ -68,7 +68,7 @@ public class ShooterController {
         //speedToCurrentRate, minCurrent calculated via linear regression (best fit)
     }
 
-    private int flywheelVelocity() {
+    private double flywheelVelocity() {
         //get the linear speed of the flywheel
         return RADIUS * shooterTalon.getSensorCollection().getQuadratureVelocity();
     }
