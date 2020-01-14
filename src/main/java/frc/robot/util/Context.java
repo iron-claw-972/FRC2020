@@ -3,6 +3,7 @@ package frc.robot.util;
 import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
 
 import frc.robot.controllers.RobotController;
+import frc.robot.controllers.VisionAllignment;
 
 // import static org.firstinspires.ftc.teamcode.drive.DriveConstants.BASE_CONSTRAINTS;
 // import static org.firstinspires.ftc.teamcode.drive.DriveConstants.TRACK_WIDTH;
@@ -26,6 +27,9 @@ public class Context {
 
     //----- Robotcontroller Static Reference -----
     public static RobotController robotController;
+
+    //----- Vision Alignment System -----
+    public static VisionAllignment visionAllignment = new VisionAllignment();
 
     //----- Acme Robotics Tank Drive -----
     // maxVel, maxAccel, maxJerk, maxAngVel, maxAngAccel, maxAngJerk
