@@ -1,7 +1,6 @@
 package frc.robot.controllers;
 
 import frc.robot.util.Context;
-import frc.robot.util.DriverJoystick;
 
 public class RobotController
 {

@@ -1,6 +1,7 @@
-package frc.robot.util;
+package frc.robot.controllers;
 
 import edu.wpi.first.wpilibj.Joystick;
+import frc.robot.util.*;
 
 /**
  * This class is wrapper class to allow the abstraction of buttons and joysticks (removes the need to specify ports every time you get a button)
