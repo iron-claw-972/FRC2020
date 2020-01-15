@@ -28,4 +28,17 @@ public class AdditionalMath
 
         return input;
     }
+
+    public static boolean isInRange(double value, double min, double max, boolean inclusive)
+    {
+        if(inclusive)
+        {
+            if(value <= max && value >= min) return true;
+        }
+        else
+        {
+            if(value < max && value > min) return true;
+        }
+        return false;
+    }
 }
