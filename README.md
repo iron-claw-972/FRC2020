@@ -30,8 +30,6 @@ https://www.kauailabs.com/dist/frc/2020/navx_frc.json
 
 ### Talon SRX
 
-(This library is not necessary)
-
 http://devsite.ctr-electronics.com/maven/release/com/ctre/phoenix/Phoenix-latest.json
 
 
