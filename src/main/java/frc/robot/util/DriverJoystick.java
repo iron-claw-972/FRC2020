@@ -13,19 +13,14 @@ public class DriverJoystick {
     }
 
     public double getThrottle() {
-        return joystick.getRawAxis(Context.throttleAxisID);
+        return getAxisDeadBandManaged(Context.throttleAxisID);
     }
 
     public double getYaw() {
-        return joystick.getRawAxis(Context.yawAxisID);
+        return getAxisDeadBandManaged(Context.yawAxisID);
     }
 
-    public double getRawAxis(int axis)
-    {
-        return joystick.getRawAxis(axis);
-    }
-
-    public double getAxisDeadBandManaged(int axis)
+    private double getAxisDeadBandManaged(int axis)
     {
         double aValue = joystick.getRawAxis(axis);
 
@@ -34,16 +29,6 @@ public class DriverJoystick {
         }
         
         return aValue;
-    }
-
-    public boolean getRawButton(int ID)
-    {
-        return joystick.getRawButton(ID);
-    }
-
-    public boolean getRawButtonPressed(int ID)
-    {
-        return joystick.getRawButtonPressed(ID);
     }
 
     public Joystick getJoystick()
