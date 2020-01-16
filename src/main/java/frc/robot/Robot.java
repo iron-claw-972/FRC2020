@@ -4,14 +4,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.controllers.RobotController;
 import frc.robot.util.*;
 
-<<<<<<< HEAD
-public class Robot extends TimedRobot
-{
-=======
 public class Robot extends TimedRobot {
   public RobotController robotController;
   public DriverJoystick joy = new DriverJoystick();
->>>>>>> master
 
   public double origTime;
   public double robotStartTime;
