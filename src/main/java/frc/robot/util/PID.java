@@ -12,10 +12,10 @@ public class PID {
     /**Method Declarations*/
 	//PID object
 	//@param double pFactor (p_coeff), double iFactor (i_coeff), double dFactor (d_coeff)
-	public PID(double pFactor, double iFactor, double dFactor) {
-		this.pFactor = pFactor;
-		this.iFactor = iFactor;
-		this.dFactor = dFactor;
+	public PID(double pFactor_, double iFactor_, double dFactor_) {
+		pFactor = pFactor_;
+		iFactor = iFactor_;
+		dFactor = dFactor_;
 	}
 	
 	//Runs through one step of the PID
