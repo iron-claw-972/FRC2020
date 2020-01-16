@@ -43,11 +43,12 @@ public class Robot extends TimedRobot
   public void teleopPeriodic()
   {
     Context.robotController.ntInterface.run();
-    double joyX = Context.ManagedJoystick.getAxisDeadBandManaged(1);
-    double joyY = Context.ManagedJoystick.getAxisDeadBandManaged(0);
+    double joyX = -Context.ManagedJoystick.getAxisDeadBandManaged(0);
+    double joyY = -Context.ManagedJoystick.getAxisDeadBandManaged(1);
 
     if(Context.ManagedJoystick.getRawButtonPressed(4))
     {
+      Context.visionAllignment.RESET();
       align = !align;
     }
     if(joyX != 0 || joyY != 0)
@@ -58,7 +59,9 @@ public class Robot extends TimedRobot
     {
       Context.visionAllignment.loop();
     }
-
+    if(!align)
+    {
     Context.robotController.drivetrain.arcadeDrive(joyY, joyX);
+    }
   }
 }

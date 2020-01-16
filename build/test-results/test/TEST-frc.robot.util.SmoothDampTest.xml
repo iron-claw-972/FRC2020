@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="frc.robot.util.SmoothDampTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2020-01-14T07:06:15" hostname="DESKTOP-PUUCM64" time="0.001">
+<testsuite name="frc.robot.util.SmoothDampTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2020-01-16T00:27:14" hostname="LAPTOP-K717PUUH" time="0.002">
   <properties/>
   <testcase name="smoothDampStepsize10" classname="frc.robot.util.SmoothDampTest" time="0.001"/>
   <testcase name="smoothDampStepsize1" classname="frc.robot.util.SmoothDampTest" time="0.0"/>

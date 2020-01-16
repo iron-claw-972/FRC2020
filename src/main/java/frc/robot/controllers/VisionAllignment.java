@@ -46,8 +46,11 @@ public class VisionAllignment
     public void loop()
     {
         grabLimelightData();
-        if(AlignmentStatus != statusEnum.ALIGNED && AlignmentStatus != statusEnum.FAILED)
+        System.out.println("Alignment status: " + AlignmentStatus.toString());
+        System.out.println(timeoutCounter);
+        if(AlignmentStatus == statusEnum.IN_PROGRESS || AlignmentStatus == statusEnum.IDLE)
         {
+            System.out.println("Running Alignment");
             AlignmentStatus = statusEnum.IN_PROGRESS;
 
             double offset = headingPID.update(0.0, tx, currentTime-pastTime); // integrating the PID for allignment
@@ -104,19 +107,33 @@ public class VisionAllignment
 
     void KeepTrack()
     {
-        if(Math.abs(tx) <= Context.alignmentThreshold)
+        if(Math.abs(tx) <= Context.alignmentThreshold && targetFound)
         {
             rotationLocalized = 0.0;
             navXYawOffset = Context.robotController.navX.getAngle(); // resetting the rotation once we align to teh target
         }
         rotationLocalized = Context.robotController.navX.getAngle() - navXYawOffset;
-        rotationLocalized = (rotationLocalized%360)-180;
+        rotationLocalized = (rotationLocalized%360);
+        if(rotationLocalized >= 180)
+        {
+            rotationLocalized -= 360;
+        }
+
+        System.out.println("Localized Rotation: " + rotationLocalized);
+        if(targetFound)
+        {
+            System.out.println("Target Found");
+        }
+        else
+        {
+            System.out.println("Target Not Found");
+        }
 
         if(!targetFound) // if there is no target found, turn based on NavX rotation data
         {
             double offset = NavXYawPID.update(0.0, rotationLocalized, currentTime-pastTime);
             double drivePower = AdditionalMath.Clamp(offset, -Context.maxTurnPower, Context.maxTurnPower);
-            Context.robotController.drivetrain.arcadeDrive(0, drivePower);
+            Context.robotController.drivetrain.arcadeDrive(0, -drivePower);
         }
         else // if target is found optically, use the limelight data
         {
@@ -126,12 +143,14 @@ public class VisionAllignment
         }
     }
 
-    void RESET() // resets the class, ready for the next alignment
+    public void RESET() // resets the class, ready for the next alignment
     {
         AlignmentStatus = statusEnum.IDLE;
         rotationLocalized = 0.0;
         pastTime = System.currentTimeMillis()-20;
         currentTime = System.currentTimeMillis();
+        timeoutCounter = 0.0;
+        timedOut = false;
 
         headingPID = new PID(headingP, headingI, headingD); // PID used when optical aquisition is avalilable
         NavXYawPID = new PID(NavXYawP, NavXYawI, NavXYawD); // PID used when no optical aquisition is avalilable and we need to rely on NavX data
