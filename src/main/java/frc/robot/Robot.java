@@ -13,7 +13,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    robotController = new RobotController();
+    Context.robotController = new RobotController();
     robotStartTime = System.currentTimeMillis()/1000.0;
   }
 
@@ -38,10 +38,30 @@ public class Robot extends TimedRobot {
     Context.robotController.drivetrain.resetEncoders();
   }
 
+  boolean align = false;
   @Override
   public void teleopPeriodic()
   {
     Context.robotController.ntInterface.run();
-    Context.visionAllignment.loop();
+    double joyX = -Context.ManagedJoystick.getAxisDeadBandManaged(0);
+    double joyY = -Context.ManagedJoystick.getAxisDeadBandManaged(1);
+
+    if(Context.ManagedJoystick.getRawButtonPressed(4))
+    {
+      Context.visionAllignment.RESET();
+      align = !align;
+    }
+    if(joyX != 0 || joyY != 0)
+    {
+      align = false;
+    }
+    if(align)
+    {
+      Context.visionAllignment.loop();
+    }
+    if(!align)
+    {
+    Context.robotController.drivetrain.arcadeDrive(joyY, joyX);
+    }
   }
 }

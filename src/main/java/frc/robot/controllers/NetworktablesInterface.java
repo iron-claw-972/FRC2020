@@ -29,7 +29,7 @@ public class NetworktablesInterface {
     public void run(){
         tx = xEntry.getDouble(0.0);
         ty = yEntry.getDouble(0.0);
-        if(targetStatus.getDouble(0) >= 0.0) targetAcquired = true;
+        if(targetStatus.getDouble(0) > 0.0) targetAcquired = true;
         else targetAcquired = false;
         robotHeartbeat.setNumber(System.currentTimeMillis());
         System.out.println("tx: " + tx + " ty: " + ty);
