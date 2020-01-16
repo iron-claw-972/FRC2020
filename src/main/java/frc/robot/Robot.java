@@ -6,7 +6,6 @@ import frc.robot.util.*;
 
 public class Robot extends TimedRobot {
   public RobotController robotController;
-  public DriverJoystick joy = new DriverJoystick();
 
   public double origTime;
   public double robotStartTime;
