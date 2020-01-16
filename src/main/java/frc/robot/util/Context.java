@@ -2,18 +2,8 @@ package frc.robot.util;
 
 import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
 
-import frc.robot.controllers.JoystickDeadbandManager;
-import frc.robot.controllers.NavX;
 import frc.robot.controllers.RobotController;
 import frc.robot.controllers.VisionAllignment;
-
-import edu.wpi.first.wpilibj.Joystick;
-
-// import static org.firstinspires.ftc.teamcode.drive.DriveConstants.BASE_CONSTRAINTS;
-// import static org.firstinspires.ftc.teamcode.drive.DriveConstants.TRACK_WIDTH;
-// import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kA;
-// import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kStatic;
-// import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
 
 public class Context {
     //----- Drivetrain Values -----
@@ -30,7 +20,7 @@ public class Context {
     public static final int throttleAxisID = 1;
     public static final int yawAxisID = 5;
     public static final double joystickMaxDeadband = 0.05;
-    public static JoystickDeadbandManager ManagedJoystick = new JoystickDeadbandManager(new Joystick(joystickID));
+    public static final int inUseLengthMillis = 3000;
 
     //----- Robotcontroller Static Reference -----
     public static RobotController robotController;
@@ -53,6 +43,7 @@ public class Context {
     public static final double kStatic = 5;
     public static final double kV = 5;
 
+    //----- Time Function -----
     public static double getRelativeTime(double relativePoint) {
         return System.currentTimeMillis() - relativePoint;
     }

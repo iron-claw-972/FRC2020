@@ -8,6 +8,7 @@ import frc.robot.util.*;
  */
 public class DriverJoystick {
     private Joystick joystick;
+    private long inUseStartTime = 0;
 
     public DriverJoystick() {
         joystick = new Joystick(Context.joystickID);
@@ -21,19 +22,26 @@ public class DriverJoystick {
         return getAxisDeadBandManaged(Context.yawAxisID);
     }
 
-    private double getAxisDeadBandManaged(int axis)
+    public boolean isInUse()
     {
-        double aValue = joystick.getRawAxis(axis);
-
-        if(AdditionalMath.isInRange(aValue, -Context.joystickMaxDeadband, Context.joystickMaxDeadband, true)) {
-            return 0.0;
-        }
-        
-        return aValue;
+        return inUseStartTime + Context.inUseLengthMillis < System.currentTimeMillis();
     }
 
     public Joystick getJoystick()
     {
         return joystick;
+    }
+
+    private double getAxisDeadBandManaged(int axis)
+    {
+        double axisValue = joystick.getRawAxis(axis);
+
+        if(AdditionalMath.isInRange(axisValue, -Context.joystickMaxDeadband, Context.joystickMaxDeadband, true)) {
+            return 0.0;
+        }
+
+        inUseStartTime = System.currentTimeMillis();
+        
+        return axisValue;
     }
 }
