@@ -27,6 +27,8 @@ public class Context {
     
     //----- Human Input Device Values -----
     public static final int joystickID = 0;
+    public static final int throttleAxisID = 1;
+    public static final int yawAxisID = 5;
     public static final double joystickMaxDeadband = 0.05;
     public static JoystickDeadbandManager ManagedJoystick = new JoystickDeadbandManager(new Joystick(joystickID));
 
@@ -50,4 +52,8 @@ public class Context {
     public static final double kA = 5;
     public static final double kStatic = 5;
     public static final double kV = 5;
+
+    public static double getRelativeTime(double relativePoint) {
+        return System.currentTimeMillis() - relativePoint;
+    }
 }
