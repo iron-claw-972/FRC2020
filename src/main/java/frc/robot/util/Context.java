@@ -20,7 +20,7 @@ public class Context {
     public static final int throttleAxisID = 1;
     public static final int yawAxisID = 5;
     public static final double joystickMaxDeadband = 0.05;
-    public static final int inUseLengthMillis = 3000;
+    public static final int inUseLengthMillis = 1000;
 
     //----- Robotcontroller Static Reference -----
     public static RobotController robotController;

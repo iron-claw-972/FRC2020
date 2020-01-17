@@ -105,7 +105,7 @@ public class VisionAllignment
         return AlignmentStatus;
     }
 
-    void KeepTrack()
+    private void KeepTrack()
     {
         if(Math.abs(tx) <= Context.alignmentThreshold && targetFound)
         {

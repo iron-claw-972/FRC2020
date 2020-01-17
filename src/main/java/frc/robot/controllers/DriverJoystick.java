@@ -24,7 +24,7 @@ public class DriverJoystick {
 
     public boolean isInUse()
     {
-        return inUseStartTime + Context.inUseLengthMillis < System.currentTimeMillis();
+        return inUseStartTime + Context.inUseLengthMillis > System.currentTimeMillis();
     }
 
     public Joystick getJoystick()
