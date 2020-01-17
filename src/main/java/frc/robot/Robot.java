@@ -54,9 +54,7 @@ public class Robot extends TimedRobot {
     if(align && !Context.robotController.driverJoystick.isInUse())
     {
       Context.visionAllignment.loop();
-    }
-    else
-    {
+    } else {
       align = false;
       Context.robotController.drivetrain.arcadeDrive(driverYaw, driverThrottle);
     }
