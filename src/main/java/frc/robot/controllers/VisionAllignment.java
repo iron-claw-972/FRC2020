@@ -10,10 +10,6 @@ public class VisionAllignment
     private final double headingI = 0.0;
     private final double headingD = 2.0;
 
-    private final double navXYawP = 0.1;
-    private final double navXYawI = 0.0;
-    private final double navXYawD = 2.0;
-
     public enum StatusEnum { IDLE, IN_PROGRESS, ALIGNED, FAILED };
     public StatusEnum alignmentStatus = StatusEnum.IDLE;
 
@@ -24,8 +20,7 @@ public class VisionAllignment
     public double newTx = 0.0;
 
     /////////////////////////////////////IMPORTANT////////////////////////////////////////////// oh, you're changing these during a competition?
-    public PID headingPID = new PID(headingP, headingI, headingD); // PID used when optical aquisition is avalilable
-    public PID navXYawPID = new PID(navXYawP, navXYawI, navXYawD); // PID used when no optical aquisition is avalilable and we need to rely on NavX data
+    public PID headingPID = new PID(headingP, headingI, headingD); // PID used for controlling heading
     /////////////////////////////////////IMPORTANT//////////////////////////////////////////////
 
     public double pastTime = System.currentTimeMillis()-20;
@@ -137,7 +132,7 @@ public class VisionAllignment
         else // Target tracked with NavX
         {
             System.out.println("Target Not Found");
-            double offset = AdditionalMath.OvercomeFriction(navXYawPID.update(0.0, rotationLocalized, currentTime-pastTime), Context.ckStatic);
+            double offset = AdditionalMath.OvercomeFriction(headingPID.update(0.0, rotationLocalized, currentTime-pastTime), Context.ckStatic);
             double drivePower = AdditionalMath.Clamp(offset, -Context.maxTurnPower, Context.maxTurnPower);
             Context.robotController.drivetrain.arcadeDrive(0, -drivePower);
         }
@@ -169,7 +164,6 @@ public class VisionAllignment
         timeoutCounter = 0.0;
         timedOut = false;
 
-        headingPID = new PID(headingP, headingI, headingD); // PID used when optical aquisition is avalilable
-        navXYawPID = new PID(navXYawP, navXYawI, navXYawD); // PID used when no optical aquisition is avalilable and we need to rely on NavX data
+        headingPID = new PID(headingP, headingI, headingD);
     }
 }
