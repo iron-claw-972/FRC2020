@@ -18,8 +18,7 @@ public class Drivetrain
     public PID leftDrivePID = new PID(0.09, 0, 0);
     public PID rightDrivePID = new PID(0.09, 0, 0);
     
-    public Drivetrain ()
-    {
+    public Drivetrain() {
         leftMotor1 = new CANSparkMax(Context.leftMotor1ID, MotorType.kBrushless);
         leftMotor2 = new CANSparkMax(Context.leftMotor2ID, MotorType.kBrushless);
         rightMotor1 = new CANSparkMax(Context.rightMotor1ID, MotorType.kBrushless);
@@ -28,7 +27,7 @@ public class Drivetrain
         pastTime = System.currentTimeMillis();
     }
 
-    public void arcadeDrive (double power, double turn) {
+    public void arcadeDrive(double power, double turn) {
         power *= speedFac;
         turn *=  turnFac;
         double leftPower = turn - power;
@@ -37,7 +36,7 @@ public class Drivetrain
         tankDrivePID(leftPower, rightPower);
     }
 
-    public void tankDrivePID (double leftGoalPower, double rightGoalPower){
+    public void tankDrivePID(double leftGoalPower, double rightGoalPower) {
         double deltaTime = (double)(System.currentTimeMillis() - pastTime);
 
         double leftDistTraveled = getLeftDist() - pastLeftDist;
@@ -57,30 +56,38 @@ public class Drivetrain
         pastRightDist = getRightDist();
     }
 
-    public void tankDrive(double leftPower, double rightPower)
-    {
+    public void tankDrive(double leftPower, double rightPower) {
         leftMotor1.set(leftPower);
         leftMotor2.set(leftPower);
         rightMotor1.set(rightPower);
         rightMotor2.set(rightPower);
     }
 
-    public void resetEncoders()
-    {
+    public void resetEncoders() {
         startPosLeft = (leftMotor1.getEncoder().getPosition() + leftMotor2.getEncoder().getPosition())/2;
         startPosRight = (rightMotor1.getEncoder().getPosition() + rightMotor2.getEncoder().getPosition())/2;
     }
 
-    public double getLeftDist()
-    {
+    public double getLeftDist() {
         //10 cm wheel diameter
         double rawCount = (leftMotor1.getEncoder().getPosition() + leftMotor2.getEncoder().getPosition())/2 - startPosLeft;
         return Context.driveClickToCm * rawCount;
     }
 
-    public double getRightDist()
-    {
+    public double getRightDist() {
         double rawCount2 = (rightMotor1.getEncoder().getPosition() + rightMotor2.getEncoder().getPosition())/2 - startPosRight;
         return Context.driveClickToCm * rawCount2;
+    }
+
+    public double getLeftVel() {
+        double deltaTime = (double)(System.currentTimeMillis() - pastTime);
+        double leftDistTraveled = getLeftDist() - pastLeftDist;
+        return leftDistTraveled/deltaTime;
+    }
+
+    public double getRightVel() {
+        double deltaTime = (double)(System.currentTimeMillis() - pastTime);
+        double rightDistTraveled = getLeftDist() - pastLeftDist;
+        return rightDistTraveled/deltaTime;
     }
 }
