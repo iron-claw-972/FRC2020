@@ -10,18 +10,12 @@ public class VisionAllignment
     private final double headingI = 0.0;
     private final double headingD = 2.0;
 
+    public PID headingPID = new PID(headingP, headingI, headingD);
+    
     public enum StatusEnum { IDLE, IN_PROGRESS, ALIGNED, FAILED };
     public StatusEnum alignmentStatus = StatusEnum.IDLE;
 
-    public double tx = 0.0;
-    public double ty = 0.0;
-
-    public double oldTx = 0.0;
-    public double newTx = 0.0;
-
-    /////////////////////////////////////IMPORTANT////////////////////////////////////////////// oh, you're changing these during a competition?
-    public PID headingPID = new PID(headingP, headingI, headingD); // PID used for controlling heading
-    /////////////////////////////////////IMPORTANT//////////////////////////////////////////////
+    public double tx = 0.0, ty = 0.0, oldTx = 0.0, newTx = 0.0;
 
     public double pastTime = System.currentTimeMillis()-20;
     public double currentTime = System.currentTimeMillis();
@@ -40,9 +34,6 @@ public class VisionAllignment
         grabLimelightData();
         localizeRotation();
 
-        System.out.println("Alignment status: " + alignmentStatus.toString());
-        System.out.println(timeoutCounter);
-
         switch(alignmentStatus)
         {
             case IDLE:
@@ -52,10 +43,8 @@ public class VisionAllignment
             case IN_PROGRESS:
             {
                 if(targetFound) {
-                    System.out.println("Target Found");
-                    Context.robotController.drivetrain.arcadeDrive(0, loopHeadingPID(tx)); // drive the robot
+                    Context.robotController.drivetrain.arcadeDrive(0, loopHeadingPID(tx));
                 } else {
-                    System.out.println("Target Not Found");
                     Context.robotController.drivetrain.arcadeDrive(0, -loopHeadingPID(rotationLocalized));
                 }
 
@@ -91,6 +80,8 @@ public class VisionAllignment
             }
         }
 
+        System.out.println("alignmentStatus: " + alignmentStatus.toString() + ", visionTrack: " + targetFound + ", timeoutCount: " + timeoutCounter + ", localRot: " + localizedRotation);
+
         pastTime = currentTime;        
     }
 
@@ -116,20 +107,16 @@ public class VisionAllignment
     {
         if(Math.abs(tx) <= Context.alignmentThreshold && targetFound)
         {
-            rotationLocalized = 0.0;
-            navXYawOffset = Context.robotController.navX.getAngle(); // resetting the rotation once we align to the target
+            navXYawOffset = Context.robotController.navX.getAngle();
         }
 
-        rotationLocalized = Context.robotController.navX.getAngle() - navXYawOffset;
-        rotationLocalized %= 360;
+        rotationLocalized = (Context.robotController.navX.getAngle() - navXYawOffset) % 360;
         
         if(rotationLocalized >= 180) {
             rotationLocalized -= 360;
         } else if (rotationLocalized <= -180) {
             rotationLocalized += 360;
         }
-
-        System.out.println("Localized Rotation: " + rotationLocalized);
     }
 
     public boolean isAligned()
@@ -154,12 +141,11 @@ public class VisionAllignment
 
     public void startTrack()
     {
-        rotationLocalized = 0.0;
+        alignmentStatus = StatusEnum.IN_PROGRESS;
+
         timeoutCounter = 0.0;
 
-        headingPID = new PID(headingP, headingI, headingD);
-
-        alignmentStatus = StatusEnum.IN_PROGRESS;
+        headingPID = new PID(headingP, headingI, headingD);        
     }
 
     public void stopTrack()
