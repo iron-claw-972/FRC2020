@@ -53,7 +53,7 @@ public class VisionAllignment
             System.out.println("Running Alignment");
             AlignmentStatus = statusEnum.IN_PROGRESS;
 
-            double offset = headingPID.update(0.0, tx, currentTime-pastTime); // integrating the PID for allignment
+            double offset = AdditionalMath.OvercomeFriction(headingPID.update(0.0, tx, currentTime-pastTime), Context.ckStatic); // integrating the PID for allignment
             double drivePower = AdditionalMath.Clamp(offset, -Context.maxTurnPower, Context.maxTurnPower); // clamping the value for safety reasons and concerns
 
             System.out.println("offset: " + offset + " power: " + drivePower + " tx:" + tx);
@@ -131,13 +131,13 @@ public class VisionAllignment
 
         if(!targetFound) // if there is no target found, turn based on NavX rotation data
         {
-            double offset = NavXYawPID.update(0.0, rotationLocalized, currentTime-pastTime);
+            double offset = AdditionalMath.OvercomeFriction(NavXYawPID.update(0.0, rotationLocalized, currentTime-pastTime), Context.ckStatic);
             double drivePower = AdditionalMath.Clamp(offset, -Context.maxTurnPower, Context.maxTurnPower);
             Context.robotController.drivetrain.arcadeDrive(0, -drivePower);
         }
         else // if target is found optically, use the limelight data
         {
-            double offset = headingPID.update(0.0, tx, currentTime-pastTime);
+            double offset = AdditionalMath.OvercomeFriction(headingPID.update(0.0, tx, currentTime-pastTime), Context.ckStatic);
             double drivePower = AdditionalMath.Clamp(offset, -Context.maxTurnPower, Context.maxTurnPower);
             Context.robotController.drivetrain.arcadeDrive(0, drivePower);
         }

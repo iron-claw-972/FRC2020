@@ -17,8 +17,8 @@ public class Context {
     
     //----- Human Input Device Values -----
     public static final int joystickID = 0;
-    public static final int throttleAxisID = 1;
-    public static final int yawAxisID = 5;
+    public static final int throttleAxisID = 4;
+    public static final int yawAxisID = 1;
     public static final double joystickMaxDeadband = 0.05;
     public static final int inUseLengthMillis = 1000;
 
@@ -30,8 +30,9 @@ public class Context {
     // ^^ Constants ^^
     public static final double alignmentTimeout = 3000; //after how many milliseconds stop the alignment loop and abort
     public static final double alignmentThreshold = 0.5; //within how many degrees can we say "good enough" aligning the robot
+    public static final double ckStatic = 0.15;
 
-    public static final double maxTurnPower = 1.0; // SAFETY
+    public static final double maxTurnPower = 2.0; // SAFETY
 
     //----- Climbing System -----
     public static final int climberMotorID = 10;

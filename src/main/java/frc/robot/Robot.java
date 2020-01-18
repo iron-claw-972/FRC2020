@@ -51,8 +51,6 @@ public class Robot extends TimedRobot {
       align = !align;
     }
 
-    System.out.println("Is in use: " + Context.robotController.driverJoystick.isInUse());
-
     if(align && !Context.robotController.driverJoystick.isInUse())
     {
       Context.visionAllignment.loop();
