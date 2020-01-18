@@ -100,18 +100,17 @@ public class VisionAllignment
 
     public boolean isAligned()
     {
-        if(alignmentStatus == StatusEnum.ALIGNED) { 
-            return true;
-        }
-        return false;
+        return alignmentStatus == StatusEnum.ALIGNED;
     }
 
     public boolean isInProgress()
     {
-        if(alignmentStatus == StatusEnum.IN_PROGRESS) {
-            return true;
-        }
-        return false;
+        return alignmentStatus == StatusEnum.IN_PROGRESS;
+    }
+
+    public boolean isActive()
+    {
+        return alignmentStatus == StatusEnum.IN_PROGRESS || alignmentStatus == StatusEnum.ALIGNED;
     }
 
     public StatusEnum getAlignmentStatus()

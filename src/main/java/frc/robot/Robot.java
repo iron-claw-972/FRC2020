@@ -45,13 +45,15 @@ public class Robot extends TimedRobot {
 
     if(Context.robotController.driverJoystick.getJoystick().getRawButtonPressed(4))
     {
-      Context.robotController.visionAllignment.startTrack();
+      if(Context.robotController.visionAllignment.isActive()){
+        Context.robotController.visionAllignment.stopTrack();
+      } else {
+        Context.robotController.visionAllignment.startTrack();
+      }
     }
 
-    if((Context.robotController.visionAllignment.isAligned() || Context.robotController.visionAllignment.isInProgress()) && !Context.robotController.driverJoystick.isInUse())
+    if(Context.robotController.driverJoystick.isInUse() || !Context.robotController.visionAllignment.isActive())
     {
-      
-    } else {
       Context.robotController.visionAllignment.stopTrack();
       Context.robotController.drivetrain.arcadeDrive(driverYaw, driverThrottle);
     }
