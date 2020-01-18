@@ -1,7 +1,5 @@
 package frc.robot.controllers;
 
-import java.sql.Time;
-
 import frc.robot.util.AdditionalMath;
 import frc.robot.util.Context;
 import frc.robot.util.PID;
@@ -12,19 +10,19 @@ public class VisionAllignment
     final double headingI = 0.0;
     final double headingD = 2.0;
 
-    final double NavXYawP = 0.1;
-    final double NavXYawI = 0.0;
-    final double NavXYawD = 2.0;
+    final double navXYawP = 0.1;
+    final double navXYawI = 0.0;
+    final double navXYawD = 2.0;
 
     public enum statusEnum { IDLE, IN_PROGRESS, ALIGNED, FAILED };
-    public statusEnum AlignmentStatus = statusEnum.IDLE;
+    public statusEnum alignmentStatus = statusEnum.IDLE;
 
     public double tx;
     public double ty;
 
     /////////////////////////////////////IMPORTANT////////////////////////////////////////////// oh, you're changing these during a competition?
     public PID headingPID = new PID(headingP, headingI, headingD); // PID used when optical aquisition is avalilable
-    public PID NavXYawPID = new PID(NavXYawP, NavXYawI, NavXYawD); // PID used when no optical aquisition is avalilable and we need to rely on NavX data
+    public PID navXYawPID = new PID(navXYawP, navXYawI, navXYawD); // PID used when no optical aquisition is avalilable and we need to rely on NavX data
     /////////////////////////////////////IMPORTANT//////////////////////////////////////////////
 
     double pastTime = System.currentTimeMillis()-20;
@@ -46,12 +44,14 @@ public class VisionAllignment
     public void loop()
     {
         grabLimelightData();
-        System.out.println("Alignment status: " + AlignmentStatus.toString());
+
+        System.out.println("Alignment status: " + alignmentStatus.toString());
         System.out.println(timeoutCounter);
-        if(AlignmentStatus == statusEnum.IN_PROGRESS || AlignmentStatus == statusEnum.IDLE)
+
+        if(alignmentStatus == statusEnum.IN_PROGRESS || alignmentStatus == statusEnum.IDLE)
         {
             System.out.println("Running Alignment");
-            AlignmentStatus = statusEnum.IN_PROGRESS;
+            alignmentStatus = statusEnum.IN_PROGRESS;
 
             double offset = AdditionalMath.OvercomeFriction(headingPID.update(0.0, tx, currentTime-pastTime), Context.ckStatic); // integrating the PID for allignment
             double drivePower = AdditionalMath.Clamp(offset, -Context.maxTurnPower, Context.maxTurnPower); // clamping the value for safety reasons and concerns
@@ -68,16 +68,16 @@ public class VisionAllignment
 
             if(Math.abs(tx) <= Context.alignmentThreshold && targetFound) // if the robot is close enough to the target, stop aligning
             {
-                AlignmentStatus = statusEnum.ALIGNED;
+                alignmentStatus = statusEnum.ALIGNED;
             }
             if(Math.abs(tx) >= Context.alignmentThreshold && timedOut) // if the robot times out and is not within acceptable, fail alignment 
             {// use cases: robot gets pinned in such a way that the camera still sees the target, but can not move, therefore the tx does not change
-                AlignmentStatus = statusEnum.FAILED;
+                alignmentStatus = statusEnum.FAILED;
             }
         }
-        if(AlignmentStatus == statusEnum.ALIGNED)
+        if(alignmentStatus == statusEnum.ALIGNED)
         {
-            KeepTrack(); // once the target is aquired, keep track of it, in case we get nudged around
+            keepTrack(); // once the target is aquired, keep track of it, in case we get nudged around
         }
 
         pastTime = currentTime;
@@ -96,56 +96,56 @@ public class VisionAllignment
 
     public boolean isAligned()
     {
-        if(AlignmentStatus == statusEnum.ALIGNED) return true;
+        if(alignmentStatus == statusEnum.ALIGNED) { 
+            return true;
+        }
         return false;
     }
 
     public statusEnum getAlignmentStatus()
     {
-        return AlignmentStatus;
+        return alignmentStatus;
     }
 
-    private void KeepTrack()
+    private void keepTrack()
+    {
+        localizeRotation();
+        if(targetFound) // Target tracked with vision
+        {
+            System.out.println("Target Found");
+            double offset = AdditionalMath.OvercomeFriction(headingPID.update(0.0, tx, currentTime-pastTime), Context.ckStatic);
+            double drivePower = AdditionalMath.Clamp(offset, -Context.maxTurnPower, Context.maxTurnPower);
+            Context.robotController.drivetrain.arcadeDrive(0, drivePower);
+        }
+        else // Target tracked with NavX
+        {
+            System.out.println("Target Not Found");
+            double offset = AdditionalMath.OvercomeFriction(navXYawPID.update(0.0, rotationLocalized, currentTime-pastTime), Context.ckStatic);
+            double drivePower = AdditionalMath.Clamp(offset, -Context.maxTurnPower, Context.maxTurnPower);
+            Context.robotController.drivetrain.arcadeDrive(0, -drivePower);
+        }
+    }
+
+    private void localizeRotation()
     {
         if(Math.abs(tx) <= Context.alignmentThreshold && targetFound)
         {
             rotationLocalized = 0.0;
-            navXYawOffset = Context.robotController.navX.getAngle(); // resetting the rotation once we align to teh target
+            navXYawOffset = Context.robotController.navX.getAngle(); // resetting the rotation once we align to the target
         }
         rotationLocalized = Context.robotController.navX.getAngle() - navXYawOffset;
-        rotationLocalized = (rotationLocalized%360);
+        rotationLocalized %= 360;
         if(rotationLocalized >= 180)
         {
             rotationLocalized -= 360;
         }
 
         System.out.println("Localized Rotation: " + rotationLocalized);
-        if(targetFound)
-        {
-            System.out.println("Target Found");
-        }
-        else
-        {
-            System.out.println("Target Not Found");
-        }
-
-        if(!targetFound) // if there is no target found, turn based on NavX rotation data
-        {
-            double offset = AdditionalMath.OvercomeFriction(NavXYawPID.update(0.0, rotationLocalized, currentTime-pastTime), Context.ckStatic);
-            double drivePower = AdditionalMath.Clamp(offset, -Context.maxTurnPower, Context.maxTurnPower);
-            Context.robotController.drivetrain.arcadeDrive(0, -drivePower);
-        }
-        else // if target is found optically, use the limelight data
-        {
-            double offset = AdditionalMath.OvercomeFriction(headingPID.update(0.0, tx, currentTime-pastTime), Context.ckStatic);
-            double drivePower = AdditionalMath.Clamp(offset, -Context.maxTurnPower, Context.maxTurnPower);
-            Context.robotController.drivetrain.arcadeDrive(0, drivePower);
-        }
     }
 
     public void RESET() // resets the class, ready for the next alignment
     {
-        AlignmentStatus = statusEnum.IDLE;
+        alignmentStatus = statusEnum.IDLE;
         rotationLocalized = 0.0;
         pastTime = System.currentTimeMillis()-20;
         currentTime = System.currentTimeMillis();
@@ -153,6 +153,6 @@ public class VisionAllignment
         timedOut = false;
 
         headingPID = new PID(headingP, headingI, headingD); // PID used when optical aquisition is avalilable
-        NavXYawPID = new PID(NavXYawP, NavXYawI, NavXYawD); // PID used when no optical aquisition is avalilable and we need to rely on NavX data
+        navXYawPID = new PID(navXYawP, navXYawI, navXYawD); // PID used when no optical aquisition is avalilable and we need to rely on NavX data
     }
 }
