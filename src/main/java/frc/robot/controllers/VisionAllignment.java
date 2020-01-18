@@ -31,16 +31,18 @@ public class VisionAllignment
 
     public double timeoutCounter = 0.0;
 
-    public double rotationLocalized;
+    public double rotationLocalized = 0.0;
     public double navXYawOffset = 0.0;
 
     public boolean targetFound= false;
 
     public void loop()
     {
-        grabLimelightData();
-
+        currentTime = System.currentTimeMillis();
         deltaTime = currentTime - pastTime;
+
+        grabLimelightData();
+        localizeRotation();
 
         System.out.println("Alignment status: " + alignmentStatus.toString());
         System.out.println(timeoutCounter);
@@ -53,7 +55,13 @@ public class VisionAllignment
             }
             case IN_PROGRESS:
             {
-                Context.robotController.drivetrain.arcadeDrive(0, loopHeadingPID(tx)); // drive the robot
+                if(targetFound) {
+                    System.out.println("Target Found");
+                    Context.robotController.drivetrain.arcadeDrive(0, loopHeadingPID(tx)); // drive the robot
+                } else {
+                    System.out.println("Target Not Found");
+                    Context.robotController.drivetrain.arcadeDrive(0, -loopHeadingPID(rotationLocalized));
+                }
 
                 if(Math.abs(frameAngleDelta) <= 0.01) {
                     timeoutCounter += deltaTime; //if the angle does not change more than 0.01, start counting time
@@ -74,7 +82,12 @@ public class VisionAllignment
             }
             case ALIGNED:
             {
-                keepTrack(); // once the target is aquired, keep track of it, in case we get nudged around
+                localizeRotation();
+
+                if(tx >= Context.alignmentThreshold)
+                {
+                    alignmentStatus = StatusEnum.IN_PROGRESS;
+                }
 
                 break;
             }
@@ -84,8 +97,7 @@ public class VisionAllignment
             }
         }
 
-        pastTime = currentTime;
-        currentTime = System.currentTimeMillis();
+        pastTime = currentTime;        
     }
 
     public void grabLimelightData()
@@ -116,21 +128,6 @@ public class VisionAllignment
     public StatusEnum getAlignmentStatus()
     {
         return alignmentStatus;
-    }
-
-    private void keepTrack()
-    {
-        localizeRotation();
-        if(targetFound) // Target tracked with vision
-        {
-            System.out.println("Target Found");
-            Context.robotController.drivetrain.arcadeDrive(0, loopHeadingPID(tx));
-        }
-        else // Target tracked with NavX
-        {
-            System.out.println("Target Not Found");
-            Context.robotController.drivetrain.arcadeDrive(0, -loopHeadingPID(rotationLocalized));
-        }
     }
 
     private double loopHeadingPID(double actualAngle)
@@ -164,8 +161,6 @@ public class VisionAllignment
     public void startTrack()
     {
         rotationLocalized = 0.0;
-        pastTime = System.currentTimeMillis()-20;
-        currentTime = System.currentTimeMillis();
         timeoutCounter = 0.0;
 
         headingPID = new PID(headingP, headingI, headingD);

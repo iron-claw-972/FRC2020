@@ -3,7 +3,6 @@ package frc.robot.util;
 import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
 
 import frc.robot.controllers.RobotController;
-import frc.robot.controllers.VisionAllignment;
 
 public class Context {
     //----- Drivetrain Values -----
