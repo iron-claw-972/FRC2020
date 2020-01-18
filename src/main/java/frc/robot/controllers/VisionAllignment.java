@@ -13,8 +13,8 @@ public class VisionAllignment
     public enum StatusEnum { IDLE, IN_PROGRESS, ALIGNED, FAILED };
     public StatusEnum alignmentStatus = StatusEnum.IDLE;
 
-    public double tx = 0;
-    public double ty = 0;
+    public double tx = 0.0;
+    public double ty = 0.0;
 
     public double oldTx = 0.0;
     public double newTx = 0.0;
@@ -25,21 +25,17 @@ public class VisionAllignment
 
     public double pastTime = System.currentTimeMillis()-20;
     public double currentTime = System.currentTimeMillis();
-    public double deltaTime = currentTime - pastTime;
-
-    public double frameAngleDelta = 0.0;
 
     public double timeoutCounter = 0.0;
 
     public double rotationLocalized = 0.0;
     public double navXYawOffset = 0.0;
 
-    public boolean targetFound= false;
+    public boolean targetFound = false;
 
     public void loop()
     {
         currentTime = System.currentTimeMillis();
-        deltaTime = currentTime - pastTime;
 
         grabLimelightData();
         localizeRotation();
@@ -63,8 +59,8 @@ public class VisionAllignment
                     Context.robotController.drivetrain.arcadeDrive(0, -loopHeadingPID(rotationLocalized));
                 }
 
-                if(Math.abs(frameAngleDelta) <= 0.01) {
-                    timeoutCounter += deltaTime; //if the angle does not change more than 0.01, start counting time
+                if(Math.abs(newTx - oldTx) <= 0.01) {
+                    timeoutCounter += (currentTime - pastTime); //if the angle does not change more than 0.01, start counting time
                 } else {
                     timeoutCounter = 0.0; // if the angle delta is greater than that, reset the timer
                 }
@@ -82,8 +78,6 @@ public class VisionAllignment
             }
             case ALIGNED:
             {
-                localizeRotation();
-
                 if(tx >= Context.alignmentThreshold)
                 {
                     alignmentStatus = StatusEnum.IN_PROGRESS;
@@ -107,7 +101,6 @@ public class VisionAllignment
         targetFound = Context.robotController.ntInterface.targetAcquired;
         oldTx = newTx;
         newTx = tx;
-        frameAngleDelta = newTx-oldTx;
     }
     
     private double loopHeadingPID(double actualAngle)
