@@ -40,20 +40,19 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic()
   {
-    Context.robotController.ntInterface.run();
     double driverThrottle = -Context.robotController.driverJoystick.getThrottle();
     double driverYaw = -Context.robotController.driverJoystick.getYaw();
 
     if(Context.robotController.driverJoystick.getJoystick().getRawButtonPressed(4))
     {
-      Context.visionAllignment.startTrack();
+      Context.robotController.visionAllignment.startTrack();
     }
 
-    if((Context.visionAllignment.isAligned() || Context.visionAllignment.isInProgress()) && !Context.robotController.driverJoystick.isInUse())
+    if((Context.robotController.visionAllignment.isAligned() || Context.robotController.visionAllignment.isInProgress()) && !Context.robotController.driverJoystick.isInUse())
     {
-      Context.visionAllignment.loop();
+      
     } else {
-      Context.visionAllignment.stopTrack();
+      Context.robotController.visionAllignment.stopTrack();
       Context.robotController.drivetrain.arcadeDrive(driverYaw, driverThrottle);
     }
   }
