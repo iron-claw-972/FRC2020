@@ -30,6 +30,7 @@ public class VisionAllignment
 
     public double pastTime = System.currentTimeMillis()-20;
     public double currentTime = System.currentTimeMillis();
+    public double deltaTime = currentTime - pastTime;
 
     public double frameAngleDelta = 0.0;
 
@@ -46,39 +47,54 @@ public class VisionAllignment
     {
         grabLimelightData();
 
-        System.out.println("Alignment status: " + alignmentStatus.toString());
-        System.out.println(timeoutCounter);
+        deltaTime = currentTime - pastTime;
 
-        if(alignmentStatus == StatusEnum.IN_PROGRESS || alignmentStatus == StatusEnum.IDLE)
+        // System.out.println("Alignment status: " + alignmentStatus.toString());
+        // System.out.println(timeoutCounter);
+
+        switch(alignmentStatus)
         {
-            System.out.println("Running Alignment");
-            alignmentStatus = StatusEnum.IN_PROGRESS;
-
-            double offset = AdditionalMath.OvercomeFriction(headingPID.update(0.0, tx, currentTime-pastTime), Context.ckStatic); // integrating the PID for allignment
-            double drivePower = AdditionalMath.Clamp(offset, -Context.maxTurnPower, Context.maxTurnPower); // clamping the value for safety reasons and concerns
-
-            System.out.println("offset: " + offset + " power: " + drivePower + " tx:" + tx);
-
-            Context.robotController.drivetrain.arcadeDrive(0, drivePower); // drive the robot
-
-            if(Math.abs(frameAngleDelta) <= 0.01) timeoutCounter+=currentTime-pastTime; //if the angle does not change more than 0.01, start counting time
-            else timeoutCounter = 0.0; // if the angle delta is greater than that, reset the timer
-
-            if(timeoutCounter >= Context.alignmentTimeout) timedOut = true;
-            //NOTE: The other places calling this function have to be disabled when calling it here. // WHAT DOES THIS MEAN???
-
-            if(Math.abs(tx) <= Context.alignmentThreshold && targetFound) // if the robot is close enough to the target, stop aligning
+            case IDLE:
             {
-                alignmentStatus = StatusEnum.ALIGNED;
+                alignmentStatus = StatusEnum.IN_PROGRESS;
+                break;
             }
-            if(Math.abs(tx) >= Context.alignmentThreshold && timedOut) // if the robot times out and is not within acceptable, fail alignment 
-            {// use cases: robot gets pinned in such a way that the camera still sees the target, but can not move, therefore the tx does not change
-                alignmentStatus = StatusEnum.FAILED;
+            case IN_PROGRESS:
+            {
+                double rawOutput = AdditionalMath.OvercomeFriction(headingPID.update(0.0, tx, deltaTime), Context.ckStatic); // integrating the PID for allignment
+                double drivePower = AdditionalMath.Clamp(rawOutput, -Context.maxTurnPower, Context.maxTurnPower); // clamping the value for safety reasons and concerns
+
+                // System.out.println("offset: " + offset + " power: " + drivePower + " tx:" + tx);
+
+                Context.robotController.drivetrain.arcadeDrive(0, drivePower); // drive the robot
+
+                if(Math.abs(frameAngleDelta) <= 0.01) {
+                    timeoutCounter+=deltaTime; //if the angle does not change more than 0.01, start counting time
+                } else {
+                    timeoutCounter = 0.0; // if the angle delta is greater than that, reset the timer
+                } 
+
+                if(timeoutCounter >= Context.alignmentTimeout) timedOut = true;
+
+                if(Math.abs(tx) <= Context.alignmentThreshold && targetFound) // if the robot is close enough to the target, stop aligning
+                {
+                    alignmentStatus = StatusEnum.ALIGNED;
+                }
+                if(Math.abs(tx) >= Context.alignmentThreshold && timedOut) // if the robot times out and is not within acceptable, fail alignment 
+                {// use cases: robot gets pinned in such a way that the camera still sees the target, but can not move, therefore the tx does not change
+                    alignmentStatus = StatusEnum.FAILED;
+                }
+                break;
             }
-        }
-        if(alignmentStatus == StatusEnum.ALIGNED)
-        {
-            keepTrack(); // once the target is aquired, keep track of it, in case we get nudged around
+            case ALIGNED:
+            {
+                keepTrack(); // once the target is aquired, keep track of it, in case we get nudged around
+                break;
+            }
+            case FAILED:
+            {
+                break;
+            }
         }
 
         pastTime = currentTime;
@@ -144,7 +160,7 @@ public class VisionAllignment
         System.out.println("Localized Rotation: " + rotationLocalized);
     }
 
-    public void RESET() // resets the class, ready for the next alignment
+    public void reset() // resets the class, ready for the next alignment
     {
         alignmentStatus = StatusEnum.IDLE;
         rotationLocalized = 0.0;

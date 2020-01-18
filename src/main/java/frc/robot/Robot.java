@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
 
     if(Context.robotController.driverJoystick.getJoystick().getRawButtonPressed(4))
     {
-      Context.visionAllignment.RESET();
+      Context.visionAllignment.reset();
       align = !align;
     }
 
