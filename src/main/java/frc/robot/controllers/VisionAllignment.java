@@ -100,7 +100,7 @@ public class VisionAllignment
         pastTime = currentTime;        
     }
 
-    public void grabLimelightData()
+    private void grabLimelightData()
     {
         tx = Context.robotController.ntInterface.tx;
         ty = Context.robotController.ntInterface.ty;
@@ -109,27 +109,7 @@ public class VisionAllignment
         newTx = tx;
         frameAngleDelta = newTx-oldTx;
     }
-
-    public boolean isAligned()
-    {
-        return alignmentStatus == StatusEnum.ALIGNED;
-    }
-
-    public boolean isInProgress()
-    {
-        return alignmentStatus == StatusEnum.IN_PROGRESS;
-    }
-
-    public boolean isActive()
-    {
-        return alignmentStatus == StatusEnum.IN_PROGRESS || alignmentStatus == StatusEnum.ALIGNED;
-    }
-
-    public StatusEnum getAlignmentStatus()
-    {
-        return alignmentStatus;
-    }
-
+    
     private double loopHeadingPID(double actualAngle)
     {
         double rawPIDOutput = AdditionalMath.OvercomeFriction(headingPID.update(0.0, rotationLocalized, currentTime-pastTime), Context.ckStatic);
@@ -150,12 +130,33 @@ public class VisionAllignment
         rotationLocalized = Context.robotController.navX.getAngle() - navXYawOffset;
         rotationLocalized %= 360;
         
-        if(rotationLocalized >= 180)
-        {
+        if(rotationLocalized >= 180) {
             rotationLocalized -= 360;
+        } else if (rotationLocalized <= -180) {
+            rotationLocalized += 360;
         }
 
         System.out.println("Localized Rotation: " + rotationLocalized);
+    }
+
+    public boolean isAligned()
+    {
+        return alignmentStatus == StatusEnum.ALIGNED;
+    }
+
+    public boolean isInProgress()
+    {
+        return alignmentStatus == StatusEnum.IN_PROGRESS;
+    }
+
+    public boolean isActive()
+    {
+        return alignmentStatus == StatusEnum.IN_PROGRESS || alignmentStatus == StatusEnum.ALIGNED;
+    }
+
+    public StatusEnum getAlignmentStatus()
+    {
+        return alignmentStatus;
     }
 
     public void startTrack()
