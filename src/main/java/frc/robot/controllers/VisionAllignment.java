@@ -49,8 +49,6 @@ public class VisionAllignment
         {
             case IDLE:
             {
-                alignmentStatus = StatusEnum.IN_PROGRESS;
-
                 break;
             }
             case IN_PROGRESS:
@@ -108,6 +106,14 @@ public class VisionAllignment
         return false;
     }
 
+    public boolean isInProgress()
+    {
+        if(alignmentStatus == StatusEnum.IN_PROGRESS) {
+            return true;
+        }
+        return false;
+    }
+
     public StatusEnum getAlignmentStatus()
     {
         return alignmentStatus;
@@ -144,7 +150,7 @@ public class VisionAllignment
             rotationLocalized = 0.0;
             navXYawOffset = Context.robotController.navX.getAngle(); // resetting the rotation once we align to the target
         }
-        
+
         rotationLocalized = Context.robotController.navX.getAngle() - navXYawOffset;
         rotationLocalized %= 360;
         
@@ -156,14 +162,20 @@ public class VisionAllignment
         System.out.println("Localized Rotation: " + rotationLocalized);
     }
 
-    public void reset() // resets the class, ready for the next alignment
+    public void startTrack()
     {
-        alignmentStatus = StatusEnum.IDLE;
         rotationLocalized = 0.0;
         pastTime = System.currentTimeMillis()-20;
         currentTime = System.currentTimeMillis();
         timeoutCounter = 0.0;
 
         headingPID = new PID(headingP, headingI, headingD);
+
+        alignmentStatus = StatusEnum.IN_PROGRESS;
+    }
+
+    public void stopTrack()
+    {
+        alignmentStatus = StatusEnum.IDLE;
     }
 }

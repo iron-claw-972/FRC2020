@@ -36,8 +36,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     Context.robotController.drivetrain.resetEncoders();
   }
-
-  boolean align = false;
+  
   @Override
   public void teleopPeriodic()
   {
@@ -47,15 +46,14 @@ public class Robot extends TimedRobot {
 
     if(Context.robotController.driverJoystick.getJoystick().getRawButtonPressed(4))
     {
-      Context.visionAllignment.reset();
-      align = !align;
+      Context.visionAllignment.startTrack();
     }
 
-    if(align && !Context.robotController.driverJoystick.isInUse())
+    if((Context.visionAllignment.isAligned() || Context.visionAllignment.isInProgress()) && !Context.robotController.driverJoystick.isInUse())
     {
       Context.visionAllignment.loop();
     } else {
-      align = false;
+      Context.visionAllignment.stopTrack();
       Context.robotController.drivetrain.arcadeDrive(driverYaw, driverThrottle);
     }
   }
