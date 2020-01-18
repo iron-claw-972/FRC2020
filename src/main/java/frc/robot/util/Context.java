@@ -3,7 +3,6 @@ package frc.robot.util;
 import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
 
 import frc.robot.controllers.RobotController;
-import frc.robot.controllers.VisionAllignment;
 
 public class Context {
     //----- Drivetrain Values -----
@@ -26,8 +25,6 @@ public class Context {
     public static RobotController robotController;
 
     //----- Vision Alignment System -----
-    public static VisionAllignment visionAllignment = new VisionAllignment();
-    // ^^ Constants ^^
     public static final double alignmentTimeout = 3000; //after how many milliseconds stop the alignment loop and abort
     public static final double alignmentThreshold = 0.5; //within how many degrees can we say "good enough" aligning the robot
     public static final double ckStatic = 0.15;
