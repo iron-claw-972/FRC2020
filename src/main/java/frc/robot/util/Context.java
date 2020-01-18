@@ -33,6 +33,12 @@ public class Context {
 
     public static final double maxTurnPower = 1.0; // SAFETY
 
+    //----- Climbing System -----
+    public static final int climberMotorID = 10;
+    
+    public static final double coilSpeed = 0.5;
+    public static final double uncoilSpeed = -0.5;
+
     //----- Acme Robotics Tank Drive -----
     // maxVel, maxAccel, maxJerk, maxAngVel, maxAngAccel, maxAngJerk
     public static final DriveConstraints BASE_CONSTRAINTS = new DriveConstraints(
