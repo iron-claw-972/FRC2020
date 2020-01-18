@@ -31,8 +31,6 @@ public class VisionAllignment
 
     public double timeoutCounter = 0.0;
 
-    public boolean timedOut = false;
-
     public double rotationLocalized;
     public double navXYawOffset = 0.0;
 
@@ -44,46 +42,42 @@ public class VisionAllignment
 
         deltaTime = currentTime - pastTime;
 
-        // System.out.println("Alignment status: " + alignmentStatus.toString());
-        // System.out.println(timeoutCounter);
+        System.out.println("Alignment status: " + alignmentStatus.toString());
+        System.out.println(timeoutCounter);
 
         switch(alignmentStatus)
         {
             case IDLE:
             {
                 alignmentStatus = StatusEnum.IN_PROGRESS;
+
                 break;
             }
             case IN_PROGRESS:
             {
-                double rawOutput = AdditionalMath.OvercomeFriction(headingPID.update(0.0, tx, deltaTime), Context.ckStatic); // integrating the PID for allignment
-                double drivePower = AdditionalMath.Clamp(rawOutput, -Context.maxTurnPower, Context.maxTurnPower); // clamping the value for safety reasons and concerns
-
-                // System.out.println("offset: " + offset + " power: " + drivePower + " tx:" + tx);
-
-                Context.robotController.drivetrain.arcadeDrive(0, drivePower); // drive the robot
+                Context.robotController.drivetrain.arcadeDrive(0, loopHeadingPID(tx)); // drive the robot
 
                 if(Math.abs(frameAngleDelta) <= 0.01) {
-                    timeoutCounter+=deltaTime; //if the angle does not change more than 0.01, start counting time
+                    timeoutCounter += deltaTime; //if the angle does not change more than 0.01, start counting time
                 } else {
                     timeoutCounter = 0.0; // if the angle delta is greater than that, reset the timer
-                } 
-
-                if(timeoutCounter >= Context.alignmentTimeout) timedOut = true;
-
+                }
+                
                 if(Math.abs(tx) <= Context.alignmentThreshold && targetFound) // if the robot is close enough to the target, stop aligning
                 {
                     alignmentStatus = StatusEnum.ALIGNED;
                 }
-                if(Math.abs(tx) >= Context.alignmentThreshold && timedOut) // if the robot times out and is not within acceptable, fail alignment 
-                {// use cases: robot gets pinned in such a way that the camera still sees the target, but can not move, therefore the tx does not change
+                if(Math.abs(tx) >= Context.alignmentThreshold && timeoutCounter >= Context.alignmentTimeout) // if the robot times out and is not within acceptable, fail alignment 
+                {
                     alignmentStatus = StatusEnum.FAILED;
                 }
+
                 break;
             }
             case ALIGNED:
             {
                 keepTrack(); // once the target is aquired, keep track of it, in case we get nudged around
+
                 break;
             }
             case FAILED:
@@ -125,17 +119,22 @@ public class VisionAllignment
         if(targetFound) // Target tracked with vision
         {
             System.out.println("Target Found");
-            double offset = AdditionalMath.OvercomeFriction(headingPID.update(0.0, tx, currentTime-pastTime), Context.ckStatic);
-            double drivePower = AdditionalMath.Clamp(offset, -Context.maxTurnPower, Context.maxTurnPower);
-            Context.robotController.drivetrain.arcadeDrive(0, drivePower);
+            Context.robotController.drivetrain.arcadeDrive(0, loopHeadingPID(tx));
         }
         else // Target tracked with NavX
         {
             System.out.println("Target Not Found");
-            double offset = AdditionalMath.OvercomeFriction(headingPID.update(0.0, rotationLocalized, currentTime-pastTime), Context.ckStatic);
-            double drivePower = AdditionalMath.Clamp(offset, -Context.maxTurnPower, Context.maxTurnPower);
-            Context.robotController.drivetrain.arcadeDrive(0, -drivePower);
+            Context.robotController.drivetrain.arcadeDrive(0, -loopHeadingPID(rotationLocalized));
         }
+    }
+
+    private double loopHeadingPID(double actualAngle)
+    {
+        double rawPIDOutput = AdditionalMath.OvercomeFriction(headingPID.update(0.0, rotationLocalized, currentTime-pastTime), Context.ckStatic);
+        double drivePower = AdditionalMath.Clamp(rawPIDOutput, -Context.maxTurnPower, Context.maxTurnPower);
+        System.out.println("rawPIDOutput: " + rawPIDOutput + ", driverPower: " + drivePower + ", actualAngle:" + actualAngle);
+
+        return drivePower;
     }
 
     private void localizeRotation()
@@ -145,8 +144,10 @@ public class VisionAllignment
             rotationLocalized = 0.0;
             navXYawOffset = Context.robotController.navX.getAngle(); // resetting the rotation once we align to the target
         }
+        
         rotationLocalized = Context.robotController.navX.getAngle() - navXYawOffset;
         rotationLocalized %= 360;
+        
         if(rotationLocalized >= 180)
         {
             rotationLocalized -= 360;
@@ -162,7 +163,6 @@ public class VisionAllignment
         pastTime = System.currentTimeMillis()-20;
         currentTime = System.currentTimeMillis();
         timeoutCounter = 0.0;
-        timedOut = false;
 
         headingPID = new PID(headingP, headingI, headingD);
     }
