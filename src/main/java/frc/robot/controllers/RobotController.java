@@ -14,16 +14,18 @@ public class RobotController
     public NetworktablesInterface ntInterface;
     public DriverJoystick driverJoystick;
     public VisionAllignment visionAllignment;
+    public Dashboard dashboard;
 
     public RobotController () {
-        drivetrain = new Drivetrain();
-        autoDrive = new AutoDrive();
-        navX = new AHRS(SerialPort.Port.kMXP);
-        zmqServer = new ZMQServer();
-        zmqServer.start();
-        ntInterface = new NetworktablesInterface();
-        driverJoystick = new DriverJoystick();
-        visionAllignment = new VisionAllignment();
+        // drivetrain = new Drivetrain();
+        // autoDrive = new AutoDrive();
+        // navX = new AHRS(SerialPort.Port.kMXP);
+        // zmqServer = new ZMQServer();
+        // zmqServer.start(); 
+        // ntInterface = new NetworktablesInterface();
+        // driverJoystick = new DriverJoystick();
+        // visionAllignment = new VisionAllignment();
+        dashboard = new Dashboard();
 
         Context.robotController = this;
     }
@@ -35,7 +37,7 @@ public class RobotController
 
     public void loopAll()
     {
-        ntInterface.run();
-        visionAllignment.loop();
+        // ntInterface.run();
+        // visionAllignment.loop();
     }
 }
