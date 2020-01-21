@@ -41,4 +41,11 @@ public class AdditionalMath
         }
         return false;
     }
+
+    public static double OvercomeFriction(double value, double decouple)
+    {
+        if(value>0) return value+decouple;
+        if(value<0) return value-decouple;
+        return value;
+    }
 }

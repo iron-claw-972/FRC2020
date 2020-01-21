@@ -3,7 +3,6 @@ package frc.robot.util;
 import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
 
 import frc.robot.controllers.RobotController;
-import frc.robot.controllers.VisionAllignment;
 
 public class Context {
     //----- Drivetrain Values -----
@@ -17,8 +16,8 @@ public class Context {
     
     //----- Human Input Device Values -----
     public static final int joystickID = 0;
-    public static final int throttleAxisID = 1;
-    public static final int yawAxisID = 5;
+    public static final int throttleAxisID = 4;
+    public static final int yawAxisID = 1;
     public static final double joystickMaxDeadband = 0.05;
     public static final int inUseLengthMillis = 1000;
 
@@ -26,12 +25,17 @@ public class Context {
     public static RobotController robotController;
 
     //----- Vision Alignment System -----
-    public static VisionAllignment visionAllignment = new VisionAllignment();
-    // ^^ Constants ^^
     public static final double alignmentTimeout = 3000; //after how many milliseconds stop the alignment loop and abort
     public static final double alignmentThreshold = 0.5; //within how many degrees can we say "good enough" aligning the robot
+    public static final double ckStatic = 0.15;
 
-    public static final double maxTurnPower = 1.0; // SAFETY
+    public static final double maxTurnPower = 2.0; // SAFETY
+
+    //----- Climbing System -----
+    public static final int climberMotorID = 10;
+    
+    public static final double coilSpeed = 0.5;
+    public static final double uncoilSpeed = -0.5;
 
     //----- Acme Robotics Tank Drive -----
     // maxVel, maxAccel, maxJerk, maxAngVel, maxAngAccel, maxAngJerk

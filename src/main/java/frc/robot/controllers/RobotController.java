@@ -13,6 +13,7 @@ public class RobotController
     public ZMQServer zmqServer;
     public NetworktablesInterface ntInterface;
     public DriverJoystick driverJoystick;
+    public VisionAllignment visionAllignment;
 
     public RobotController () {
         drivetrain = new Drivetrain();
@@ -22,7 +23,19 @@ public class RobotController
         zmqServer.start();
         ntInterface = new NetworktablesInterface();
         driverJoystick = new DriverJoystick();
+        visionAllignment = new VisionAllignment();
 
         Context.robotController = this;
+    }
+
+    public void initAll()
+    {
+
+    }
+
+    public void loopAll()
+    {
+        ntInterface.run();
+        visionAllignment.loop();
     }
 }
