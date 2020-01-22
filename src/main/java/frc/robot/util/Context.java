@@ -42,14 +42,15 @@ public class Context {
 
     //----- Acme Robotics Tank Drive -----
     // maxVel, maxAccel, maxJerk, maxAngVel, maxAngAccel, maxAngJerk
+    public static final double maxDrivingSpeed = 20.0; // cm/s
+    public static final double maxturningSpeed = 1.0; // radians/s ?
     public static final DriveConstraints BASE_CONSTRAINTS = new DriveConstraints(
-        20.0, 40.0, 80.0, 1.0, 2.0, 4.0
+        maxDrivingSpeed, 40.0, 80.0, maxturningSpeed, 2.0, 4.0
     );
     public static final double TRACK_WIDTH = 5;
     public static final double kA = 5;
     public static final double kStatic = 5;
     public static final double kV = 5;
-    public static final Pose2d initialPose = new Pose2d(0, 0);
 
     //----- Time Function -----
     public static double getRelativeTime(double relativePoint) {

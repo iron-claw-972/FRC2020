@@ -71,15 +71,21 @@ public class Drivetrain
         startPosRight = (rightMotor1.getEncoder().getPosition() + rightMotor2.getEncoder().getPosition())/2;
     }
 
+    /**
+     * @return distance in cm
+     */
     public double getLeftDist() {
         //10 cm wheel diameter
         double rawCount = (leftMotor1.getEncoder().getPosition() + leftMotor2.getEncoder().getPosition())/2 - startPosLeft;
         return Context.driveClickToCm * rawCount;
     }
 
+    /**
+     * @return distance in cm
+     */
     public double getRightDist() {
-        double rawCount2 = (rightMotor1.getEncoder().getPosition() + rightMotor2.getEncoder().getPosition())/2 - startPosRight;
-        return Context.driveClickToCm * rawCount2;
+        double rawCount = (rightMotor1.getEncoder().getPosition() + rightMotor2.getEncoder().getPosition())/2 - startPosRight;
+        return Context.driveClickToCm * rawCount;
     }
 
     /**
@@ -96,16 +102,19 @@ public class Drivetrain
         return (rightMotor1.getEncoder().getVelocity() + rightMotor2.getEncoder().getVelocity())/2;
     }
 
-    public Pose2d estimatePose() {
+    /**
+     * @return positions in cm
+     */
+    public ArrayList<Double> getWheelPositions() {
         /* convert from RPM to clicks per second */
-        double leftVel = getLeftVel() * Context.driveClicksPerRev * 60;
-        double rightVel = getRightVel() * Context.driveClicksPerRev * 60;
+        double leftVel = getLeftDist();
+        double rightVel = getRightDist();
 
-        ArrayList<Double> wheelVelocities = new ArrayList<Double>();
-        wheelVelocities.add(leftVel);
-        wheelVelocities.add(rightVel);
-        Pose2d poseEstimate = TankKinematics.wheelToRobotVelocities(wheelVelocities, Context.TRACK_WIDTH);
-        return poseEstimate;
+        ArrayList<Double> wheelPositions = new ArrayList<Double>();
+        wheelPositions.add(leftVel);
+        wheelPositions.add(rightVel);
+
+        return wheelPositions;
     }
 
 }
