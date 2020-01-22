@@ -11,8 +11,24 @@ public class NavX
         ahrs = new AHRS(SPI.Port.kMXP);
     }
 
-    public double getHeading(){
+    public double getRawHeading(){
         return ahrs.getAngle();
+    }
+
+    public double getConstrainedHeading() {
+        double heading = getRawHeading();
+
+        // Constrains between -360 and 360
+        heading %= 360; 
+        
+        // Constrains between -180 and 180
+        if (heading >= 180) {
+            heading -= 360;
+        } else if (heading < -180) {
+            heading += 360;
+        }
+
+        return heading;
     }
 
     public double getBarometricPressure(){
