@@ -2,6 +2,9 @@ package frc.robot.controllers;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.acmerobotics.roadrunner.geometry.*;
+import com.acmerobotics.roadrunner.kinematics.*;
+import java.util.ArrayList;
 
 import frc.robot.util.*;
 
@@ -79,15 +82,30 @@ public class Drivetrain
         return Context.driveClickToCm * rawCount2;
     }
 
+    /**
+     * @return velocity in RPM
+     */
     public double getLeftVel() {
-        double deltaTime = (double)(System.currentTimeMillis() - pastTime);
-        double leftDistTraveled = getLeftDist() - pastLeftDist;
-        return leftDistTraveled/deltaTime;
+        return (leftMotor1.getEncoder().getVelocity() + leftMotor2.getEncoder().getVelocity())/2;
     }
 
+    /**
+     * @return velocity in RPM
+     */
     public double getRightVel() {
-        double deltaTime = (double)(System.currentTimeMillis() - pastTime);
-        double rightDistTraveled = getLeftDist() - pastLeftDist;
-        return rightDistTraveled/deltaTime;
+        return (rightMotor1.getEncoder().getVelocity() + rightMotor2.getEncoder().getVelocity())/2;
     }
+
+    public Pose2d estimatePose() {
+        /* convert from RPM to clicks per second */
+        double leftVel = getLeftVel() * Context.driveClicksPerRev * 60;
+        double rightVel = getRightVel() * Context.driveClicksPerRev * 60;
+
+        ArrayList<Double> wheelVelocities = new ArrayList<Double>();
+        wheelVelocities.add(leftVel);
+        wheelVelocities.add(rightVel);
+        Pose2d poseEstimate = TankKinematics.wheelToRobotVelocities(wheelVelocities, Context.TRACK_WIDTH);
+        return poseEstimate;
+    }
+
 }

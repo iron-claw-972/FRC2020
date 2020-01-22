@@ -98,7 +98,7 @@ public class VisionAllignment
         }
 
         // Print all important values for debugging
-        System.out.println("alignmentStatus: " + alignmentStatus.toString() + ", visionTrack: " + targetFound + ", timeoutCount: " + timeoutCounter + ", localRot: " + localizedRotation);
+        System.out.println("alignmentStatus: " + alignmentStatus.toString() + ", visionTrack: " + targetFound + ", timeoutCount: " + timeoutCounter + ", localRot: " + rotationLocalized);
 
         pastTime = currentTime;        
     }

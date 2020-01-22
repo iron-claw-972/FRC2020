@@ -1,5 +1,6 @@
 package frc.robot.util;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
 
 import frc.robot.controllers.RobotController;
@@ -12,7 +13,9 @@ public class Context {
     public static final int rightMotor2ID = 4;
 
     // Diameter of wheel (10 cm) * Pi (3.14) * Clicks per rev (0.2)
-    public static final double driveClickToCm = 2*Math.PI;
+    public static final double driveWheelDiameter = 10;
+    public static final double driveClicksPerRev = 0.2;
+    public static final double driveClickToCm = driveWheelDiameter * Math.PI * driveClicksPerRev;
     
     //----- Human Input Device Values -----
     public static final int joystickID = 0;
@@ -46,6 +49,7 @@ public class Context {
     public static final double kA = 5;
     public static final double kStatic = 5;
     public static final double kV = 5;
+    public static final Pose2d initialPose = new Pose2d(0, 0);
 
     //----- Time Function -----
     public static double getRelativeTime(double relativePoint) {
