@@ -1,6 +1,6 @@
 package frc.robot.controllers;
 
-import edu.wpi.first.wpilibj.Encoder;
+// import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.util.Context;
 import frc.robot.util.PID;
 import com.ctre.phoenix.motorcontrol.can.*;
