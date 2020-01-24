@@ -16,62 +16,56 @@ uint8_t surfaceQuality = 0;
 int32_t MotionX = 0;
 int32_t MotionY = 0;
 
-union ByteToLong
-{
-  byte arr[4];
-  int32_t result;
-};
+int32_t PositionX = 0;
+int32_t PositionY = 0;
 
 void loop()
 {
   // put your main code here, to run repeatedly:
-  while(Serial1.available()>0)
+  while (Serial1.available() > 0)
   {
-    if(!foundPacket)
+    if (!foundPacket)
     {
-      memcpy(inBytes, &inBytes[1], 8); 
+      memcpy(inBytes, &inBytes[1], 8);
       inBytes[8] = Serial1.read();
-      if(allIsTrue(inBytes, catchPattern))
+      if (allIsTrue(inBytes, catchPattern))
       {
         foundPacket = true;
         //Serial.println("Packet found");
       }
-      for(int i = 0 ; i< 9; i++)
-      {/*
-        Serial.print(inBytes[i]);
-        Serial.print("-");*/
+      for (int i = 0 ; i < 9; i++)
+      { /*
+          Serial.print(inBytes[i]);
+          Serial.print("-");*/
       }
     }
     else
     {
       inBytes[dataBytes] = Serial1.read();
       dataBytes++;
-      if(dataBytes == 8)
+      if (dataBytes == 8)
       {
-        ByteToLong motionXBytes;
-        motionXBytes.arr[0] = inBytes[1];
-        motionXBytes.arr[1] = inBytes[2];
-        motionXBytes.arr[2] = inBytes[3];
-        motionXBytes.arr[3] = inBytes[4];
+        uint32_t a = inBytes[1] + (inBytes[2] << 8) + (inBytes[3] << 16) + (inBytes[4] << 24);
+        MotionX = (int32_t)a;
 
-        ByteToLong motionYBytes;
-        motionYBytes.arr[0] = inBytes[5];
-        motionYBytes.arr[1] = inBytes[6];
-        motionYBytes.arr[2] = inBytes[7];
-        motionYBytes.arr[3] = inBytes[8];
-        
+        a = inBytes[5] + (inBytes[6] << 8) + (inBytes[7] << 16) + (inBytes[8] << 24);
+        MotionY = (int32_t)a;
+
         foundPacket = false;
         Serial.print("Surface Quality: ");
         surfaceQuality = inBytes[0];
         Serial.println(surfaceQuality);
 
-        MotionX = byteArrToLong(motionXBytes.result);
-        MotionY = byteArrToLong(motionYBytes.result);
+        //MotionX = byteArrToLong(motionXBytes.result);
+        //MotionY = byteArrToLong(motionYBytes.result);
+
+        PositionX += MotionX;
+        PositionY += MotionY;
 
         Serial.print("X: ");
-        Serial.print(MotionX);
+        Serial.print(PositionX);
         Serial.print(" Y: ");
-        Serial.println(MotionY);
+        Serial.println(PositionY);
         
         dataBytes = 0;
       }
@@ -83,10 +77,10 @@ void loop()
 bool allIsTrue(byte A[], byte B[])
 {
   bool is = true;
-  for(int i = 0; i < 8; i++)
+  for (int i = 0; i < 8; i++)
   {
-    is = A[i+1] == B[i];
-    if(is ==false)
+    is = A[i + 1] == B[i];
+    if (is == false)
     {
       return false;
     }
