@@ -30,7 +30,6 @@ public class AutoDrive {
     PIDCoefficients headingPid;
     TankPIDVAFollower follower;
     TankDrive tankDrive;
-    TankLocalizer tankLocalizer;
 
     public AutoDrive() {
 
@@ -51,9 +50,8 @@ public class AutoDrive {
             }
         };
 
-        tankDrive.setLocalizer();
-
-        tankLocalizer = new TankLocalizer(tankDrive, false);
+        /* Disables the use of external heading */
+        tankDrive.setLocalizer(new TankLocalizer(tankDrive, false));
 
         // profile = MotionProfileGenerator.generateSimpleMotionProfile(
         //     new MotionState(0.0, 0.0, 0.0),
@@ -81,7 +79,6 @@ public class AutoDrive {
 
     public void loop(double t) {
         tankDrive.updatePoseEstimate();
-        tankLocalizer.getPoseEstimate();
         poseEstimate = tankDrive.getPoseEstimate();
 
         System.out.println(poseEstimate);
