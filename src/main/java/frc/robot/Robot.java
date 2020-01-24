@@ -1,8 +1,9 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.*;
 import frc.robot.controllers.RobotController;
 import frc.robot.util.*;
+import frc.robot.controllers.*;
 
 public class Robot extends TimedRobot {
   public RobotController robotController;
@@ -10,15 +11,19 @@ public class Robot extends TimedRobot {
   public double origTime;
   public double robotStartTime;
 
+  Joystick joy;
+
   @Override
   public void robotInit() {
     Context.robotController = new RobotController();
     robotStartTime = System.currentTimeMillis()/1000.0;
+
+    joy = new Joystick(0);
   }
 
   @Override
   public void robotPeriodic() {
-
+    Dashboard.putJoystick(joy.getRawAxis(4));
   }
 
   @Override

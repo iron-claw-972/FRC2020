@@ -4,6 +4,10 @@ import edu.wpi.first.wpilibj.smartdashboard.*;
 
 public class Dashboard {
     public Dashboard() {
-        SmartDashboard.putNumber("Test", 972);
+        
+    }
+
+    public static void putJoystick(double value) {
+        SmartDashboard.putNumber("Joystick", value);
     }
 }
