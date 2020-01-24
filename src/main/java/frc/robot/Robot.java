@@ -42,8 +42,8 @@ public class Robot extends TimedRobot {
   {
     double driverThrottle = -Context.robotController.driverJoystick.getThrottle();
     double driverYaw = -Context.robotController.driverJoystick.getYaw();
-
-    if(Context.robotController.driverJoystick.getJoystick().getRawButtonPressed(4))
+    
+    if(Context.robotController.driverJoystick.getToggleTrack())
     {
       if(Context.robotController.visionAllignment.isActive()){
         Context.robotController.visionAllignment.stopTrack();
