@@ -20,6 +20,11 @@ public class Context {
     public static final int yawAxisID = 1;
     public static final double joystickMaxDeadband = 0.05;
     public static final int inUseLengthMillis = 1000;
+    public static final int climbButtonUp = 2;
+    public static final int climbButtonDown = 1; 
+    public static final int shoot = 3; 
+    public static final int loopyLoopBreak = 7;
+    public static final int toggleTrack = 4;
 
     //----- Robotcontroller Static Reference -----
     public static RobotController robotController;
