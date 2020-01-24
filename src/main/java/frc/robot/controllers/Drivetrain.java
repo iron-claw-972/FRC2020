@@ -72,47 +72,29 @@ public class Drivetrain
     }
 
     /**
-     * @return distance in cm
+     * @return distance in m
      */
     public double getLeftDist() {
         //10 cm wheel diameter
-        double rawCount = (leftMotor1.getEncoder().getPosition() + leftMotor2.getEncoder().getPosition())/2 - startPosLeft;
-        return Context.driveClickToCm * rawCount;
+        double rawCount = leftMotor1.getEncoder().getPosition() - startPosLeft;
+        return rawCount / Context.driveTicksPerMeter;
     }
 
     /**
-     * @return distance in cm
+     * @return distance in m
      */
     public double getRightDist() {
-        double rawCount = (rightMotor1.getEncoder().getPosition() + rightMotor2.getEncoder().getPosition())/2 - startPosRight;
-        return Context.driveClickToCm * rawCount;
+        double rawCount = -(rightMotor1.getEncoder().getPosition() - startPosRight);
+        return rawCount / Context.driveTicksPerMeter;
     }
 
     /**
-     * @return velocity in RPM
-     */
-    public double getLeftVel() {
-        return (leftMotor1.getEncoder().getVelocity() + leftMotor2.getEncoder().getVelocity())/2;
-    }
-
-    /**
-     * @return velocity in RPM
-     */
-    public double getRightVel() {
-        return (rightMotor1.getEncoder().getVelocity() + rightMotor2.getEncoder().getVelocity())/2;
-    }
-
-    /**
-     * @return positions in cm
+     * @return positions in m
      */
     public ArrayList<Double> getWheelPositions() {
-        /* convert from RPM to clicks per second */
-        double leftVel = getLeftDist();
-        double rightVel = getRightDist();
-
         ArrayList<Double> wheelPositions = new ArrayList<Double>();
-        wheelPositions.add(leftVel);
-        wheelPositions.add(rightVel);
+        wheelPositions.add(getLeftDist());
+        wheelPositions.add(getRightDist());
 
         return wheelPositions;
     }

@@ -5,6 +5,7 @@ import java.util.List;
 import com.acmerobotics.roadrunner.control.PIDCoefficients;
 import com.acmerobotics.roadrunner.drive.DriveSignal;
 import com.acmerobotics.roadrunner.drive.TankDrive;
+import com.acmerobotics.roadrunner.drive.TankDrive.TankLocalizer;
 import com.acmerobotics.roadrunner.followers.TankPIDVAFollower;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -29,13 +30,14 @@ public class AutoDrive {
     PIDCoefficients headingPid;
     TankPIDVAFollower follower;
     TankDrive tankDrive;
+    TankLocalizer tankLocalizer;
 
     public AutoDrive() {
 
         tankDrive = new TankDrive(Context.kV, Context.kA, Context.kStatic, Context.TRACK_WIDTH) {
             @Override
             protected double getRawExternalHeading() {
-                return Context.robotController.navX.getCompassHeading();
+                return 0.0;
             }
         
             @Override
@@ -49,6 +51,10 @@ public class AutoDrive {
             }
         };
 
+        tankDrive.setLocalizer();
+
+        tankLocalizer = new TankLocalizer(tankDrive, false);
+
         // profile = MotionProfileGenerator.generateSimpleMotionProfile(
         //     new MotionState(0.0, 0.0, 0.0),
         //     new MotionState(200.0, 0.0, 0.0),
@@ -57,9 +63,9 @@ public class AutoDrive {
         //     100.0
         // );
 
-        path = new PathBuilder(new Pose2d(3.0, 3.0, 0.0))
-            .splineTo(new Pose2d(-3.0, -3.0, 0.0))
-            .lineTo(new Vector2d(1.0, 1.0))
+        path = new PathBuilder(new Pose2d(0, 0, 0))
+            .splineTo(new Pose2d(150, 150, 0))
+            .lineTo(new Vector2d(300, 150))
             .build();
 
         trajectory = TrajectoryGenerator.INSTANCE.generateTrajectory(path, Context.BASE_CONSTRAINTS);
@@ -75,11 +81,20 @@ public class AutoDrive {
 
     public void loop(double t) {
         tankDrive.updatePoseEstimate();
+        tankLocalizer.getPoseEstimate();
         poseEstimate = tankDrive.getPoseEstimate();
 
-        DriveSignal signal = follower.update(poseEstimate);
+        System.out.println(poseEstimate);
 
-        tankDrive.setDriveSignal(signal);
+        // double right = Context.robotController.drivetrain.getRightDist();
+        // double left = Context.robotController.drivetrain.getLeftDist();
+
+        // System.out.println("right: " + right + " left: " + left);
+        // System.out.println(Context.robotController.drivetrain.rightMotor1.getEncoder().getPosition());
+
+        // DriveSignal signal = follower.update(poseEstimate);
+
+        // tankDrive.setDriveSignal(signal);
     }
 
 }

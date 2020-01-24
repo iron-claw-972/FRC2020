@@ -12,10 +12,9 @@ public class Context {
     public static final int rightMotor1ID = 3;
     public static final int rightMotor2ID = 4;
 
-    // Diameter of wheel (10 cm) * Pi (3.14) * Clicks per rev (0.2)
-    public static final double driveWheelDiameter = 10;
-    public static final double driveClicksPerRev = 0.2;
-    public static final double driveClickToCm = driveWheelDiameter * Math.PI * driveClicksPerRev;
+    public static final double driveWheelDiameter = 0.1; // meters
+    public static final double driveMotorGearRatio = (1/12.0) * (50.0) * (1/34.0) * (40.0); // in neo revs / wheel revs
+    public static final double driveTicksPerMeter = driveMotorGearRatio / (driveWheelDiameter * Math.PI);
     
     //----- Human Input Device Values -----
     public static final int joystickID = 0;
@@ -47,7 +46,7 @@ public class Context {
     public static final DriveConstraints BASE_CONSTRAINTS = new DriveConstraints(
         maxDrivingSpeed, 40.0, 80.0, maxturningSpeed, 2.0, 4.0
     );
-    public static final double TRACK_WIDTH = 5;
+    public static final double TRACK_WIDTH = 0.675; // meters
     public static final double kA = 5;
     public static final double kStatic = 5;
     public static final double kV = 5;
