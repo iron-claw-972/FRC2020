@@ -35,6 +35,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     Context.robotController.drivetrain.resetEncoders();
+    Context.robotController.intake.init();
   }
 
   boolean align = false;

@@ -29,7 +29,6 @@ public class Intake
     private final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
     private final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
 
-    m_colorMatcher.addColorMatch(kBlueTarget);
 
     Joystick joy = new Joystick(0);
     TalonSRX rollingIntake = new TalonSRX(0);
@@ -37,7 +36,47 @@ public class Intake
     PID beltSpeed = new PID(1, 0, 0);
     DigitalInput limitSwitch = new DigitalInput(1);
 
-    public void roll()
+    public Intake()
+    {
+        
+    }
+
+    public void init()
+    {
+        m_colorMatcher.addColorMatch(kBlueTarget);
+        m_colorMatcher.addColorMatch(kGreenTarget);
+        m_colorMatcher.addColorMatch(kRedTarget);
+        m_colorMatcher.addColorMatch(kYellowTarget);  
+    }
+
+    public void loop()
+    {
+        Color detectedColor = m_colorSensor.getColor();
+
+        
+        String colorString;
+        ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
+
+        if (match.color == kBlueTarget) {
+            colorString = "Blue";
+          } else if (match.color == kRedTarget) {
+            colorString = "Red";
+          } else if (match.color == kGreenTarget) {
+            colorString = "Green";
+          } else if (match.color == kYellowTarget) {
+            colorString = "Yellow";
+          } else {
+            colorString = "Unknown";
+          }
+        
+        SmartDashboard.putNumber("Red", detectedColor.red);
+        SmartDashboard.putNumber("Green", detectedColor.green);
+        SmartDashboard.putNumber("Blue", detectedColor.blue);
+        SmartDashboard.putNumber("Confidence", match.confidence);
+        SmartDashboard.putString("Detected Color", colorString);
+    }
+
+    /*public void roll()
     {
         rollingIntake.set(ControlMode.PercentOutput, joy.getRawAxis(0));
     }
@@ -48,5 +87,5 @@ public class Intake
         {
             beltIntake.set(ControlMode.PercentOutput, 0.5);
         }
-    }
+    }*/
 }

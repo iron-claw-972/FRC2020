@@ -13,6 +13,7 @@ public class RobotController
     public ZMQServer zmqServer;
     public NetworktablesInterface ntInterface;
     public DriverJoystick driverJoystick;
+    public Intake intake;
 
     public RobotController () {
         drivetrain = new Drivetrain();
@@ -22,6 +23,7 @@ public class RobotController
         zmqServer.start();
         ntInterface = new NetworktablesInterface();
         driverJoystick = new DriverJoystick();
+        intake = new Intake();
 
         Context.robotController = this;
     }
