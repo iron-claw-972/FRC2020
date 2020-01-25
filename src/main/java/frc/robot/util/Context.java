@@ -11,6 +11,12 @@ public class Context {
     public static final int rightMotor1ID = 3;
     public static final int rightMotor2ID = 4;
 
+    /* For non-neo and non-falcon drive trains only */
+    public static final int leftEncoderChannelA = 0;
+    public static final int leftEncoderChannelB = 1;
+    public static final int rightEncoderChannelA = 2;
+    public static final int rightEncoderChannelB = 3;
+
     // Diameter of wheel (10 cm) * Pi (3.14) * Clicks per rev (0.2)
     public static final double driveClickToCm = 2*Math.PI;
     
@@ -20,11 +26,6 @@ public class Context {
     public static final int yawAxisID = 1;
     public static final double joystickMaxDeadband = 0.05;
     public static final int inUseLengthMillis = 1000;
-    public static final int climbButtonUp = 2;
-    public static final int climbButtonDown = 1; 
-    public static final int shoot = 3; 
-    public static final int loopyLoopBreak = 7;
-    public static final int toggleTrack = 4;
 
     //----- Robotcontroller Static Reference -----
     public static RobotController robotController;

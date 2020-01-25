@@ -4,7 +4,7 @@ import frc.robot.util.Context;
 
 public class RobotController
 {
-    public Drivetrain drivetrain;
+    public NeoDrivetrain drivetrain;
     public AutoDrive autoDrive;
     public NavX navX;
     public ZMQServer zmqServer;
@@ -13,7 +13,7 @@ public class RobotController
     public VisionAllignment visionAllignment;
 
     public RobotController () {
-        drivetrain = new Drivetrain();
+        drivetrain = new NeoDrivetrain();
         autoDrive = new AutoDrive();
         navX = new NavX();
         zmqServer = new ZMQServer();
