@@ -9,11 +9,13 @@ import com.acmerobotics.roadrunner.drive.TankDrive.TankLocalizer;
 import com.acmerobotics.roadrunner.followers.TankPIDVAFollower;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.acmerobotics.roadrunner.kinematics.*;
 import com.acmerobotics.roadrunner.path.Path;
 import com.acmerobotics.roadrunner.path.PathBuilder;
 import com.acmerobotics.roadrunner.profile.MotionProfile;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryGenerator;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
 import frc.robot.util.Context;
 
@@ -41,7 +43,7 @@ public class AutoDrive {
         
             @Override
             public void setMotorPowers(double leftPower, double rightPower) {
-                Context.robotController.drivetrain.tankDrive(leftPower, rightPower);
+                Context.robotController.drivetrain.tankDrive(leftPower, -rightPower);
             }
         
             @Override
@@ -62,8 +64,8 @@ public class AutoDrive {
         // );
 
         path = new PathBuilder(new Pose2d(0, 0, 0))
-            .splineTo(new Pose2d(150, 150, 0))
-            .lineTo(new Vector2d(300, 150))
+            .splineTo(new Pose2d(1.5, 1.5, 0))
+            // .lineTo(new Vector2d(3.0, 1.5))
             .build();
 
         trajectory = TrajectoryGenerator.INSTANCE.generateTrajectory(path, Context.BASE_CONSTRAINTS);
@@ -83,15 +85,18 @@ public class AutoDrive {
 
         System.out.println(poseEstimate);
 
-        // double right = Context.robotController.drivetrain.getRightDist();
-        // double left = Context.robotController.drivetrain.getLeftDist();
-
-        // System.out.println("right: " + right + " left: " + left);
-        // System.out.println(Context.robotController.drivetrain.rightMotor1.getEncoder().getPosition());
-
-        // DriveSignal signal = follower.update(poseEstimate);
+        DriveSignal signal = follower.update(poseEstimate);
+        
+        List<Double> velocities = TankKinematics.robotToWheelVelocities(signal.getVel(), Context.TRACK_WIDTH);
+        List<Double> accelerations = TankKinematics.robotToWheelAccelerations(signal.getAccel(), Context.TRACK_WIDTH);
+        List<Double> powers = Kinematics.calculateMotorFeedforward(velocities, accelerations, Context.kV, Context.kA, Context.kStatic);
 
         // tankDrive.setDriveSignal(signal);
+
+        System.out.println("Drive Powers: (" + powers.get(0) + ", " + powers.get(1) + ")");
+
+        Context.robotController.drivetrain.tankDrive(powers.get(0), powers.get(1));
+        // Context.robotController.drivetrain.tankDrivePID(velocities.get(0), velocities.get(1));
     }
 
 }
