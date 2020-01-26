@@ -25,18 +25,17 @@ public class NeoDrivetrain extends Drivetrain {
     }
 
     public void resetEncoders() {
-        startPosLeft = (leftMotor1.getEncoder().getPosition() + leftMotor2.getEncoder().getPosition())/2;
-        startPosRight = (rightMotor1.getEncoder().getPosition() + rightMotor2.getEncoder().getPosition())/2;
+        startPosLeft = leftMotor1.getEncoder().getPosition();
+        startPosRight = rightMotor1.getEncoder().getPosition();
     }
 
     public double getLeftDist() {
-        //10 cm wheel diameter
-        double rawCount = (leftMotor1.getEncoder().getPosition() + leftMotor2.getEncoder().getPosition())/2 - startPosLeft;
-        return Context.driveClickToCm * rawCount;
+        double rawCount = leftMotor1.getEncoder().getPosition() - startPosLeft;
+        return rawCount / Context.neoDriveTicksPerMeter;
     }
 
     public double getRightDist() {
-        double rawCount = (rightMotor1.getEncoder().getPosition() + rightMotor2.getEncoder().getPosition())/2 - startPosRight;
-        return Context.driveClickToCm * rawCount;
+        double rawCount = rightMotor1.getEncoder().getPosition() - startPosRight;
+        return rawCount / Context.neoDriveTicksPerMeter;
     }
 }

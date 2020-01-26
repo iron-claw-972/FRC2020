@@ -35,13 +35,12 @@ public class TalonSRXDrivetrain extends Drivetrain {
     }
 
     public double getLeftDist() {
-        //10 cm wheel diameter
         double rawCount = leftEncoder.get() - startPosLeft;
-        return Context.driveClickToCm * rawCount;
+        return rawCount / Context.basicDriveTicksPerMeter;
     }
 
     public double getRightDist() {
         double rawCount = leftEncoder.get() - startPosRight;
-        return Context.driveClickToCm * rawCount;
+        return rawCount / Context.basicDriveTicksPerMeter;
     }
 }
