@@ -14,7 +14,7 @@ public class RobotController
 
     public RobotController () {
         /* Change this line when using a different drive train. Don't forget to change the motor ids in context */
-        drivetrain = new NeoDrivetrain();
+        drivetrain = new TalonFXDrivetrain();
         autoDrive = new AutoDrive();
         navX = new NavX();
         zmqServer = new ZMQServer();

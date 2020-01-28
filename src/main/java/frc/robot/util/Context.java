@@ -29,12 +29,15 @@ public class Context {
     /* Falcon Drivetrain Values */
     public static final double falconFXTicksPerRotation = 4096;
     public static final double falconFXDriveWheelDiameter = 0.1; // meters
-    public static final double falconFXDriveMotorGearRatio = 1 * falconFXTicksPerRotation; // falcon ticks / wheel revs
-    public static final double falconFXDriveTicksPerMeter = falconFXDriveMotorGearRatio / (falconFXDriveWheelDiameter * Math.PI);
+    public static final double falconFXGearRatioLow = (1/10.0) * falconFXTicksPerRotation; // falcon ticks / wheel revs
+    public static final double falconFXGearRatioHigh = (1/15.2) * falconFXTicksPerRotation; // falcon ticks / wheel revs
+    public static final double falconFXDriveTicksPerMeterLow = falconFXGearRatioLow / (falconFXDriveWheelDiameter * Math.PI);
+    public static final double falconFXDriveTicksPerMeterHigh = falconFXGearRatioHigh / (falconFXDriveWheelDiameter * Math.PI);
     
     //----- Human Input Device Values -----
     public static final int joystickID = 0;
     public static final int throttleAxisID = 4;
+    public static final int shiftGearsButtonID = 6;
     public static final int yawAxisID = 1;
     public static final double joystickMaxDeadband = 0.05;
     public static final int inUseLengthMillis = 1000;
@@ -43,6 +46,11 @@ public class Context {
     public static final int shoot = 3; 
     public static final int loopyLoopBreak = 7;
     public static final int toggleTrack = 4;
+
+    /* Pneumatics Values */
+    public static final int compressorID = 40;
+    public static final int gearShifterChannelA = 0;
+    public static final int gearShifterChannelB = 1;
 
     //----- Robotcontroller Static Reference -----
     public static RobotController robotController;
