@@ -2,31 +2,41 @@ package frc.robot.controllers;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.*;
+import edu.wpi.first.wpilibj.*;
 
 import java.util.*;
 
 public class Dashboard {
-    private ShuffleboardTab tab;
+    private static ShuffleboardTab tab;
 
-    private ShuffleboardLayout drivetrainLayout;
+    private static ShuffleboardLayout drivetrainLayout;
 
     private static NetworkTableEntry leftEncoderEntry;
+    private static NetworkTableEntry rightEncoderEntry;
 
-    public Dashboard() {
-        tab = Shuffleboard.getTab("SmartDashboard");
+    public static void init() {
+        tab = Shuffleboard.getTab("Dashboard");
 
         drivetrainLayout = tab.getLayout("Drivetrain", BuiltInLayouts.kGrid)
             .withPosition(0,0)
-            .withSize(2,4)
-            .withProperties(Map.of("Number of rows", 2, "Number of Columns", 2, "Label Position", "TOP"));
+            .withSize(2,5)
+            .withProperties(Map.of("Number of rows", 2, "number of columns", 2, "Label Position", "TOP"));
+
         leftEncoderEntry = drivetrainLayout.add("Left", 0)
-            .withSize(1,1)
-            .withWidget(BuiltInWidgets.kEnc)
+            .withPosition(0,0)
+            .withWidget(BuiltInWidgets.kNumberSlider)
+            .withProperties(Map.of("min", -1, "max", 1))
+            .getEntry();
+
+        rightEncoderEntry = drivetrainLayout.add("Right", 0)
+            .withPosition(1,0)
+            .withWidget(BuiltInWidgets.kNumberSlider)
             .withProperties(Map.of("min", -1, "max", 1))
             .getEntry();
     }
 
-    public static void putJoystick(double value) {
-        leftEncoderEntry.setDouble(value);
+    public static void putJoystick(Joystick joy) {
+        leftEncoderEntry.setDouble(joy.getRawAxis(0));
+        rightEncoderEntry.setDouble(joy.getRawAxis(4));
     }
 }

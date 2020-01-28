@@ -15,15 +15,15 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    Context.robotController = new RobotController();
-    robotStartTime = System.currentTimeMillis()/1000.0;
+    // Context.robotController = new RobotController();
+    // robotStartTime = System.currentTimeMillis()/1000.0;
 
     joy = new Joystick(0);
   }
 
   @Override
   public void robotPeriodic() {
-    Dashboard.putJoystick(joy.getRawAxis(4));
+    
   }
 
   @Override
@@ -40,11 +40,13 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     // Context.robotController.drivetrain.resetEncoders();
+    Dashboard.init();
   }
   
   @Override
   public void teleopPeriodic()
   {
+    Dashboard.putJoystick(joy);
   //   double driverThrottle = -Context.robotController.driverJoystick.getThrottle();
   //   double driverYaw = -Context.robotController.driverJoystick.getYaw();
 
