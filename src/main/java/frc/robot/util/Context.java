@@ -11,6 +11,10 @@ public class Context {
     public static final int rightMotor1ID = 3;
     public static final int rightMotor2ID = 4;
 
+    //----- Flywheel Shooter Values -----
+    public static final int shooterMotorID = 2;
+    public static final int FALCON_ENCODER_CPR = 2048;
+
     // Diameter of wheel (10 cm) * Pi (3.14) * Clicks per rev (0.2)
     public static final double driveClickToCm = 2*Math.PI;
     
@@ -51,6 +55,11 @@ public class Context {
     public static final double kA = 5;
     public static final double kStatic = 5;
     public static final double kV = 5;
+
+    //----- Superstructure/Game Measurements -----
+    public static final double M_FLYWHEEL_RADIUS = 0.0508;
+    public static final double M_BALL_DIAMETER = 0.0762;
+
 
     //----- Time Function -----
     public static double getRelativeTime(double relativePoint) {

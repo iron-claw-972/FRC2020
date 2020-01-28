@@ -11,8 +11,10 @@ public class RobotController
     public NetworktablesInterface ntInterface;
     public DriverJoystick driverJoystick;
     public VisionAllignment visionAllignment;
+    public ShooterController shooterController;
 
     public RobotController () {
+        shooterController = new ShooterController();
         drivetrain = new Drivetrain();
         autoDrive = new AutoDrive();
         navX = new NavX();
