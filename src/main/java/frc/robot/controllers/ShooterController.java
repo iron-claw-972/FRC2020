@@ -43,14 +43,14 @@ public class ShooterController {
         shooterTalon.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
         velocityJRAD = new JRAD(kF, kI, kLoadRatio); //need tuning
         M_SHOOTING_RADIUS = Context.M_FLYWHEEL_RADIUS + Context.M_BALL_DIAMETER/2;
-        startTime = System.currentTimeMillis();
+        startTime = System.currentTimeMillis()/1000;
     }
 
     private void updateParameters() {
         //updates all necessary
         actualVelocity = flywheelVelocity()/2; //accounts for fact that ball rolls on inside of hood
         lastTime = time;
-        time = Context.getRelativeTime(startTime);
+        time = Context.getRelativeTimeSeconds(startTime);
         deltaTime = time - lastTime;
         setVelocity = velocityJRAD.update(desiredVelocity, actualVelocity, deltaTime);
     }

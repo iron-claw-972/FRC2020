@@ -62,7 +62,7 @@ public class Context {
 
 
     //----- Time Function -----
-    public static double getRelativeTime(double relativePoint) {
-        return System.currentTimeMillis() - relativePoint;
+    public static double getRelativeTimeSeconds(double relativePoint) {
+        return System.currentTimeMillis()/1000 - relativePoint;
     }
 }
