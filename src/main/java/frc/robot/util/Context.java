@@ -18,7 +18,7 @@ public class Context {
     public static final int rightEncoderChannelB = 3;
     public static final double amtTicksPerRotation = 2048;
     public static final double basicDriveWheelDiameter = 0.1; // meters
-    public static final double basicDriveMotorGearRatio = 1 * amtTicksPerRotation; // amt ticks / wheel revs
+    public static final double basicDriveMotorGearRatio = (1/12.0) * (50.0) * (1/34.0) * (40.0) * amtTicksPerRotation; // amt ticks / wheel revs
     public static final double basicDriveTicksPerMeter = basicDriveMotorGearRatio / (basicDriveWheelDiameter * Math.PI);
 
     /* Neo Drivetrain values */
@@ -48,7 +48,7 @@ public class Context {
     public static final int toggleTrack = 4;
 
     /* Pneumatics Values */
-    public static final int compressorID = 40;
+    // public static final int compressorID = 40;
     public static final int gearShifterChannelA = 0;
     public static final int gearShifterChannelB = 1;
 
