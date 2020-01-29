@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
     double driverYaw = -Context.robotController.driverJoystick.getYaw();
 
     if (Context.robotController.driverJoystick.shiftGears()) {
-      Context.robotController.drivetrain.switchGears();
+      Context.robotController.drivetrain.shiftGears();
     }
     
     if (Context.robotController.driverJoystick.getToggleTrack()) {

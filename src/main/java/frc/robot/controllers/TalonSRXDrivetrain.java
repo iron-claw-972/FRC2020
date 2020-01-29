@@ -29,18 +29,21 @@ public class TalonSRXDrivetrain extends Drivetrain {
         rightMotor2.set(ControlMode.PercentOutput, rightPower);
     }
 
-    public void resetEncoders() {
-        startPosLeft = leftEncoder.get();
-        startPosRight = rightEncoder.get();
+    protected double getLeftTicks() {
+        return leftEncoder.get();
+    }
+
+    protected double getRightTicks() {
+        return rightEncoder.get();
     }
 
     public double getLeftDist() {
-        double rawCount = leftEncoder.get() - startPosLeft;
+        double rawCount = getLeftTicks() - startPosLeft;
         return rawCount / Context.basicDriveTicksPerMeter;
     }
 
     public double getRightDist() {
-        double rawCount = leftEncoder.get() - startPosRight;
+        double rawCount = getRightTicks() - startPosRight;
         return rawCount / Context.basicDriveTicksPerMeter;
     }
 }

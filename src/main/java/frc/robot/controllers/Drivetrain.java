@@ -9,14 +9,14 @@ public abstract class Drivetrain {
     public double pastLeftDist = 0, pastRightDist = 0;
     public long pastTime;
 
-    public PID leftDrivePID = new PID(0.09, 0, 0);
-    public PID rightDrivePID = new PID(0.09, 0, 0);
+    public PID leftDrivePID = new PID(0.6, 0, 0);
+    public PID rightDrivePID = new PID(0.6, 0, 0);
     
-    public Drivetrain () {
+    public Drivetrain() {
         pastTime = System.currentTimeMillis();
     }
 
-    public void arcadeDrive (double power, double turn) {
+    public void arcadeDrive(double power, double turn) {
         power *= speedFac;
         turn *=  turnFac;
         double leftPower = turn - power;
@@ -25,7 +25,7 @@ public abstract class Drivetrain {
         tankDrivePID(leftPower, rightPower);
     }
 
-    public void tankDrivePID (double leftGoalPower, double rightGoalPower){
+    public void tankDrivePID(double leftGoalPower, double rightGoalPower) {
         double deltaTime = (double)(System.currentTimeMillis() - pastTime);
 
         double leftDistTraveled = getLeftDist() - pastLeftDist;
@@ -47,7 +47,14 @@ public abstract class Drivetrain {
 
     public abstract void tankDrive(double leftPower, double rightPower);
 
-    public abstract void resetEncoders();
+    protected abstract double getLeftTicks();
+
+    protected abstract double getRightTicks();
+
+    public void resetEncoders() {
+        startPosLeft = getLeftTicks();
+        startPosRight = getRightTicks();
+    }
 
     public abstract double getLeftDist();
 

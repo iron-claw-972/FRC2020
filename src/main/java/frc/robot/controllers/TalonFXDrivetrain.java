@@ -44,19 +44,22 @@ public class TalonFXDrivetrain extends Drivetrain {
     }
 
     public void tankDrive(double leftPower, double rightPower) {
-        leftMotor1.set(ControlMode.PercentOutput, leftPower);
-        leftMotor2.set(ControlMode.PercentOutput, leftPower);
+        leftMotor1.set(ControlMode.PercentOutput, -leftPower);
+        leftMotor2.set(ControlMode.PercentOutput, -leftPower);
         rightMotor1.set(ControlMode.PercentOutput, rightPower);
         rightMotor2.set(ControlMode.PercentOutput, rightPower);
     }
 
-    public void resetEncoders() {
-        startPosLeft = leftMotor1.getSelectedSensorPosition();
-        startPosRight = rightMotor1.getSelectedSensorPosition();
+     protected double getLeftTicks() {
+        return leftMotor1.getSelectedSensorPosition();
+    }
+
+    protected double getRightTicks() {
+        return -rightMotor1.getSelectedSensorPosition();
     }
 
     public double getLeftDist() {
-        double rawCount = leftMotor1.getSelectedSensorPosition() - startPosLeft;
+        double rawCount = getLeftTicks() - startPosLeft;
         switch(gear) {
         case LOW:
             return (rawCount / Context.falconFXDriveTicksPerMeterLow) + leftDistTraveled;
@@ -69,7 +72,7 @@ public class TalonFXDrivetrain extends Drivetrain {
     }
 
     public double getRightDist() {
-        double rawCount = rightMotor1.getSelectedSensorPosition() - startPosRight;
+        double rawCount = getRightTicks() - startPosRight;
         switch(gear) {
         case LOW:
             return (rawCount / Context.falconFXDriveTicksPerMeterLow) + rightDistTraveled;
@@ -84,23 +87,33 @@ public class TalonFXDrivetrain extends Drivetrain {
     /**
      * Toggles low to high gears
      */
-    public void switchGears() {
+    public void shiftGears() {
         switch(gear) {
         case LOW:
+            shiftGears(Gear.HIGH);
+            break;
+        case HIGH:
+            shiftGears(Gear.LOW);
+            break;
+        }
+    }
+
+    /**
+     * Shifts to specified position
+     */
+    public void shiftGears(Gear desiredGear) {
+        switch(desiredGear) {
+        case LOW:
             gearShifterSolenoid.set(Value.kForward);
-            gear = Gear.HIGH;
-            resetEncoders();
-            leftDistTraveled = getLeftDist();
-            rightDistTraveled = getRightDist();
             break;
         case HIGH:
             gearShifterSolenoid.set(Value.kReverse);
-            gear = Gear.LOW;
-            resetEncoders();
-            leftDistTraveled = getLeftDist();
-            rightDistTraveled = getRightDist();
             break;
         }
+        gear = desiredGear;
+        leftDistTraveled = getLeftDist();
+        rightDistTraveled = getRightDist();
+        resetEncoders();
     }
 
 }

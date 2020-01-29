@@ -24,18 +24,21 @@ public class NeoDrivetrain extends Drivetrain {
         rightMotor2.set(rightPower);
     }
 
-    public void resetEncoders() {
-        startPosLeft = leftMotor1.getEncoder().getPosition();
-        startPosRight = rightMotor1.getEncoder().getPosition();
+    protected double getLeftTicks() {
+        return leftMotor1.getEncoder().getPosition();
+    }
+
+    protected double getRightTicks() {
+        return rightMotor1.getEncoder().getPosition();
     }
 
     public double getLeftDist() {
-        double rawCount = leftMotor1.getEncoder().getPosition() - startPosLeft;
+        double rawCount = getLeftTicks() - startPosLeft;
         return rawCount / Context.neoDriveTicksPerMeter;
     }
 
     public double getRightDist() {
-        double rawCount = rightMotor1.getEncoder().getPosition() - startPosRight;
+        double rawCount = getRightTicks() - startPosRight;
         return rawCount / Context.neoDriveTicksPerMeter;
     }
 }
