@@ -23,25 +23,34 @@ public class OpticalLocalization
     public Long LeftPosY = 0L;
     public Long RightPosX, RightPosY;
 
-    public boolean IsNewData = false;
+    public boolean IsNewLeftData = false;
+    public boolean IsNewRightData = false;
 
     public void Update()
     {
-        byte[] Data = new byte[ReplyLength];
-        LeftSensor.readOnly(Data, Data.length);
-        LeftQuality = Data[0];
-        LeftMovementX = (Integer)(int) ((int)Data[1] | ((int)Data[2] << 8) | ((int)Data[3] << 16) | ((int)Data[4] << 24));
+        byte[] Data = new byte[ReplyLength]; // incoming byte data buffer
+        LeftSensor.readOnly(Data, Data.length); //requesting arduino to send the data, write it into the buffer
+        LeftQuality = Data[0]; // 0th byte is the surface quality
+        LeftMovementX = (Integer)(int) ((int)Data[1] | ((int)Data[2] << 8) | ((int)Data[3] << 16) | ((int)Data[4] << 24)); // combine the bytes into an integer using unsigned byte stuff
         LeftMovementY = (Integer)(int) ((int)Data[5] | ((int)Data[6] << 8) | ((int)Data[7] << 16) | (int)(Data[8] << 24));
-        for(int i =0; i<ReplyLength; i++)
-        {
-            //System.out.println(String.format("0x%08X", Data[i]));
-        }
-        if(Data[9] == 1) IsNewData = true;
-        else IsNewData = false;
+
+        IsNewLeftData = Data[9] >= 1; // check if the sensor data has been updated since last i2c data request
+
+        RightSensor.readOnly(Data, Data.length); // same but on the right
+        RightQuality = Data[0];
+        RightMovementX = (Integer)(int) ((int)Data[1] | ((int)Data[2] << 8) | ((int)Data[3] << 16) | ((int)Data[4] << 24));
+        RightMovementY = (Integer)(int) ((int)Data[5] | ((int)Data[6] << 8) | ((int)Data[7] << 16) | (int)(Data[8] << 24));
+
+        IsNewRightData = Data[9] >= 1;
     }
 
-    public boolean IsFresh()
+    public boolean IsFreshLeft()
     {
-        return IsNewData;
+        return IsNewLeftData;
+    }
+
+    public boolean IsFreshRight()
+    {
+        return IsNewRightData;
     }
 }
