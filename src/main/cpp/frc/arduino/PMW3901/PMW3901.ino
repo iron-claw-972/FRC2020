@@ -1,11 +1,13 @@
 #include <Wire.h>
 
-#define I2C_ADDRESS 0x25
+#define I2C_ADDRESS 25
 
 void setup()
 {
   Serial.begin(115200);
   Wire.begin(I2C_ADDRESS);
+  Wire.onRequest(receiveEvent);
+  pinMode(13, OUTPUT);
 }
 
 byte catchPattern[] = { 0x24, 0x58, 0x3c, 0x00, 0x02, 0x1f, 0x09, 0x00};
@@ -21,6 +23,10 @@ int32_t MotionY = 0;
 
 int32_t PositionX = 0;
 int32_t PositionY = 0;
+
+bool LEDState = false;
+
+byte IsNewData = 0;
 
 union int32ByteConverter
 {
@@ -69,6 +75,11 @@ void loop()
         PositionY += MotionY;
 
         dataBytes = 0;
+        IsNewData = 1;
+        //Serial.print("  X: ");
+        //Serial.print(MotionX);
+        //Serial.print("  Y: ");
+        //Serial.println(MotionY);
       }
     }
   }
@@ -89,32 +100,44 @@ bool allIsTrue(byte A[], byte B[])
   return true;
 }
 
-void receiveEvent()
+void receiveEvent() // if we receive an I2C Message
 {
   String data = "";
+  //Serial.println("I2C Request received");
 
-  // Data is sent one byte at a time, so piece it together
-  // In the future, you should probably just send a number or something to avoid needing to piece together a string
-  while ( Wire.available() > 0 )
+  while(Wire.available() > 0)
   {
     char n=(char)Wire.read();
     if(((int)n)>((int)(' '))) data += n; 
   }
-  
-  if (data == ">$r")
-  {
-    int32ByteConverter converterX;
-    converterX.integer = PositionX;
 
-    int32ByteConverter converterY;
-    converterY.integer = PositionY;
-    byte dataToSend[] = { (byte)surfaceQuality, converterX.bytes[0], converterX.bytes[1], converterX.bytes[2], converterX.bytes[3],
-    converterY.bytes[0], converterY.bytes[1], converterY.bytes[2], converterY.bytes[3]};
-    for(int i = 0; i < sizeof(dataToSend); i++)
-    {
-      Wire.write(dataToSend[i]);
-    }
-    PositionX = 0;
-    PositionY = 0;
+  //Serial.println(data);
+  
+  //delay(10);
+  digitalWrite(13, !LEDState); // toggle the onboard LED once we get a request data packet
+  if(LEDState) LEDState = false;
+  else LEDState = true;
+
+  //PositionX = 0x01020304;
+  //PositionY = 0xF5F6F7F8;
+  byte dataToSend[] = { (byte)surfaceQuality, 
+                        (uint32_t)PositionX&0xFF, 
+                        ((uint32_t)PositionX>>8)&0xFF, 
+                        ((uint32_t)PositionX>>16)&0xFF, 
+                        ((uint32_t)PositionX>>24)&0xFF, 
+                        (uint32_t)PositionY&0xFF, 
+                        ((uint32_t)PositionY>>8)&0xFF, 
+                        ((uint32_t)PositionY>>16)&0xFF, 
+                        ((uint32_t)PositionY>>24)&0xFF,
+                        IsNewData};
+
+  Wire.write(dataToSend, 9);// send the bytes subsequently (NOT SURE)
+  for(int i = 0; i < sizeof(dataToSend); i++)
+  {
+    //Serial.print(dataToSend[i]);
   }
+  PositionX = 0;
+  PositionY = 0;
+
+  IsNewData = 0;
 }

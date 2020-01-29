@@ -11,6 +11,7 @@ public class RobotController
     public NetworktablesInterface ntInterface;
     public DriverJoystick driverJoystick;
     public VisionAllignment visionAllignment;
+    public OpticalLocalization opticalLocalization;
 
     public RobotController () {
         drivetrain = new Drivetrain();
@@ -21,6 +22,7 @@ public class RobotController
         ntInterface = new NetworktablesInterface();
         driverJoystick = new DriverJoystick();
         visionAllignment = new VisionAllignment();
+        opticalLocalization = new OpticalLocalization();
 
         Context.robotController = this;
     }
@@ -33,6 +35,7 @@ public class RobotController
     public void loopAll()
     {
         ntInterface.run();
+        opticalLocalization.Update();
         visionAllignment.loop();
     }
 }
