@@ -1,16 +1,17 @@
 package frc.robot.controllers;
 
+import edu.wpi.first.wpilibj.Compressor;
 import frc.robot.util.Context;
 
-public class RobotController
-{
-    public Drivetrain drivetrain;
+public class RobotController {
+    public TalonFXDrivetrain drivetrain;
     public AutoDrive autoDrive;
     public NavX navX;
     public ZMQServer zmqServer;
     public NetworktablesInterface ntInterface;
     public DriverJoystick driverJoystick;
     public VisionAllignment visionAllignment;
+    public Compressor compressor;
 
     public RobotController () {
         /* Change this line when using a different drive train. Don't forget to change the motor ids in context */
@@ -22,17 +23,15 @@ public class RobotController
         ntInterface = new NetworktablesInterface();
         driverJoystick = new DriverJoystick();
         visionAllignment = new VisionAllignment();
+        compressor = new Compressor();
 
         Context.robotController = this;
     }
 
-    public void initAll()
-    {
-
+    public void initAll() {
     }
 
-    public void loopAll()
-    {
+    public void loopAll() {
         ntInterface.run();
         visionAllignment.loop();
     }
