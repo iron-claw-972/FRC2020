@@ -9,11 +9,18 @@ public abstract class Drivetrain {
     public double pastLeftDist = 0, pastRightDist = 0;
     public long pastTime;
 
-    public PID leftDrivePID = new PID(0.6, 0, 0);
-    public PID rightDrivePID = new PID(0.6, 0, 0);
+    private PID leftDrivePID, rightDrivePID;
     
-    public Drivetrain() {
+    /**
+     * Requires PIDs to be inputted so each drivetrain can have it's own values
+     * @param leftDrivePID_
+     * @param rightDrivePID_
+     */
+    public Drivetrain(PID leftDrivePID_, PID rightDrivePID_) {
         pastTime = System.currentTimeMillis();
+
+        leftDrivePID = leftDrivePID_;
+        rightDrivePID = rightDrivePID_;
     }
 
     public void arcadeDrive(double power, double turn) {

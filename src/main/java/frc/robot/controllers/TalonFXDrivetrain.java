@@ -20,9 +20,12 @@ public class TalonFXDrivetrain extends Drivetrain {
     public enum Gear {
         LOW, HIGH;
     }
+
+    private static PID leftDrivePID = new PID(0.6, 0, 0);
+    private static PID rightDrivePID = new PID(0.6, 0, 0);
     
-    public TalonFXDrivetrain () {
-        super();
+    public TalonFXDrivetrain() {
+        super(leftDrivePID, rightDrivePID);
 
         leftMotor1 = new TalonFX(Context.leftMotor1ID);
         leftMotor1.configFactoryDefault();
