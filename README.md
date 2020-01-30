@@ -40,3 +40,6 @@ http://devsite.ctr-electronics.com/maven/release/com/ctre/phoenix/Phoenix-latest
     - [ ] Get Distance Sensor
       - [ ] Find/Calculate optimal distance and speed of rotation
 - [ ] Delta Timer for PID
+
+### Google Java Style Guide
+https://google.github.io/styleguide/javaguide.html
