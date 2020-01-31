@@ -22,6 +22,10 @@ public class DriverJoystick {
         return getAxisDeadBandManaged(Context.yawAxisID);
     }
 
+    public boolean shiftGears() {
+        return joystick.getRawButtonPressed(Context.shiftGearsButtonID);
+    }
+
     public boolean getClimbU() {
         return joystick.getRawButton(Context.climbButtonUp);
     }
