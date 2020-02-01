@@ -9,38 +9,27 @@ import java.util.*;
 public class Dashboard {
     private static ShuffleboardTab tab;
 
-    private static ShuffleboardLayout drivetrainLayout;
-
-    private static NetworkTableEntry leftEncoderEntry;
-    private static NetworkTableEntry rightEncoderEntry;
+    private static NetworkTableEntry cameraEntry;
+    private static NetworkTableEntry voltageEntry;
+    private static NetworkTableEntry shooterSpeedEntry;
 
     public static void init() {
         tab = Shuffleboard.getTab("Dashboard");
 
-        drivetrainLayout = tab.getLayout("Drivetrain", BuiltInLayouts.kGrid)
+        cameraEntry = tab.add("Camera", 0)
             .withPosition(0,0)
-            .withSize(3,3)
-            .withProperties(Map.of("Number of rows", 2))
-            .withProperties(Map.of("Number of columns", 2))
-            .withProperties(Map.of("Label Position", "TOP"));
-
-        leftEncoderEntry = drivetrainLayout.add("Left", 0)
-            .withPosition(0,0)
-            .withSize(2,1)
-            .withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(Map.of("min", -1, "max", 1))
+            .withSize(7,5)
             .getEntry();
 
-        rightEncoderEntry = drivetrainLayout.add("Right", 0)
-            .withPosition(1,0)
+        voltageEntry = tab.add("Voltage", 0)
+            .withWidget(BuiltInWidgets.kNumberBar)
+            .withPosition(7,0)
             .withSize(2,1)
-            .withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(Map.of("min", -1, "max", 1))
+            .withProperties(Map.of("Min", 11.5, "Max", 13.5))
             .getEntry();
     }
 
-    public static void putJoystick(Joystick joy) {
-        leftEncoderEntry.setDouble(joy.getRawAxis(0));
-        rightEncoderEntry.setDouble(joy.getRawAxis(2));
+    public static void update() {
+        voltageEntry.setDouble(edu.wpi.first.wpilibj.RobotController.getBatteryVoltage());
     }
 }

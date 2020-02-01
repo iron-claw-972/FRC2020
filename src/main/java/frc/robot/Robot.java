@@ -46,7 +46,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic()
   {
-    Dashboard.putJoystick(joy);
+    Dashboard.update();
   //   double driverThrottle = -Context.robotController.driverJoystick.getThrottle();
   //   double driverYaw = -Context.robotController.driverJoystick.getYaw();
 
