@@ -33,6 +33,7 @@ public class RobotController {
 
     public void loopAll() {
         ntInterface.run();
+        opticalLocalization.Update();
         visionAllignment.loop();
     }
 }

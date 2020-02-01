@@ -31,6 +31,6 @@ public class NetworktablesInterface {
         if(targetStatus.getDouble(0) > 0.0) targetAcquired = true;
         else targetAcquired = false;
         robotHeartbeat.setNumber(System.currentTimeMillis());
-        System.out.println("tx: " + tx + " ty: " + ty);
+        //System.out.println("tx: " + tx + " ty: " + ty);
     }
 }
