@@ -15,6 +15,7 @@ public class Robot extends TimedRobot {
   {
     Context.robotController = new RobotController();
     robotStartTime = System.currentTimeMillis()/1000.0;
+    Context.robotController.compressor.start();
   }
 
   @Override
@@ -41,24 +42,28 @@ public class Robot extends TimedRobot {
   }
   
   @Override
+
   public void teleopPeriodic()
   {
     Context.robotController.loopAll();
-    //double driverThrottle = -Context.robotController.driverJoystick.getThrottle();
-    //double driverYaw = -Context.robotController.driverJoystick.getYaw();
+
+  public void teleopPeriodic() {
+    double driverThrottle = -Context.robotController.driverJoystick.getThrottle();
+    double driverYaw = -Context.robotController.driverJoystick.getYaw();
+
+    if (Context.robotController.driverJoystick.shiftGears()) {
+      Context.robotController.drivetrain.shiftGears();
+    }
     
-    /* /////COMMENTED OUT FOR TESTING
-    if(Context.robotController.driverJoystick.getToggleTrack())
-    {
-      if(Context.robotController.visionAllignment.isActive()){
+    if (Context.robotController.driverJoystick.getToggleTrack()) {
+      if (Context.robotController.visionAllignment.isActive()) {
         Context.robotController.visionAllignment.stopTrack();
       } else {
         Context.robotController.visionAllignment.startTrack();
       }
     }
 
-    if(Context.robotController.driverJoystick.isInUse() || !Context.robotController.visionAllignment.isActive())
-    {
+    if (Context.robotController.driverJoystick.isInUse() || !Context.robotController.visionAllignment.isActive()) {
       Context.robotController.visionAllignment.stopTrack();
       Context.robotController.drivetrain.arcadeDrive(driverYaw, driverThrottle);
     }
