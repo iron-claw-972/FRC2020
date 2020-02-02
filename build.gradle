@@ -68,6 +68,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.zeromq/jeromq
     compile group: 'org.zeromq', name: 'jeromq', version: '0.4.0'
     compile 'com.google.code.gson:gson:2.8.6'
+
+    implementation(group: "edu.wpi.first.shuffleboard", name: "api", version: "2020.2.2")
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
@@ -76,4 +78,42 @@ dependencies {
 jar {
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
+}
+
+//Shuffleboard
+
+ext.FRC_YEAR = "2020"
+
+def getFrcToolsRoot ()
+{
+    if (OperatingSystem.current ().isWindows () )
+    {
+        String pubFolder = System.getenv("PUBLIC")
+        if (pubFolder == null)
+        {
+            pubFolder = "C:\\Users\\Public"
+        }
+
+        return pubFolder + "/frc${FRC_YEAR}" 
+
+    }
+    else
+    {
+        return System.getProperty ("user.home") + "/frc${FRC_YEAR}"
+    }
+} 
+
+task deployWidget (type: Copy, group: "Shuffleboard Widget", description: "Copy the widget jar into the Shuffleboard plugin folder", dependsOn: "build") {
+    from "build/libs"
+    into getDeployDest ()
+    include "*.jar"
+}
+
+def getDeployDest ()
+{
+    return System.getProperty ("user.home") + "/Shuffleboard/plugins"
+}
+def getShuffleboardJar ()
+{
+    return files(getFrcToolsRoot() + "/tools/shuffleboard.jar")
 }

@@ -4,21 +4,34 @@ import edu.wpi.first.wpilibj.*;
 import frc.robot.controllers.RobotController;
 import frc.robot.util.*;
 import frc.robot.controllers.*;
+import frc.robot.shuffleboard.*;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.*;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Robot extends TimedRobot {
-  public RobotController robotController;
+  // public RobotController robotController;
 
-  public double origTime;
-  public double robotStartTime;
+  // public double origTime;
+  // public double robotStartTime;
+
+  public TalonFX left1, left2, right1, right2;
 
   Joystick joy;
+
+  Compressor c;
+
+  DoubleSolenoid ds;
+
+  public boolean shiftState;
 
   @Override
   public void robotInit() {
     // Context.robotController = new RobotController();
     // robotStartTime = System.currentTimeMillis()/1000.0;
-
-    joy = new Joystick(0);
   }
 
   @Override
@@ -46,6 +59,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic()
   {
+
     Dashboard.update();
   //   double driverThrottle = -Context.robotController.driverJoystick.getThrottle();
   //   double driverYaw = -Context.robotController.driverJoystick.getYaw();

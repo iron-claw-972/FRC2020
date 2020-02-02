@@ -14,7 +14,6 @@ public class RobotController
     public NetworktablesInterface ntInterface;
     public DriverJoystick driverJoystick;
     public VisionAllignment visionAllignment;
-    public Dashboard dashboard;
 
     public RobotController () {
         // drivetrain = new Drivetrain();
@@ -25,7 +24,6 @@ public class RobotController
         // ntInterface = new NetworktablesInterface();
         // driverJoystick = new DriverJoystick();
         // visionAllignment = new VisionAllignment();
-        dashboard = new Dashboard();
 
         Context.robotController = this;
     }
