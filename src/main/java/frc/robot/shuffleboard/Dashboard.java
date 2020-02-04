@@ -12,6 +12,9 @@ public class Dashboard {
     private static NetworkTableEntry voltageEntry;
     private static NetworkTableEntry shooterSpeedEntry;
     private static NetworkTableEntry gearEntry;
+    private static NetworkTableEntry WOFEntry;
+    private static ShuffleboardLayout NMFLayout;
+    private static NetworkTableEntry NMFEntry1, NMFEntry2, NMFEntry3, NMFEntry4, NMFEntry5;
 
     public static void init() {
         tab = Shuffleboard.getTab("Shuffleboard");
@@ -40,6 +43,17 @@ public class Dashboard {
             .withPosition(9,0)
             .withSize(2,1) 
             .getEntry();
+            
+        WOFEntry = tab.add("WOF Color", 0)
+            .withPosition(9,2)
+            .withSize(2,2) 
+            .getEntry();
+        
+        NMFLayout = tab.getLayout("Counting To Five Tutorial", BuiltInLayouts.kGrid)
+            .withPosition(7, 4)
+            .withSize(4, 2)
+            .withProperties(Map.of("Number of Rows", 1, "Number of columns", 5));
+        NMFEntry1 = NMFLayout.add()
     }
 
     public static void update() {
