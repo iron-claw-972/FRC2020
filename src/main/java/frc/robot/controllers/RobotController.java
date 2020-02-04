@@ -12,6 +12,7 @@ public class RobotController {
     public DriverJoystick driverJoystick;
     public VisionAllignment visionAllignment;
     public Compressor compressor;
+    public Intake intake;
 
     public RobotController () {
         /* Change this line when using a different drive train. Don't forget to change the motor ids in context */
@@ -24,6 +25,7 @@ public class RobotController {
         driverJoystick = new DriverJoystick();
         visionAllignment = new VisionAllignment();
         compressor = new Compressor();
+        intake = new Intake();
 
         Context.robotController = this;
     }
