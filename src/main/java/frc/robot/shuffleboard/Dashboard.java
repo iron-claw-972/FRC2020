@@ -53,7 +53,36 @@ public class Dashboard {
             .withPosition(7, 4)
             .withSize(4, 2)
             .withProperties(Map.of("Number of Rows", 1, "Number of columns", 5));
-        NMFEntry1 = NMFLayout.add()
+        NMFEntry1 = NMFLayout.add("1", false)
+            .withWidget(BuiltInWidgets.kBooleanBox)
+            .withPosition(0, 0)
+            .withSize(1, 1)
+            .withProperties(Map.of("Color when true", "yellow", "Color when false", "grey"))
+            .getEntry();
+        NMFEntry2 = NMFLayout.add("2", false)
+            .withWidget(BuiltInWidgets.kBooleanBox)
+            .withPosition(0, 0)
+            .withSize(2, 1)
+            .withProperties(Map.of("Color when true", "yellow", "Color when false", "grey"))
+            .getEntry();
+        NMFEntry3 = NMFLayout.add("3", false)
+            .withWidget(BuiltInWidgets.kBooleanBox)
+            .withPosition(0, 0)
+            .withSize(3, 1)
+            .withProperties(Map.of("Color when true", "yellow", "Color when false", "grey"))
+            .getEntry();
+        NMFEntry4 = NMFLayout.add("4", false)
+            .withWidget(BuiltInWidgets.kBooleanBox)
+            .withPosition(0, 0)
+            .withSize(4, 1)
+            .withProperties(Map.of("Color when true", "yellow", "Color when false", "grey"))
+            .getEntry();
+        NMFEntry5 = NMFLayout.add("5", false)
+            .withWidget(BuiltInWidgets.kBooleanBox)
+            .withPosition(0, 0)
+            .withSize(5, 1)
+            .withProperties(Map.of("Color when true", "yellow", "Color when false", "grey"))
+            .getEntry(); 
     }
 
     public static void update() {
