@@ -13,6 +13,7 @@ public class RobotController {
     public VisionAllignment visionAllignment;
     public Compressor compressor;
     public Intake intake;
+    public OpticalLocalization opticalLocalization;
 
     public RobotController () {
         /* Change this line when using a different drive train. Don't forget to change the motor ids in context */
@@ -26,6 +27,7 @@ public class RobotController {
         visionAllignment = new VisionAllignment();
         compressor = new Compressor();
         intake = new Intake();
+        opticalLocalization = new OpticalLocalization();
 
         Context.robotController = this;
     }
