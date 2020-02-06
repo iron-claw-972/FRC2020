@@ -5,6 +5,8 @@ import frc.robot.controllers.RobotController;
 import frc.robot.util.*;
 import frc.robot.controllers.*;
 import frc.robot.shuffleboard.*;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -18,25 +20,21 @@ public class Robot extends TimedRobot {
   // public double origTime;
   // public double robotStartTime;
 
-  public TalonFX left1, left2, right1, right2;
-
-  Joystick joy;
-
-  Compressor c;
-
-  DoubleSolenoid ds;
-
-  public boolean shiftState;
+  private UsbCamera camera;
 
   @Override
   public void robotInit() {
     // Context.robotController = new RobotController();
     // robotStartTime = System.currentTimeMillis()/1000.0;
+
+    camera = edu.wpi.first.cameraserver.CameraServer.getInstance().startAutomaticCapture();
+
+    Dashboard.init();
   }
 
   @Override
   public void robotPeriodic() {
-    
+    Dashboard.update();
   }
 
   @Override
@@ -53,14 +51,11 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     // Context.robotController.drivetrain.resetEncoders();
-    Dashboard.init();
+    
   }
   
   @Override
-  public void teleopPeriodic()
-  {
-
-    Dashboard.update();
+  public void teleopPeriodic() {
   //   double driverThrottle = -Context.robotController.driverJoystick.getThrottle();
   //   double driverYaw = -Context.robotController.driverJoystick.getYaw();
 
