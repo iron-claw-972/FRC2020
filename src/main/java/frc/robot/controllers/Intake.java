@@ -47,27 +47,28 @@ public class Intake
         m_colorMatcher.addColorMatch(kGreenTarget);
         m_colorMatcher.addColorMatch(kRedTarget);
         m_colorMatcher.addColorMatch(kYellowTarget);*/  
-        System.out.print("hello world");
+        
     }
 
     public void loop()
     {
 
-        //Color detectedColor = m_colorSensor.getColor();
+        System.out.print("hello world");
+        Color detectedColor = m_colorSensor.getColor();
 
         /**
          * The sensor returns a raw IR value of the infrared light detected.
          */
-        //double IR = m_colorSensor.getIR();
+        double IR = m_colorSensor.getIR();
 
         /**
          * Open Smart Dashboard or Shuffleboard to see the color detected by the 
          * sensor.
          */
-       // SmartDashboard.putNumber("Red", detectedColor.red);
-       // SmartDashboard.putNumber("Green", detectedColor.green);
-       // SmartDashboard.putNumber("Blue", detectedColor.blue);
-        //SmartDashboard.putNumber("IR", IR);
+        SmartDashboard.putNumber("Red", detectedColor.red);
+        SmartDashboard.putNumber("Green", detectedColor.green);
+        SmartDashboard.putNumber("Blue", detectedColor.blue);
+        SmartDashboard.putNumber("IR", IR);
 
         /**
          * In addition to RGB IR values, the color sensor can also return an 
@@ -94,7 +95,7 @@ public class Intake
         SmartDashboard.putNumber("Blue", detectedColor.blue);
         SmartDashboard.putNumber("Confidence", match.confidence);*/
         //SmartDashboard.putString("Detected Color", colorString);
-    }
+    }  
 
     /*public void roll()
     {
@@ -108,4 +109,42 @@ public class Intake
             beltIntake.set(ControlMode.PercentOutput, 0.5);
         }
     }*/
+    public static double[] RGBtoHSV(double r, double g, double b){
+
+        double h, s, v;
+    
+        double min, max, delta;
+    
+        min = Math.min(Math.min(r, g), b);
+        max = Math.max(Math.max(r, g), b);
+    
+        // V
+        v = max;
+    
+         delta = max - min;
+    
+        // S
+         if( max != 0 )
+            s = delta / max;
+         else {
+            s = 0;
+            h = -1;
+            return new double[]{h,s,v};
+         }
+    
+        // H
+         if( r == max )
+            h = ( g - b ) / delta; // between yellow & magenta
+         else if( g == max )
+            h = 2 + ( b - r ) / delta; // between cyan & yellow
+         else
+            h = 4 + ( r - g ) / delta; // between magenta & cyan
+    
+         h *= 60;    // degrees
+    
+        if( h < 0 )
+            h += 360;
+    
+        return new double[]{h,s,v};
+    }
 }

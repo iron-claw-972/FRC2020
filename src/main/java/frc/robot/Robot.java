@@ -16,6 +16,7 @@ public class Robot extends TimedRobot {
     Context.robotController = new RobotController();
     robotStartTime = System.currentTimeMillis()/1000.0;
     Context.robotController.compressor.start();
+    Context.robotController.intake.init();
   }
 
   @Override
