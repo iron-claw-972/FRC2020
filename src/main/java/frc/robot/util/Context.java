@@ -71,13 +71,13 @@ public class Context {
 
     //----- Acme Robotics Tank Drive -----
     // maxVel, maxAccel, maxJerk, maxAngVel, maxAngAccel, maxAngJerk
-    public static final double maxDrivingSpeed = 0.2; // m/s
+    public static final double maxDrivingSpeed = 1.0; // m/s
     public static final double maxDrivingAcceleration = 0.5; // m/s/s
-    public static final double maxDrivingJerk = 1.0; // m/s/s/s
+    public static final double maxDrivingJerk = 3.0; // m/s/s/s
     public static final double maxTurningSpeed = 0.5; // radians/s
     /* Not used in trajectories */
-    public static final double maxTurningAcceleration = 0;
-    public static final double maxTurningJerk = 0;
+    public static final double maxTurningAcceleration = 1;
+    public static final double maxTurningJerk = 1;
 
     public static final DriveConstraints BASE_CONSTRAINTS = new DriveConstraints(
         maxDrivingSpeed, maxDrivingAcceleration, maxDrivingJerk, maxTurningSpeed, maxTurningAcceleration, maxTurningJerk

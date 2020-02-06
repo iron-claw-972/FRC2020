@@ -1,5 +1,6 @@
 package frc.robot.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.acmerobotics.roadrunner.control.PIDCoefficients;
@@ -12,6 +13,7 @@ import com.acmerobotics.roadrunner.kinematics.*;
 import com.acmerobotics.roadrunner.path.Path;
 import com.acmerobotics.roadrunner.path.PathBuilder;
 import com.acmerobotics.roadrunner.profile.MotionProfile;
+import com.acmerobotics.roadrunner.profile.MotionState;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryGenerator;
 
@@ -41,57 +43,45 @@ public class AutoDrive {
         
             @Override
             public void setMotorPowers(double leftPower, double rightPower) {
-                Context.robotController.drivetrain.tankDrive(leftPower, -rightPower);
+                Context.robotController.drivetrain.tankDrive(leftPower, rightPower);
             }
         
             @Override
             public List<Double> getWheelPositions() {
-                return Context.robotController.drivetrain.getWheelPositions();
+                ArrayList<Double> output = new ArrayList<Double>();
+                output.add(Context.robotController.drivetrain.getLeftDist());
+                output.add(Context.robotController.drivetrain.getRightDist());
+                
+                return output;
             }
         };
 
         /* Disables the use of external heading */
         tankDrive.setLocalizer(new TankLocalizer(tankDrive, false));
 
-        // profile = MotionProfileGenerator.generateSimpleMotionProfile(
-        //     new MotionState(0.0, 0.0, 0.0),
-        //     new MotionState(200.0, 0.0, 0.0),
-        //     50.0,
-        //     40.0,
-        //     100.0
-        // );
-
         path = new PathBuilder(new Pose2d(0, 0, 0))
-            .splineTo(new Pose2d(1.5, 1.5, 0))
+            .splineTo(new Pose2d(3, 0, 0))
             // .lineTo(new Vector2d(3.0, 1.5))
             .build();
 
         trajectory = TrajectoryGenerator.INSTANCE.generateTrajectory(path, Context.BASE_CONSTRAINTS);
-
-        translationalPid = new PIDCoefficients(5.0, 0.0, 0.0);
-        headingPid = new PIDCoefficients(2.0, 0.0, 0.0);
-        follower = new TankPIDVAFollower(translationalPid, headingPid);
-    }
-
-    public void startSpline() {
-        follower.followTrajectory(trajectory);
     }
 
     public void loop(double t) {
         tankDrive.updatePoseEstimate();
         poseEstimate = tankDrive.getPoseEstimate();
 
-        DriveSignal signal = follower.update(poseEstimate);
-        
-        List<Double> velocities = TankKinematics.robotToWheelVelocities(signal.getVel(), Context.TRACK_WIDTH);
-        List<Double> accelerations = TankKinematics.robotToWheelAccelerations(signal.getAccel(), Context.TRACK_WIDTH);
-        List<Double> powers = Kinematics.calculateMotorFeedforward(velocities, accelerations, Context.kV, Context.kA, Context.kStatic);
+        System.out.println("pose: " + poseEstimate);
 
-        // tankDrive.setDriveSignal(signal);
+        MotionState state = trajectory.getProfile().get(t);
+        double robotVelocity = state.getV();
+        Pose2d tank = new Pose2d(robotVelocity, 0, trajectory.get(t).getHeading());
+        System.out.println("goal: " + trajectory.get(t));
+        List<Double> wheelVelocities = TankKinematics.robotToWheelVelocities(tank, Context.TRACK_WIDTH);
 
-        System.out.println("Drive Powers: (" + powers.get(0) + ", " + powers.get(1) + ")");
+        //System.out.println("Left: " + wheelVelocities.get(0) + ", Right: " + wheelVelocities.get(1));
 
-        Context.robotController.drivetrain.tankDrive(powers.get(0), powers.get(1));
+        Context.robotController.drivetrain.tankDrivePID(wheelVelocities.get(1), wheelVelocities.get(0));
         // Context.robotController.drivetrain.tankDrivePID(velocities.get(0), velocities.get(1));
     }
 

@@ -4,30 +4,31 @@ import edu.wpi.first.wpilibj.Compressor;
 import frc.robot.util.Context;
 
 public class RobotController {
-    public TalonFXDrivetrain drivetrain;
+    public NeoDrivetrain drivetrain;
     public AutoDrive autoDrive;
     public NavX navX;
-    public ZMQServer zmqServer;
+    // public ZMQServer zmqServer;
     public NetworktablesInterface ntInterface;
-    public DriverJoystick driverJoystick;
-    public VisionAllignment visionAllignment;
-    public Compressor compressor;
-    public Intake intake;
-    public OpticalLocalization opticalLocalization;
+    // public DriverJoystick driverJoystick;
+    // public VisionAllignment visionAllignment;
+    // public Compressor compressor;
+    // public Intake intake;
+    // public OpticalLocalization opticalLocalization;
 
     public RobotController () {
         /* Change this line when using a different drive train. Don't forget to change the motor ids in context */
-        drivetrain = new TalonFXDrivetrain();
+        // drivetrain = new TalonFXDrivetrain();
+        drivetrain = new NeoDrivetrain();
         autoDrive = new AutoDrive();
-        navX = new NavX();
-        zmqServer = new ZMQServer();
-        zmqServer.start();
-        ntInterface = new NetworktablesInterface();
-        driverJoystick = new DriverJoystick();
-        visionAllignment = new VisionAllignment();
-        compressor = new Compressor();
-        intake = new Intake();
-        opticalLocalization = new OpticalLocalization();
+        // navX = new NavX();
+        // zmqServer = new ZMQServer();
+        // zmqServer.start();
+        // ntInterface = new NetworktablesInterface();
+        // driverJoystick = new DriverJoystick();
+        // visionAllignment = new VisionAllignment();
+        // compressor = new Compressor();
+        // intake = new Intake();
+        // opticalLocalization = new OpticalLocalization();
 
         Context.robotController = this;
     }
@@ -36,8 +37,8 @@ public class RobotController {
     }
 
     public void loopAll() {
-        ntInterface.run();
-        opticalLocalization.Update();
-        visionAllignment.loop();
+        // ntInterface.run();
+        // opticalLocalization.Update();
+        // visionAllignment.loop();
     }
 }
