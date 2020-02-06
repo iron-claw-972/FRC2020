@@ -53,8 +53,8 @@ public class Intake
     public void loop()
     {
 
-        System.out.print("hello world");
         Color detectedColor = m_colorSensor.getColor();
+        double[] hsv = RGBtoHSV(detectedColor.red, detectedColor.green, detectedColor.blue);
 
         /**
          * The sensor returns a raw IR value of the infrared light detected.
