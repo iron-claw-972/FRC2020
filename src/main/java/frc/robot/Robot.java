@@ -25,8 +25,8 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void autonomousInit()
-  {
+  public void autonomousInit() {
+    Context.robotController.drivetrain.resetEncoders()
     origTime = System.currentTimeMillis();
     //Context.robotController.autoDrive.startSpline();
   }
@@ -40,6 +40,7 @@ public class Robot extends TimedRobot {
   public void teleopInit()
   {
     //Context.robotController.drivetrain.resetEncoders();
+    Context.robotController.initAll();
   }
   
   @Override
@@ -47,6 +48,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic()
   {
     Context.robotController.loopAll();
+
     double driverThrottle = -Context.robotController.driverJoystick.getThrottle();
     double driverYaw = -Context.robotController.driverJoystick.getYaw();
 
@@ -66,7 +68,7 @@ public class Robot extends TimedRobot {
       Context.robotController.visionAllignment.stopTrack();
       Context.robotController.drivetrain.arcadeDrive(driverYaw, driverThrottle);
     }
-    */
+    
     if((Context.robotController.opticalLocalization.LeftMovementX != 0) || (Context.robotController.opticalLocalization.LeftMovementY !=0))
     {
       System.out.println("X: " + Context.robotController.opticalLocalization.LeftMovementX + " Y: " + Context.robotController.opticalLocalization.LeftMovementY);

@@ -1,5 +1,6 @@
 package frc.robot.util;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
 
 import frc.robot.controllers.RobotController;
@@ -77,13 +78,21 @@ public class Context {
 
     //----- Acme Robotics Tank Drive -----
     // maxVel, maxAccel, maxJerk, maxAngVel, maxAngAccel, maxAngJerk
+    public static final double maxDrivingSpeed = 0.2; // m/s
+    public static final double maxDrivingAcceleration = 0.5; // m/s/s
+    public static final double maxDrivingJerk = 1.0; // m/s/s/s
+    public static final double maxTurningSpeed = 0.5; // radians/s
+    /* Not used in trajectories */
+    public static final double maxTurningAcceleration = 0;
+    public static final double maxTurningJerk = 0;
+
     public static final DriveConstraints BASE_CONSTRAINTS = new DriveConstraints(
-        20.0, 40.0, 80.0, 1.0, 2.0, 4.0
+        maxDrivingSpeed, maxDrivingAcceleration, maxDrivingJerk, maxTurningSpeed, maxTurningAcceleration, maxTurningJerk
     );
-    public static final double TRACK_WIDTH = 5;
-    public static final double kA = 5;
-    public static final double kStatic = 5;
-    public static final double kV = 5;
+    public static final double TRACK_WIDTH = 0.675; // meters
+    public static final double kA = 0.2; // m/s/s
+    public static final double kStatic = 0.0;
+    public static final double kV = 0.04;
 
     //----- Superstructure/Game Measurements -----
     public static final double M_FLYWHEEL_RADIUS = 0.0508;

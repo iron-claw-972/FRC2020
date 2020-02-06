@@ -13,6 +13,9 @@ public class RobotController {
     public VisionAllignment visionAllignment;
     public Compressor compressor;
     public ShooterController shooterController;
+    public Intake intake;
+    public OpticalLocalization opticalLocalization;
+
 
     public RobotController () {
         shooterController = new ShooterController();
@@ -27,6 +30,8 @@ public class RobotController {
         driverJoystick = new DriverJoystick();
         visionAllignment = new VisionAllignment();
         compressor = new Compressor();
+        intake = new Intake();
+        opticalLocalization = new OpticalLocalization();
 
         Context.robotController = this;
     }
