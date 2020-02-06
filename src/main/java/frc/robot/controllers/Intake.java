@@ -43,30 +43,31 @@ public class Intake
 
     public void init()
     {
-        /*m_colorMatcher.addColorMatch(kBlueTarget);
+        /*++++++.addColorMatch(kBlueTarget);
         m_colorMatcher.addColorMatch(kGreenTarget);
         m_colorMatcher.addColorMatch(kRedTarget);
         m_colorMatcher.addColorMatch(kYellowTarget);*/  
+        System.out.print("hello world");
     }
 
     public void loop()
     {
 
-        Color detectedColor = m_colorSensor.getColor();
+        //Color detectedColor = m_colorSensor.getColor();
 
         /**
          * The sensor returns a raw IR value of the infrared light detected.
          */
-        double IR = m_colorSensor.getIR();
+        //double IR = m_colorSensor.getIR();
 
         /**
          * Open Smart Dashboard or Shuffleboard to see the color detected by the 
          * sensor.
          */
-        SmartDashboard.putNumber("Red", detectedColor.red);
-        SmartDashboard.putNumber("Green", detectedColor.green);
-        SmartDashboard.putNumber("Blue", detectedColor.blue);
-        SmartDashboard.putNumber("IR", IR);
+       // SmartDashboard.putNumber("Red", detectedColor.red);
+       // SmartDashboard.putNumber("Green", detectedColor.green);
+       // SmartDashboard.putNumber("Blue", detectedColor.blue);
+        //SmartDashboard.putNumber("IR", IR);
 
         /**
          * In addition to RGB IR values, the color sensor can also return an 
