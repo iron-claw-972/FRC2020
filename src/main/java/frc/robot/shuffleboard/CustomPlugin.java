@@ -11,12 +11,12 @@ import java.util.*;
 @Description(
     group = "frc.robot", 
     name = "CustomPlugin", 
-    version = "1.2.3", 
-    summary = "A good plugin"
+    version = "1.0.0", 
+    summary = "A custom plugin"
 )
 public class CustomPlugin extends Plugin {
 
-    private static final Theme customTheme = new Theme(CustomPlugin.class, "Iron Claw Theme", "/path/to/stylesheet");
+    private static final Theme customTheme = new Theme(CustomPlugin.class, "Iron Claw Theme", "Theme.css");
 
     @Override
     public List<ComponentType> getComponents() {

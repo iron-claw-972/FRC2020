@@ -9,7 +9,6 @@ import java.util.*;
 public class Dashboard {
     private static ShuffleboardTab tab;
 
-    private static NetworkTableEntry cameraEntry;
     private static NetworkTableEntry voltageEntry;
     private static NetworkTableEntry shooterSpeedEntry;
     private static NetworkTableEntry WOFEntry;
@@ -19,11 +18,11 @@ public class Dashboard {
     public static void init(UsbCamera camera) {
         tab = Shuffleboard.getTab("Shuffleboard");
 
-        cameraEntry = tab.add("Camera", (Object) camera)
+        tab.add("Camera", camera)
             .withWidget(BuiltInWidgets.kCameraStream)
             .withPosition(0,0)
-            .withSize(7,5)
-            .getEntry();
+            .withProperties(Map.of("Show controls", false))
+            .withSize(7,5);
 
         voltageEntry = tab.add("Voltage", 0)
             .withWidget(BuiltInWidgets.kNumberBar)

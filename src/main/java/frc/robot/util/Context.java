@@ -51,4 +51,9 @@ public class Context {
     public static double getRelativeTime(double relativePoint) {
         return System.currentTimeMillis() - relativePoint;
     }
+
+    //----- Camera Constants -----
+    public static final int cameraWidth = 1;
+    public static final int cameraHeight = 1;
+    public static final int cameraFPS = 1;
 }

@@ -6,6 +6,7 @@ import frc.robot.util.*;
 import frc.robot.controllers.*;
 import frc.robot.shuffleboard.*;
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoMode.PixelFormat;
 import edu.wpi.first.cameraserver.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -28,8 +29,8 @@ public class Robot extends TimedRobot {
     // robotStartTime = System.currentTimeMillis()/1000.0;
 
     camera = edu.wpi.first.cameraserver.CameraServer.getInstance().startAutomaticCapture();
-
-    Dashboard.init();
+    camera.setVideoMode(PixelFormat.kMJPEG, Context.cameraWidth, Context.cameraHeight, Context.cameraFPS);
+    Dashboard.init(camera);
   }
 
   @Override
