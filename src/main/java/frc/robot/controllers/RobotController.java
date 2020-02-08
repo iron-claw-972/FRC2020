@@ -25,6 +25,7 @@ public class RobotController {
     public TalonSRX beltIntake;
 
     public RobotController () {
+        //----- Motors -----
         leftDriveMotor1 = new TalonFX(Context.leftMotor1ID);
         leftDriveMotor2 = new TalonFX(Context.leftMotor2ID);
         rightDriveMotor1 = new TalonFX(Context.rightMotor1ID);
@@ -32,6 +33,11 @@ public class RobotController {
         rollingIntake = new TalonSRX(-1);
         beltIntake = new TalonSRX(-1);
 
+        //----- Pneumatics -----
+        compressor = new Compressor();
+        compressor.setClosedLoopControl(true);
+
+        //----- Controllers -----
         /* Change this line when using a different drive train. Don't forget to change the motor ids in context */
         drivetrain = new TalonFXDrivetrain(leftDriveMotor1, leftDriveMotor2, rightDriveMotor1, rightDriveMotor2);
         autoDrive = new AutoDrive();
@@ -39,8 +45,6 @@ public class RobotController {
         ntInterface = new NetworktablesInterface();
         driverJoystick = new DriverJoystick();
         visionAllignment = new VisionAllignment();
-        compressor = new Compressor();
-        compressor.setClosedLoopControl(true);
         intake = new Intake(rollingIntake, beltIntake);
         opticalLocalization = new OpticalLocalization();
 
