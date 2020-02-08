@@ -30,15 +30,15 @@ public class Intake
     private final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);*/
 
 
-    Joystick joy = new Joystick(0);
-    TalonSRX rollingIntake = new TalonSRX(0);
-    TalonSRX beltIntake = new TalonSRX(1);
-    PID beltSpeed = new PID(1, 0, 0);
-    DigitalInput limitSwitch = new DigitalInput(1);
+    public TalonSRX rollingIntake;
+    public TalonSRX beltIntake;
+    public PID beltSpeed = new PID(1, 0, 0);
+    public DigitalInput limitSwitch = new DigitalInput(1);
 
-    public Intake()
+    public Intake(TalonSRX rollingIntake_, TalonSRX beltIntake_)
     {
-        
+        this.rollingIntake = rollingIntake_;
+        this.beltIntake = beltIntake_;
     }
 
     public void init()

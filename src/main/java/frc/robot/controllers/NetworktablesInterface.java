@@ -25,7 +25,7 @@ public class NetworktablesInterface {
         inst.startDSClient();  // recommended if running on DS computer; this gets the robot IP from the DS
     }
 
-    public void run(){
+    public void loop(){
         tx = xEntry.getDouble(0.0);
         ty = yEntry.getDouble(0.0);
         if(targetStatus.getDouble(0) > 0.0) targetAcquired = true;
