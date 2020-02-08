@@ -9,10 +9,6 @@ import frc.robot.util.*;
 
 public class ShooterController {
 
-    /*/////////////////////////////////////
-    THIS IS TUNED FOR THE SHOOTER PROTOTYPE
-    /////////////////////////////////////*/
-
     private final double kF = 0;
     private final double kI = 0;
     private final double kLoadRatio = 0;
@@ -31,8 +27,8 @@ public class ShooterController {
 
     private TalonFX shooterTalon;
 
-    private final double minCurrent = 0.06; //minimum current needed for flywheel motor to overcome friction, etc. (to go into motion)
-    private final double speedToCurrentRate = 0.01075; //the linear conversion rate between a velocity and necessary current
+    private final double minCurrent = 0; //minimum current needed for flywheel motor to overcome friction, etc. (to go into motion)
+    private final double speedToCurrentRate = 0; //the linear conversion rate between a velocity and necessary current
     
     //Measurements in meters
     private double M_SHOOTING_RADIUS;
@@ -89,6 +85,9 @@ public class ShooterController {
         //get the RPM of the flywheel
         return 600 * shooterTalon.getSelectedSensorVelocity()/2048;
     }
-
+    
+    public double getDesiredVelocity() {
+        return desiredVelocity;
+    }
 
 }
