@@ -24,22 +24,22 @@ public class TalonFXDrivetrain extends Drivetrain {
     private static PID leftDrivePID = new PID(0.6, 0, 0);
     private static PID rightDrivePID = new PID(0.6, 0, 0);
     
-    public TalonFXDrivetrain() {
+    public TalonFXDrivetrain(TalonFX leftMotor1_, TalonFX leftMotor2_, TalonFX rightMotor1_, TalonFX rightMotor2_) {
         super(leftDrivePID, rightDrivePID);
 
-        leftMotor1 = new TalonFX(Context.leftMotor1ID);
+        leftMotor1 = leftMotor1_;
         leftMotor1.configFactoryDefault();
         leftMotor1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
-        leftMotor2 = new TalonFX(Context.leftMotor2ID);
+        leftMotor2 = leftMotor2_;
         leftMotor2.configFactoryDefault();
         leftMotor2.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
-        rightMotor1 = new TalonFX(Context.rightMotor1ID);
+        rightMotor1 = rightMotor1_;
         rightMotor1.configFactoryDefault();
         rightMotor1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
-        rightMotor2 = new TalonFX(Context.rightMotor2ID);
+        rightMotor2 = rightMotor2_;
         rightMotor2.configFactoryDefault();
         rightMotor2.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 

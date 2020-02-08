@@ -1,5 +1,8 @@
 package frc.robot.controllers;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj.Compressor;
 import frc.robot.util.Context;
 
@@ -14,9 +17,23 @@ public class RobotController {
     public Intake intake;
     public OpticalLocalization opticalLocalization;
 
+    public TalonFX leftDriveMotor1;
+    public TalonFX leftDriveMotor2;
+    public TalonFX rightDriveMotor1;
+    public TalonFX rightDriveMotor2;
+    public TalonSRX rollingIntake;
+    public TalonSRX beltIntake;
+
     public RobotController () {
+        leftDriveMotor1 = new TalonFX(Context.leftMotor1ID);
+        leftDriveMotor2 = new TalonFX(Context.leftMotor2ID);
+        rightDriveMotor1 = new TalonFX(Context.rightMotor1ID);
+        rightDriveMotor2 = new TalonFX(Context.rightMotor2ID);
+        rollingIntake = new TalonSRX(-1);
+        beltIntake = new TalonSRX(-1);
+
         /* Change this line when using a different drive train. Don't forget to change the motor ids in context */
-        drivetrain = new TalonFXDrivetrain();
+        drivetrain = new TalonFXDrivetrain(leftDriveMotor1, leftDriveMotor2, rightDriveMotor1, rightDriveMotor2);
         autoDrive = new AutoDrive();
         navX = new NavX();
         ntInterface = new NetworktablesInterface();
@@ -24,7 +41,7 @@ public class RobotController {
         visionAllignment = new VisionAllignment();
         compressor = new Compressor();
         compressor.setClosedLoopControl(true);
-        intake = new Intake();
+        intake = new Intake(rollingIntake, beltIntake);
         opticalLocalization = new OpticalLocalization();
 
         Context.robotController = this;
