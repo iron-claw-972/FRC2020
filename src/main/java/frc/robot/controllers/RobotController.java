@@ -7,7 +7,6 @@ public class RobotController {
     public TalonFXDrivetrain drivetrain;
     public AutoDrive autoDrive;
     public NavX navX;
-    public ZMQServer zmqServer;
     public NetworktablesInterface ntInterface;
     public DriverJoystick driverJoystick;
     public VisionAllignment visionAllignment;
@@ -20,12 +19,11 @@ public class RobotController {
         drivetrain = new TalonFXDrivetrain();
         autoDrive = new AutoDrive();
         navX = new NavX();
-        zmqServer = new ZMQServer();
-        zmqServer.start();
         ntInterface = new NetworktablesInterface();
         driverJoystick = new DriverJoystick();
         visionAllignment = new VisionAllignment();
         compressor = new Compressor();
+        compressor.setClosedLoopControl(true);
         intake = new Intake();
         opticalLocalization = new OpticalLocalization();
 
