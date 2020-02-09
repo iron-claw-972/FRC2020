@@ -16,6 +16,7 @@ public class RobotController {
     public Compressor compressor;
     public Intake intake;
     public OpticalLocalization opticalLocalization;
+    public NMFColorSensorController ballPositions;
 
     public TalonFX leftDriveMotor1;
     public TalonFX leftDriveMotor2;
@@ -47,6 +48,7 @@ public class RobotController {
         visionAllignment = new VisionAllignment();
         intake = new Intake(rollingIntake, beltIntake);
         opticalLocalization = new OpticalLocalization();
+        ballPositions = new NMFColorSensorController();
 
         Context.robotController = this;
     }
