@@ -3,7 +3,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.controllers.RobotController;
 import frc.robot.util.*;
-import edu.wpi.first.wpilibj.smartdashboard.*;
 
 public class Robot extends TimedRobot {
   public RobotController robotController;
