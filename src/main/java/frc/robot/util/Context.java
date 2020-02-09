@@ -94,16 +94,16 @@ public class Context {
     public static char WOFTargetColor = 'N'; //N for none. B,G,R,Y for other colors.
 
     public static void setWOFTargetColor() {
-        if(WOFTargetColor == 'N') {
-            if(DriverStation.getInstance().getGameSpecificMessage().length() > 0) {
-                System.out.println(DriverStation.getInstance().getGameSpecificMessage().charAt(0));
-                char color = DriverStation.getInstance().getGameSpecificMessage().charAt(0);
-                if (color == 'B' || color =='G' || color =='R' || color =='Y') {
-                    WOFTargetColor = color;
-                } else { //Corrupted
-                    WOFTargetColor = 'N';
-                }
+        if(DriverStation.getInstance().getGameSpecificMessage().length() > 0) {
+            System.out.println(DriverStation.getInstance().getGameSpecificMessage().charAt(0));
+            char color = DriverStation.getInstance().getGameSpecificMessage().charAt(0);
+            if (color == 'B' || color =='G' || color =='R' || color =='Y') {
+                WOFTargetColor = color;
+            } else { //Corrupted
+                WOFTargetColor = 'N';
             }
+        } else {
+            WOFTargetColor = 'N';
         }
     }
 }
