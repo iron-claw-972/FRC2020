@@ -74,5 +74,6 @@ public class Robot extends TimedRobot {
   //     Context.robotController.visionAllignment.stopTrack();
   //     Context.robotController.drivetrain.arcadeDrive(driverYaw, driverThrottle);
   //   }
-   }
+    Context.setWOFTargetColor();
+  }
 }

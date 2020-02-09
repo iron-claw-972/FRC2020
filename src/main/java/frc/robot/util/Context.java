@@ -2,6 +2,8 @@ package frc.robot.util;
 
 import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
 
+import edu.wpi.first.wpilibj.DriverStation;
+
 import frc.robot.controllers.RobotController;
 
 public class Context {
@@ -56,4 +58,21 @@ public class Context {
     public static final int cameraWidth = 1;
     public static final int cameraHeight = 1;
     public static final int cameraFPS = 1;
+
+    //----- Game-Specific Data -----
+    public static char WOFTargetColor = 'N'; //N for none. B,G,R,Y for other colors.
+
+    public static void setWOFTargetColor() {
+        if(WOFTargetColor == 'N') {
+            if(DriverStation.getInstance().getGameSpecificMessage().length() > 0) {
+                System.out.println(DriverStation.getInstance().getGameSpecificMessage().charAt(0));
+                char color = DriverStation.getInstance().getGameSpecificMessage().charAt(0);
+                if (color == 'B' || color =='G' || color =='R' || color =='Y') {
+                    WOFTargetColor = color;
+                } else { //Corrupted
+                    WOFTargetColor = 'N';
+                }
+            }
+        }
+    }
 }
