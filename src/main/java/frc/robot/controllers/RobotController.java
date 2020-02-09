@@ -14,6 +14,7 @@ public class RobotController {
     public DriverJoystick driverJoystick;
     public VisionAllignment visionAllignment;
     public Compressor compressor;
+    public ShooterController shooterController;
     public Intake intake;
     public OpticalLocalization opticalLocalization;
     public NMFColorSensorController ballPositions;

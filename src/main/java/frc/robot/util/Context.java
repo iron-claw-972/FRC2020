@@ -14,8 +14,15 @@ public class Context {
     public static final int leftMotor2ID = 2;
     public static final int rightMotor1ID = 3;
     public static final int rightMotor2ID = 4;
+  
+      //----- Flywheel Shooter Values -----
+    public static final int shooterMotorID = 2;
+    public static final int FALCON_ENCODER_CPR = 2048;
 
-    // TalonSRX and Encoder Drivetrain Values
+    // Diameter of wheel (10 cm) * Pi (3.14) * Clicks per rev (0.2)
+    public static final double driveClickToCm = 2*Math.PI;
+  
+    /* TalonSRX and Encoder Drivetrain Values */
     public static final int leftEncoderChannelA = 0;
     public static final int leftEncoderChannelB = 1;
     public static final int rightEncoderChannelA = 2;
@@ -92,9 +99,12 @@ public class Context {
     public static final double kStatic = 0.0;
     public static final double kV = 0.04;
 
+    //----- Superstructure/Game Measurements -----
+    public static final double M_FLYWHEEL_RADIUS = 0.0508;
+    public static final double M_BALL_DIAMETER = 0.0762;
 
     //----- Time Function -----
-    public static double getRelativeTime(double relativePoint) {
-        return System.currentTimeMillis() - relativePoint;
+    public static double getRelativeTimeSeconds(double relativePoint) {
+        return System.currentTimeMillis()/1000 - relativePoint;
     }
 }
