@@ -19,7 +19,6 @@ public class NetworktablesInterface {
     NetworkTableEntry yEntry = table.getEntry("tx");
     NetworkTableEntry targetStatus = table.getEntry("tv");
     NetworkTableEntry robotHeartbeat = table.getEntry("robotHeartbeat");
-    // TODO: Find way to get limelight hearbeat to confirm connection
 
     public NetworktablesInterface(){
         inst.startClientTeam(972);
@@ -32,6 +31,6 @@ public class NetworktablesInterface {
         if(targetStatus.getDouble(0) > 0.0) targetAcquired = true;
         else targetAcquired = false;
         robotHeartbeat.setNumber(System.currentTimeMillis());
-        System.out.println("tx: " + tx + " ty: " + ty);
+        //System.out.println("tx: " + tx + " ty: " + ty);
     }
 }

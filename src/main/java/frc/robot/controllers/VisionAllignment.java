@@ -130,11 +130,11 @@ public class VisionAllignment
         // When the robot is facing the target, the angle is recorded for later NavX based tracking
         if(Math.abs(tx) <= Context.alignmentThreshold && targetFound)
         {
-            navXYawOffset = Context.robotController.navX.getAngle();
+            navXYawOffset = Context.robotController.navX.getRawHeading();
         }
 
         // Grabs the angle, subtracts the offset and does modulus of 360 to contain value between -360 and 360
-        rotationLocalized = (Context.robotController.navX.getAngle() - navXYawOffset) % 360;
+        rotationLocalized = (Context.robotController.navX.getRawHeading() - navXYawOffset) % 360;
         
         // Fixes the angle between -180 and 180, with 0 being the target
         if(rotationLocalized >= 180) {

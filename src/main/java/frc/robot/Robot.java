@@ -16,21 +16,22 @@ import com.revrobotics.*;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Robot extends TimedRobot {
-  // public RobotController robotController;
+  public RobotController robotController;
 
-  // public double origTime;
-  // public double robotStartTime;
+  public double origTime;
+  public double robotStartTime;
 
   private UsbCamera camera;
 
   @Override
   public void robotInit() {
-    // Context.robotController = new RobotController();
-    // robotStartTime = System.currentTimeMillis()/1000.0;
-
     camera = edu.wpi.first.cameraserver.CameraServer.getInstance().startAutomaticCapture();
     camera.setVideoMode(PixelFormat.kMJPEG, Context.cameraWidth, Context.cameraHeight, Context.cameraFPS);
     Dashboard.init(camera);
+
+    Context.robotController = new RobotController();
+    robotStartTime = System.currentTimeMillis()/1000.0;
+    Context.robotController.compressor.start();
   }
 
   @Override
@@ -39,9 +40,10 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void autonomousInit() {
-    // origTime = System.currentTimeMillis();
-    // Context.robotController.autoDrive.startSpline();
+  public void autonomousInit()
+  {
+    origTime = System.currentTimeMillis();
+    //Context.robotController.autoDrive.startSpline();
   }
 
   @Override
@@ -50,30 +52,40 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopInit() {
-    // Context.robotController.drivetrain.resetEncoders();
-    
+  public void teleopInit()
+  {
+    //Context.robotController.drivetrain.resetEncoders();
   }
   
   @Override
   public void teleopPeriodic() {
-  //   double driverThrottle = -Context.robotController.driverJoystick.getThrottle();
-  //   double driverYaw = -Context.robotController.driverJoystick.getYaw();
+    Context.robotController.loopAll();
+    double driverThrottle = -Context.robotController.driverJoystick.getThrottle();
+    double driverYaw = -Context.robotController.driverJoystick.getYaw();
 
-  //   if(Context.robotController.driverJoystick.getJoystick().getRawButtonPressed(4))
-  //   {
-  //     if(Context.robotController.visionAllignment.isActive()){
-  //       Context.robotController.visionAllignment.stopTrack();
-  //     } else {
-  //       Context.robotController.visionAllignment.startTrack();
-  //     }
-  //   }
+    if (Context.robotController.driverJoystick.shiftGears()) {
+      Context.robotController.drivetrain.shiftGears();
+    }
+    
+    if (Context.robotController.driverJoystick.getToggleTrack()) {
+      if (Context.robotController.visionAllignment.isActive()) {
+        Context.robotController.visionAllignment.stopTrack();
+      } else {
+        Context.robotController.visionAllignment.startTrack();
+      }
+    }
 
-  //   if(Context.robotController.driverJoystick.isInUse() || !Context.robotController.visionAllignment.isActive())
-  //   {
-  //     Context.robotController.visionAllignment.stopTrack();
-  //     Context.robotController.drivetrain.arcadeDrive(driverYaw, driverThrottle);
-  //   }
+    if (Context.robotController.driverJoystick.isInUse() || !Context.robotController.visionAllignment.isActive()) {
+      Context.robotController.visionAllignment.stopTrack();
+      Context.robotController.drivetrain.arcadeDrive(driverYaw, driverThrottle);
+    }
+
+    // if((Context.robotController.opticalLocalization.LeftMovementX != 0) || (Context.robotController.opticalLocalization.LeftMovementY !=0))
+    // {
+    //   System.out.println("X: " + Context.robotController.opticalLocalization.LeftMovementX + " Y: " + Context.robotController.opticalLocalization.LeftMovementY);
+    // }
+    //System.out.println(String.format("X: 0x%08X, Y:  0x%08X",Context.robotController.opticalLocalization.LeftMovementX, Context.robotController.opticalLocalization.LeftMovementY));
+  
     Context.setWOFTargetColor();
   }
 }

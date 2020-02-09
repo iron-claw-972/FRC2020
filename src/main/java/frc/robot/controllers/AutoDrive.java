@@ -72,7 +72,7 @@ public class AutoDrive
         List<Double> velocities = TankKinematics.robotToWheelVelocities(ds.getVel(), Context.TRACK_WIDTH);
         List<Double> acceleraations = TankKinematics.robotToWheelAccelerations(ds.getAccel(), Context.TRACK_WIDTH);
         List<Double> powers = Kinematics.calculateMotorFeedforward(velocities, acceleraations, Context.kV, Context.kA, Context.kStatic);
-        // System.out.println("Power1: " + powers.get(0) + ", Power2: " + powers.get(1) + ", Len: " + powers.size());
+        System.out.println("Power1: " + powers.get(0) + ", Power2: " + powers.get(1) + ", Len: " + powers.size());
         System.out.println(ds + ", error: " + follower.getLastError() + ", vels: " + velocities);
 
         // System.out.println("Velocity: " + scaledVel);

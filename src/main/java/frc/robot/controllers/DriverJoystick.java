@@ -22,6 +22,30 @@ public class DriverJoystick {
         return getAxisDeadBandManaged(Context.yawAxisID);
     }
 
+    public boolean shiftGears() {
+        return joystick.getRawButtonPressed(Context.shiftGearsButtonID);
+    }
+
+    public boolean getClimbU() {
+        return joystick.getRawButton(Context.climbButtonUp);
+    }
+
+    public boolean getClimbD() {
+        return joystick.getRawButton(Context.climbButtonDown);
+    }
+
+    public boolean getShoot() {
+        return joystick.getRawButton(Context.shoot);
+    }
+
+    public boolean getToggleTrack() {
+        return joystick.getRawButton(Context.toggleTrack);
+    }
+
+    public boolean getLoop() {
+        return joystick.getRawButton(Context.loopyLoopBreak);
+    }
+
     public boolean isInUse()
     {
         return inUseStartTime + Context.inUseLengthMillis > System.currentTimeMillis();
