@@ -135,6 +135,13 @@ public class Dashboard {
         }
         WOFEntry.setString(color);
 
+        boolean[] NMFArray = Context.robotController.ballPositions.getBallPositions();
+        NMFEntry1.setBoolean(NMFArray[0]);
+        NMFEntry2.setBoolean(NMFArray[1]);
+        NMFEntry3.setBoolean(NMFArray[2]);
+        NMFEntry4.setBoolean(NMFArray[3]);
+        NMFEntry5.setBoolean(NMFArray[4]);
+
         timeEntry.setString(Timer.getMatchTime() + " s");
     }
 
