@@ -9,9 +9,7 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
  
-import com.revrobotics.ColorSensorV3;
-import com.revrobotics.ColorMatchResult;
-import com.revrobotics.ColorMatch;
+import com.revrobotics.*;
 
 public class NMFColorSensorController {
     private final I2C.Port i2cPort = I2C.Port.kMXP;
