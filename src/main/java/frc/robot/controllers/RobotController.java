@@ -4,6 +4,10 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.cscore.UsbCamera;
+
 import frc.robot.util.Context;
 
 public class RobotController {
@@ -24,31 +28,38 @@ public class RobotController {
     public TalonFX rightDriveMotor2;
     public TalonSRX rollingIntake;
     public TalonSRX beltIntake;
+    
+    public DriverStation driverStation;
+    public PowerDistributionPanel pdp;
+    public UsbCamera camera;
 
     public RobotController () {
-        //----- Motors -----
-        leftDriveMotor1 = new TalonFX(Context.leftMotor1ID);
-        leftDriveMotor2 = new TalonFX(Context.leftMotor2ID);
-        rightDriveMotor1 = new TalonFX(Context.rightMotor1ID);
-        rightDriveMotor2 = new TalonFX(Context.rightMotor2ID);
-        rollingIntake = new TalonSRX(-1);
-        beltIntake = new TalonSRX(-1);
+        // //----- Motors -----
+        // leftDriveMotor1 = new TalonFX(Context.leftMotor1ID);
+        // leftDriveMotor2 = new TalonFX(Context.leftMotor2ID);
+        // rightDriveMotor1 = new TalonFX(Context.rightMotor1ID);
+        // rightDriveMotor2 = new TalonFX(Context.rightMotor2ID);
+        // rollingIntake = new TalonSRX(-1);
+        // beltIntake = new TalonSRX(-1);
 
-        //----- Pneumatics -----
-        compressor = new Compressor();
-        compressor.setClosedLoopControl(true);
+        // //----- Pneumatics -----
+        // compressor = new Compressor();
+        // compressor.setClosedLoopControl(true);
 
-        //----- Controllers -----
-        /* Change this line when using a different drive train. Don't forget to change the motor ids in context */
-        drivetrain = new TalonFXDrivetrain(leftDriveMotor1, leftDriveMotor2, rightDriveMotor1, rightDriveMotor2);
-        autoDrive = new AutoDrive();
-        navX = new NavX();
-        ntInterface = new NetworktablesInterface();
-        driverJoystick = new DriverJoystick();
-        visionAllignment = new VisionAllignment();
-        intake = new Intake(rollingIntake, beltIntake);
-        opticalLocalization = new OpticalLocalization();
-        ballPositions = new NMFColorSensorController();
+        // //----- Controllers -----
+        // /* Change this line when using a different drive train. Don't forget to change the motor ids in context */
+        // drivetrain = new TalonFXDrivetrain(leftDriveMotor1, leftDriveMotor2, rightDriveMotor1, rightDriveMotor2);
+        // autoDrive = new AutoDrive();
+        // navX = new NavX();
+        // ntInterface = new NetworktablesInterface();
+        // driverJoystick = new DriverJoystick();
+        // visionAllignment = new VisionAllignment();
+        // intake = new Intake(rollingIntake, beltIntake);
+        // opticalLocalization = new OpticalLocalization();
+        //ballPositions = new NMFColorSensorController();
+
+        driverStation = DriverStation.getInstance();
+        //pdp = new PowerDistributionPanel(0);
 
         Context.robotController = this;
     }
@@ -57,9 +68,9 @@ public class RobotController {
     }
 
     public void loopAll() {
-        ntInterface.loop();
-        opticalLocalization.Update();
-        visionAllignment.loop();
-        ballPositions.loop();
+        // ntInterface.loop();
+        // opticalLocalization.Update();
+        // visionAllignment.loop();
+        // ballPositions.loop();
     }
 }
