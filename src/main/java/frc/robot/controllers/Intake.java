@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj.DriverStation;
 
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatchResult;
@@ -60,7 +61,40 @@ public class Intake
          * The sensor returns a raw IR value of the infrared light detected.
          */
         double IR = m_colorSensor.getIR();
+        double hue = hsv[0];
+        char color = "";
+        
+        if( (hue >= 0) && (hue<=60) )
+        {
+            color = 'R';
+        }
+        else if( (hue >= 61) && (hue<=120) )
+        {
+            color = 'Y';
+        }
+        else if( (hue >= 121) && (hue<=180) )
+        {
+            color = 'G';
+        }
+        else if( (hue >= 241) && (hue<=300) )
+        {
+            color = 'B';
+        }
+        else
+        {
+            color = 'N';
+        }
 
+
+        String gameData;
+        gameData = DriverStation.getInstance().getGameSpecificMessage();
+        if(gameData.length() > 0)
+        {
+            if(color == gameData.charAt(0))
+            {
+
+            }
+        }
         /**
          * Open Smart Dashboard or Shuffleboard to see the color detected by the 
          * sensor.
@@ -69,6 +103,7 @@ public class Intake
         SmartDashboard.putNumber("Green", detectedColor.green);
         SmartDashboard.putNumber("Blue", detectedColor.blue);
         SmartDashboard.putNumber("IR", IR);
+        SmartDashboard.putString("Color", String(color))
 
         /**
          * In addition to RGB IR values, the color sensor can also return an 
@@ -96,6 +131,8 @@ public class Intake
         SmartDashboard.putNumber("Confidence", match.confidence);*/
         //SmartDashboard.putString("Detected Color", colorString);
     }  
+
+    
 
     /*public void roll()
     {
