@@ -19,7 +19,7 @@ public class NMFColorSensorController {
     public boolean[] ballPositions = {false, false, false, false, false};
     public boolean currentSectorYellow = false;
 
-    private final ColorSensorV3 m_colorSensor;
+    private final ColorSensorV3 m_colorSensor; //sometimes reads as error, still builds. Same issue for other colorsensor references
 
     /**
      * A Rev Color Match object is used to register and detect known colors. This can 
