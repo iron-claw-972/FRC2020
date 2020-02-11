@@ -122,11 +122,11 @@ public class NavXTest {
     @Test
     // Tests getting the rawHeading of a mocked AHRS
     public void testRawHeading() {
-        // Declares and initializes NavX
-        NavX navX = new NavX();
-
         // Makes a mock AHRS, it acts in almost every way like a real AHRS
         AHRS mockAhrs = mock(AHRS.class);
+
+        // Declares and initializes NavX
+        NavX navX = new NavX(mockAhrs);
         
         // When the AHRS.getAngle() method is called, it will return 5.0
         when(mockAhrs.getAngle()).thenReturn(5.0);
@@ -140,11 +140,11 @@ public class NavXTest {
     @Test
     // Tests getting the rawHeading of a mocked AHRS
     public void testLimitedHeading() {
-        // Declares and initializes NavX
-        NavX navX = new NavX();
-
         // Makes a mock AHRS, it acts in almost every way like a real AHRS
         AHRS mockAhrs = mock(AHRS.class);
+
+        // Declares and initializes NavX
+        NavX navX = new NavX(mockAhrs);
         
         // When the getPressure() is called, it will return the float 5.0f
         // On the second call, it will return the float 6.5f
@@ -159,11 +159,11 @@ public class NavXTest {
     @Test
     // Tests getting the rawHeading of a mocked AHRS
     public void testBarometer() {
-        // Declares and initializes NavX
-        NavX navX = new NavX();
-
         // Makes a mock AHRS, it acts in almost every way like a real AHRS
         AHRS mockAhrs = mock(AHRS.class);
+
+        // Declares and initializes NavX
+        NavX navX = new NavX(mockAhrs);
         
         // When the getPressure() is called, it will return the float 5.0f
         // On the second call, it will return the float 6.5f
@@ -173,6 +173,78 @@ public class NavXTest {
 
         // Assert
         assertEquals(3.0f, navX.getBarometricPressure(), 0.1f);
+    }
+}
+```
+
+### CANSparkMax Example
+
+The example below demonstrates how to read the value used as the input to the spark's .set method. This style of test can be applied to many different classes that use motors.
+
+```java
+package frc.robot.controllers;
+
+import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import org.junit.*;
+import com.revrobotics.CANSparkMax;
+
+public class NeoDrivetrainTest
+{
+    // Declaration of variables used to store inputs to motors
+    public double lm1Power = 0;
+    public double lm2Power = 0;
+    public double rm1Power = 0;
+    public double rm2Power = 0;
+
+    // Creation of mock sparks and putting them into NeoDrivetrain
+    public CANSparkMax lm1 = mock(CANSparkMax.class);
+    public CANSparkMax lm2 = mock(CANSparkMax.class);
+    public CANSparkMax rm1 = mock(CANSparkMax.class);
+    public CANSparkMax rm2 = mock(CANSparkMax.class);
+    public NeoDrivetrain neoDrivetrain = new NeoDrivetrain(lm1, lm2, rm1, rm2);
+
+    // @Before allows for the setup() method to be called before any other methods
+    @Before
+    public void setup() {
+        // Basically replaces the .set() method for mock Spark with 
+        // method that puts input into variable for testing
+        doAnswer(invocation -> {
+            Double power = invocation.getArgument(0, Double.class);
+            lm1Power = power.doubleValue();
+            return null;
+        }).when(lm1).set(any(Double.class));
+
+        doAnswer(invocation -> {
+            Double power = invocation.getArgument(0, Double.class);
+            lm2Power = power.doubleValue();
+            return null;
+        }).when(lm2).set(any(Double.class));
+
+        doAnswer(invocation -> {
+            Double power = invocation.getArgument(0, Double.class);
+            rm1Power = power.doubleValue();
+            return null;
+        }).when(rm1).set(any(Double.class));
+
+        doAnswer(invocation -> {
+            Double power = invocation.getArgument(0, Double.class);
+            rm2Power = power.doubleValue();
+            return null;
+        }).when(rm2).set(any(Double.class));
+    }
+
+    // Simple test that calls method that calls in turn the .set function of motors
+    @Test
+    public void testTankDrive0() {
+        neoDrivetrain.tankDrive(1.0, 1.0);
+
+        assertEquals(1.0, lm1Power, 0.1);
+        assertEquals(1.0, lm2Power, 0.1);
+        assertEquals(1.0, rm1Power, 0.1);
+        assertEquals(1.0, rm2Power, 0.1);
     }
 }
 ```

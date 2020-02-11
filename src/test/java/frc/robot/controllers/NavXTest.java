@@ -10,11 +10,11 @@ public class NavXTest {
     @Test
     // Tests getting the rawHeading of a mocked AHRS
     public void testRawHeading() {
-        // Declares and initializes NavX
-        NavX navX = new NavX();
-
         // Makes a mock AHRS, it acts in almost every way like a real AHRS
         AHRS mockAhrs = mock(AHRS.class);
+
+        // Declares and initializes NavX
+        NavX navX = new NavX(mockAhrs);
         
         // When the AHRS.getAngle() method is called, it will return 5.0
         when(mockAhrs.getAngle()).thenReturn(5.0);
@@ -28,11 +28,11 @@ public class NavXTest {
     @Test
     // Tests getting the rawHeading of a mocked AHRS
     public void testLimitedHeading() {
-        // Declares and initializes NavX
-        NavX navX = new NavX();
-
         // Makes a mock AHRS, it acts in almost every way like a real AHRS
         AHRS mockAhrs = mock(AHRS.class);
+
+        // Declares and initializes NavX
+        NavX navX = new NavX(mockAhrs);
         
         // When the getPressure() is called, it will return the float 5.0f
         // On the second call, it will return the float 6.5f
@@ -47,11 +47,11 @@ public class NavXTest {
     @Test
     // Tests getting the rawHeading of a mocked AHRS
     public void testBarometer() {
-        // Declares and initializes NavX
-        NavX navX = new NavX();
-
         // Makes a mock AHRS, it acts in almost every way like a real AHRS
         AHRS mockAhrs = mock(AHRS.class);
+
+        // Declares and initializes NavX
+        NavX navX = new NavX(mockAhrs);
         
         // When the getPressure() is called, it will return the float 5.0f
         // On the second call, it will return the float 6.5f

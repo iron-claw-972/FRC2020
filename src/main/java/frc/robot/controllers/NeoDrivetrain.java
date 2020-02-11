@@ -10,13 +10,13 @@ public class NeoDrivetrain extends Drivetrain {
     private static PID leftDrivePID = new PID(0.09, 0, 0);
     private static PID rightDrivePID = new PID(0.09, 0, 0);
     
-    public NeoDrivetrain() {
+    public NeoDrivetrain(CANSparkMax leftMotor1_, CANSparkMax leftMotor2_, CANSparkMax rightMotor1_, CANSparkMax rightMotor2_) {
         super(leftDrivePID, rightDrivePID);
 
-        leftMotor1 = new CANSparkMax(Context.leftMotor1ID, MotorType.kBrushless);
-        leftMotor2 = new CANSparkMax(Context.leftMotor2ID, MotorType.kBrushless);
-        rightMotor1 = new CANSparkMax(Context.rightMotor1ID, MotorType.kBrushless);
-        rightMotor2 = new CANSparkMax(Context.rightMotor2ID, MotorType.kBrushless);
+        leftMotor1 = leftMotor1_;
+        leftMotor2 = leftMotor2_;
+        rightMotor1 = rightMotor1_;
+        rightMotor2 = rightMotor2_;
     }
 
     public void tankDrive(double leftPower, double rightPower) {

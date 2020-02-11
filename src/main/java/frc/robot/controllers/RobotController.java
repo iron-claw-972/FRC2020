@@ -2,6 +2,9 @@ package frc.robot.controllers;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.SPI;
 
 import edu.wpi.first.wpilibj.Compressor;
 import frc.robot.util.Context;
@@ -43,7 +46,7 @@ public class RobotController {
         /* Change this line when using a different drive train. Don't forget to change the motor ids in context */
         drivetrain = new TalonFXDrivetrain(leftDriveMotor1, leftDriveMotor2, rightDriveMotor1, rightDriveMotor2);
         autoDrive = new AutoDrive();
-        navX = new NavX();
+        navX = new NavX(new AHRS(SPI.Port.kMXP));
         ntInterface = new NetworktablesInterface();
         driverJoystick = new DriverJoystick();
         visionAllignment = new VisionAllignment();
