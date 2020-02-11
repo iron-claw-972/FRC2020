@@ -39,6 +39,7 @@ public class Robot extends TimedRobot {
   public void teleopInit()
   {
     //Context.robotController.drivetrain.resetEncoders();
+    Context.robotController.autoDrive.resetLocalization();
     Context.robotController.initAll();
   }
   
@@ -48,25 +49,28 @@ public class Robot extends TimedRobot {
   {
     Context.robotController.loopAll();
 
-    double driverThrottle = -Context.robotController.driverJoystick.getThrottle();
-    double driverYaw = -Context.robotController.driverJoystick.getYaw();
+    double driverThrottle = Context.robotController.driverJoystick.getThrottle();
+    double driverYaw = Context.robotController.driverJoystick.getYaw();
+
+    Context.robotController.autoDrive.updatePoseEstimate();
+    System.out.println(Context.robotController.autoDrive.getPoseEstimate());
 
     if (Context.robotController.driverJoystick.shiftGears()) {
       Context.robotController.drivetrain.shiftGears();
     }
     
-    if (Context.robotController.driverJoystick.getToggleTrack()) {
-      if (Context.robotController.visionAllignment.isActive()) {
-        Context.robotController.visionAllignment.stopTrack();
-      } else {
-        Context.robotController.visionAllignment.startTrack();
-      }
-    }
+    // if (Context.robotController.driverJoystick.getToggleTrack()) {
+    //   if (Context.robotController.visionAllignment.isActive()) {
+    //     Context.robotController.visionAllignment.stopTrack();
+    //   } else {
+    //     Context.robotController.visionAllignment.startTrack();
+    //   }
+    // }
 
-    if (Context.robotController.driverJoystick.isInUse() || !Context.robotController.visionAllignment.isActive()) {
-      Context.robotController.visionAllignment.stopTrack();
+    // if (Context.robotController.driverJoystick.isInUse() || !Context.robotController.visionAllignment.isActive()) {
+      // Context.robotController.visionAllignment.stopTrack();
       Context.robotController.drivetrain.arcadeDrive(driverYaw, driverThrottle);
-    }
+    // }
     
     if((Context.robotController.opticalLocalization.LeftMovementX != 0) || (Context.robotController.opticalLocalization.LeftMovementY !=0))
     {

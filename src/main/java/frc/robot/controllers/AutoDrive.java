@@ -56,10 +56,14 @@ public class AutoDrive {
             }
         };
 
-        /* Disables the use of external heading */
-        tankDrive.setLocalizer(new TankLocalizer(tankDrive, false));
+        resetLocalization();
 
         trajectory = generateTrajectory();
+    }
+
+    public void resetLocalization() {
+        /* Disables the use of external heading */
+        tankDrive.setLocalizer(new TankLocalizer(tankDrive, false));
     }
 
     public Trajectory generateTrajectory() {
