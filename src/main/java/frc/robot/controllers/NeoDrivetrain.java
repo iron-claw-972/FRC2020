@@ -20,14 +20,14 @@ public class NeoDrivetrain extends Drivetrain {
     }
 
     public void tankDrive(double leftPower, double rightPower) {
-        leftMotor1.set(-leftPower);
-        leftMotor2.set(-leftPower);
+        leftMotor1.set(leftPower);
+        leftMotor2.set(leftPower);
         rightMotor1.set(rightPower);
         rightMotor2.set(rightPower);
     }
 
     protected double getLeftTicks() {
-        return -leftMotor1.getEncoder().getPosition();
+        return leftMotor1.getEncoder().getPosition();
     }
 
     protected double getRightTicks() {
