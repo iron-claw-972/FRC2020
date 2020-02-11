@@ -2,6 +2,8 @@ package frc.robot.controllers;
 
 import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.util.*;
 
 public class Climber
@@ -21,11 +23,11 @@ public class Climber
 
     }
     public void telescopeUp(double PIDVal) {
-        telescopeMotor.set(ControlMode.PercentOutput, PIDVal);
+        telescopeMotor.set(PIDVal);
     }
 
     public void telescopeDown(double PIDVal) {
-        telescopeMotor.set(ControlMode.PercentOutput, PIDVal);
+        telescopeMotor.set(PIDVal);
     }
 
     public void coil(){
@@ -37,8 +39,7 @@ public class Climber
     }
 
     public void loop() {
-        double currentPosition = telescopeMotor.getPosition();
-
+        double currentPosition = telescopeMotor.getEncoder().getPosition();
         long currentTime = System.currentTimeMillis();
         double deltaTime = currentTime - pastTime;
         if (Context.robotController.driverJoystick.getClimbU())

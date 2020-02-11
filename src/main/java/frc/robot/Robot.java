@@ -25,7 +25,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    Context.robotController.drivetrain.resetEncoders()
+    Context.robotController.drivetrain.resetEncoders();
     origTime = System.currentTimeMillis();
     //Context.robotController.autoDrive.startSpline();
   }
@@ -74,6 +74,6 @@ public class Robot extends TimedRobot {
     }
     //System.out.println(String.format("X: 0x%08X, Y:  0x%08X",Context.robotController.opticalLocalization.LeftMovementX, Context.robotController.opticalLocalization.LeftMovementY));
 
-    Context.robotController.Climber.loop();
+    Context.robotController.climber.loop();
   }
 }

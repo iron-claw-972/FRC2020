@@ -14,6 +14,7 @@ public class RobotController {
     public Compressor compressor;
     public Intake intake;
     public OpticalLocalization opticalLocalization;
+    public Climber climber;
 
     public RobotController () {
         /* Change this line when using a different drive train. Don't forget to change the motor ids in context */
@@ -28,6 +29,7 @@ public class RobotController {
         compressor = new Compressor();
         intake = new Intake();
         opticalLocalization = new OpticalLocalization();
+        climber = new Climber();
 
         Context.robotController = this;
     }

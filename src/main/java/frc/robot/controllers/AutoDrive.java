@@ -46,7 +46,7 @@ public class AutoDrive {
         
             @Override
             public List<Double> getWheelPositions() {
-                return Context.robotController.drivetrain.getWheelPositions();
+                return null;
             }
         };
 
