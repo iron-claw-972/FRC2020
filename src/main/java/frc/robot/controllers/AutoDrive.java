@@ -26,7 +26,6 @@ public class AutoDrive {
     MotionProfile profile;
     Pose2d poseEstimate = new Pose2d(0, 0);
     DriveSignal signal;
-    Path path;
     Trajectory trajectory;
     PIDCoefficients translationalPid;
     PIDCoefficients headingPid;
@@ -38,17 +37,18 @@ public class AutoDrive {
         tankDrive = new TankDrive(Context.kV, Context.kA, Context.kStatic, Context.TRACK_WIDTH) {
             @Override
             protected double getRawExternalHeading() {
+                // Also not using external heading for localization
                 return 0.0;
             }
         
             @Override
             public void setMotorPowers(double leftPower, double rightPower) {
-                Context.robotController.drivetrain.tankDrive(leftPower, rightPower);
+                // Not using their code to control the motors
             }
         
             @Override
             public List<Double> getWheelPositions() {
-                ArrayList<Double> output = new ArrayList<Double>();
+                List<Double> output = new ArrayList<Double>();
                 output.add(Context.robotController.drivetrain.getLeftDist());
                 output.add(Context.robotController.drivetrain.getRightDist());
                 
@@ -59,30 +59,43 @@ public class AutoDrive {
         /* Disables the use of external heading */
         tankDrive.setLocalizer(new TankLocalizer(tankDrive, false));
 
-        path = new PathBuilder(new Pose2d(0, 0, 0))
-            .splineTo(new Pose2d(3, 0, 0))
-            // .lineTo(new Vector2d(3.0, 1.5))
-            .build();
-
-        trajectory = TrajectoryGenerator.INSTANCE.generateTrajectory(path, Context.BASE_CONSTRAINTS);
+        trajectory = generateTrajectory();
     }
 
-    public void loop(double t) {
+    public Trajectory generateTrajectory() {
+        Path path = new PathBuilder(new Pose2d(0, 0, 0))
+                .splineTo(new Pose2d(3, 0, 0))
+                .build();
+
+        return TrajectoryGenerator.INSTANCE.generateTrajectory(path, Context.BASE_CONSTRAINTS);
+    }
+
+    public Pose2d getPoseEstimate() {
+        return tankDrive.getPoseEstimate();
+    }
+
+    public void updatePoseEstimate() {
         tankDrive.updatePoseEstimate();
         poseEstimate = tankDrive.getPoseEstimate();
+    }
 
-        System.out.println("pose: " + poseEstimate);
+    public Pose2d getTankVelocityProfile(double time) {
+        // Transforms the mecanum velocities to tank
+        double robotVelocity = trajectory.getProfile().get(time).getV();
+        return new Pose2d(robotVelocity, 0, trajectory.get(time).getHeading());
+    }
 
-        MotionState state = trajectory.getProfile().get(t);
-        double robotVelocity = state.getV();
-        Pose2d tank = new Pose2d(robotVelocity, 0, trajectory.get(t).getHeading());
-        System.out.println("goal: " + trajectory.get(t));
+    public void loop(double time) {
+        updatePoseEstimate();
+
+        Pose2d tank = getTankVelocityProfile(time);
+
+        System.out.println("goal: " + trajectory.get(time));
         List<Double> wheelVelocities = TankKinematics.robotToWheelVelocities(tank, Context.TRACK_WIDTH);
 
         //System.out.println("Left: " + wheelVelocities.get(0) + ", Right: " + wheelVelocities.get(1));
 
         Context.robotController.drivetrain.tankDrivePID(wheelVelocities.get(1), wheelVelocities.get(0));
-        // Context.robotController.drivetrain.tankDrivePID(velocities.get(0), velocities.get(1));
     }
 
 }
