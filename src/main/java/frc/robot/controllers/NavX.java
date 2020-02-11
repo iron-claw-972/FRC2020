@@ -1,14 +1,13 @@
 package frc.robot.controllers;
 
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.SPI;
 
 public class NavX
 {
     public AHRS ahrs;
 
-    public NavX() {
-        ahrs = new AHRS(SPI.Port.kMXP);
+    public NavX(AHRS ahrs_) {
+        ahrs = ahrs_;
     }
 
     public double getRawHeading(){
