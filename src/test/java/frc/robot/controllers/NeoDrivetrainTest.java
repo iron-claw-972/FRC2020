@@ -17,13 +17,14 @@ public class NeoDrivetrainTest
         CANSparkMax rm1 = mock(CANSparkMax.class);
         CANSparkMax rm2 = mock(CANSparkMax.class);
         NeoDrivetrain neoDrivetrain = new NeoDrivetrain(lm1, lm2, rm1, rm2);
-        
+
         ArgumentCaptor<Double> argCap = ArgumentCaptor.forClass(Double.class);
 
         verify(neoDrivetrain.leftMotor1, times(1)).set(argCap.capture());
 
-        neoDrivetrain.tankDrive(1.0, 1.0);
+        // neoDrivetrain.leftMotor1.set(1.0);
+        // neoDrivetrain.tankDrive(1.0, 1.0);
 
-        assertEquals(0.0, argCap.getValue(), 0.1);
+        assertEquals(1.0, argCap.getValue(), 0.1);
     }
 }
