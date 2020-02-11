@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.cscore.UsbCamera;
+import frc.robot.controllers.AutoOptions;
 import frc.robot.controllers.TalonFXDrivetrain.Gear;
 import frc.robot.util.Context;
 
@@ -12,12 +13,14 @@ import java.util.Map;
 
 public class Dashboard {
     private static ShuffleboardTab tab;
-    private static NetworkTableEntry voltageEntry, currentEntry, WOFEntry, gearEntry, timeEntry, shooterSpeedEntry;
+    private static NetworkTableEntry voltageEntry, currentEntry, WOFEntry, timeEntry, shooterSpeedEntry;
     private static ShuffleboardLayout NMFLayout, autoLayout;
     private static NetworkTableEntry NMFEntry1, NMFEntry2, NMFEntry3, NMFEntry4, NMFEntry5;
-    private static NetworkTableEntry autoStartEntry, autoDelayEntry, autoPortEntry, autoPickUpEntry;
 
-    public static SendableChooser<Gear> gearChooser; 
+    public static SendableChooser<Gear> gearChooser;
+    public static SendableChooser<AutoOptions.Start> autoStartChooser;
+    public static SendableChooser<AutoOptions.Port> autoPortChooser;
+    public static SendableChooser<AutoOptions.PickUp> autoPickUpChooser;
 
     private static final boolean config = true;
     private static ShuffleboardTab configTab;
@@ -109,7 +112,20 @@ public class Dashboard {
         autoLayout = tab.getLayout("Auto Selection", BuiltInLayouts.kGrid)
             .withPosition(7, 4)
             .withSize(4, 1)
-            .withProperties(Map.of("Number of Rows", 1, "Number of columns", 3, "Label Position", "HIDDEN"));
+            .withProperties(Map.of("Number of Rows", 1, "Number of columns", 3, "Label Position", "TOP"));
+        autoLayout.add("Starting Positions", autoStartChooser)
+            .withWidget(BuiltInWidgets.kComboBoxChooser)
+            .withPosition(0,0)
+            .withSize(1,1);
+        autoLayout.add("Target Port", autoPortChooser)
+            .withWidget(BuiltInWidgets.kComboBoxChooser)
+            .withPosition(1,0)
+            .withSize(1,1);
+        autoLayout.add("Pick Up Positions", autoPickUpChooser)
+            .withWidget(BuiltInWidgets.kComboBoxChooser)
+            .withPosition(2,0)
+            .withSize(1,1);
+
 
         if(config) {
             configInit();
@@ -141,7 +157,25 @@ public class Dashboard {
 
     private static void setChoosers() {
         gearChooser = new SendableChooser<Gear>();
-        gearChooser.setDefaultOption("L", Gear.LOW);
-        gearChooser.addOption("H", Gear.HIGH);
+        gearChooser.setDefaultOption("Lo", Gear.LOW);
+        gearChooser.addOption("Hi", Gear.HIGH);
+
+        autoStartChooser = new SendableChooser<AutoOptions.Start>();
+        autoStartChooser.setDefaultOption("Left", AutoOptions.Start.LEFT);
+        autoStartChooser.addOption("Middle", AutoOptions.Start.MIDDLE);
+        autoStartChooser.addOption("Right", AutoOptions.Start.RIGHT);
+
+        autoPortChooser = new SendableChooser<AutoOptions.Port>();
+        autoPortChooser.addOption("Low", AutoOptions.Port.LOW);
+        autoPortChooser.setDefaultOption("High", AutoOptions.Port.HIGH);
+
+        autoPickUpChooser = new SendableChooser<AutoOptions.PickUp>();
+        autoPickUpChooser.addOption("Alliance Trench", AutoOptions.PickUp.TRENCH_ALLIANCE);
+        autoPickUpChooser.setDefaultOption("Enemy Trench", AutoOptions.PickUp.TRENCH_ENEMY);
+        autoPickUpChooser.addOption("Rendezvous", AutoOptions.PickUp.RENDEZVOUS);
+    }
+
+    public static Gear getGear() {
+        return gearChooser.getSelected();
     }
 }

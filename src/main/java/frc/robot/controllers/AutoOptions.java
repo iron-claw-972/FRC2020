@@ -1,15 +1,15 @@
 package frc.robot.controllers;
 
 public class AutoOptions {
-    public static enum AutoStart {
+    public static enum Start {
         LEFT, MIDDLE, RIGHT
     }
 
-    public static enum AutoPort {
+    public static enum Port {
         HIGH, LOW
     }
 
-    public static enum AutoPickUp {
-        TRENCH_ENEMY, TRENCH_ALLIANCE, TRWNCH_RENDEZVOUS
+    public static enum PickUp {
+        TRENCH_ENEMY, TRENCH_ALLIANCE, RENDEZVOUS
     }
 }
