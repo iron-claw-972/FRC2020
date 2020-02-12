@@ -9,18 +9,18 @@ public abstract class Drivetrain {
     public double pastLeftDist = 0, pastRightDist = 0;
     public long pastTime;
 
-    private PID leftDrivePID, rightDrivePID;
+    private PIDF leftDrivePIDF, rightDrivePIDF;
     
     /**
      * Requires PIDs to be inputted so each drivetrain can have it's own values
-     * @param leftDrivePID_
-     * @param rightDrivePID_
+     * @param leftDrivePIDF_
+     * @param rightDrivePIDF_
      */
-    public Drivetrain(PID leftDrivePID_, PID rightDrivePID_) {
+    public Drivetrain(PIDF leftDrivePIDF_, PIDF rightDrivePIDF_) {
         pastTime = System.currentTimeMillis();
 
-        leftDrivePID = leftDrivePID_;
-        rightDrivePID = rightDrivePID_;
+        leftDrivePIDF = leftDrivePIDF_;
+        rightDrivePIDF = rightDrivePIDF_;
     }
 
     public void arcadeDrive(double power, double turn) {
@@ -36,10 +36,10 @@ public abstract class Drivetrain {
         double deltaTime = (double)(System.currentTimeMillis() - pastTime);
 
         double leftVelocity = getLeftVel();
-        double leftPower = leftDrivePID.update(leftGoalPower, leftVelocity, deltaTime);
+        double leftPower = leftDrivePIDF.update(leftGoalPower, leftVelocity, deltaTime);
 
         double rightVelocity = getRightVel();
-        double rightPower = rightDrivePID.update(rightGoalPower, rightVelocity, deltaTime);
+        double rightPower = rightDrivePIDF.update(rightGoalPower, rightVelocity, deltaTime);
 
         tankDrive(leftPower, rightPower);
 

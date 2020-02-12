@@ -7,11 +7,11 @@ import frc.robot.util.*;
 
 public class NeoDrivetrain extends Drivetrain {
     public CANSparkMax leftMotor1, leftMotor2, rightMotor1, rightMotor2;
-    private static PID leftDrivePID = new PID(0.09, 0, 0);
-    private static PID rightDrivePID = new PID(0.09, 0, 0);
+    private static PIDF leftDrivePIDF = new PIDF(0.09, 0, 0, 0);
+    private static PIDF rightDrivePIDF = new PIDF(0.09, 0, 0, 0);
     
     public NeoDrivetrain() {
-        super(leftDrivePID, rightDrivePID);
+        super(leftDrivePIDF, rightDrivePIDF);
 
         leftMotor1 = new CANSparkMax(Context.leftMotor1ID, MotorType.kBrushless);
         leftMotor2 = new CANSparkMax(Context.leftMotor2ID, MotorType.kBrushless);
