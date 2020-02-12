@@ -1,6 +1,5 @@
 package frc.robot.util;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
 
 import frc.robot.controllers.RobotController;
@@ -29,11 +28,10 @@ public class Context {
 
     /* Falcon Drivetrain Values */
     public static final double falconFXTicksPerRotation = 4096;
-    public static final double falconFXDriveWheelDiameter = 0.1; // meters
-    public static final double falconFXGearRatioLow = (1/10.0) * falconFXTicksPerRotation; // falcon ticks / wheel revs
-    public static final double falconFXGearRatioHigh = (1/15.2) * falconFXTicksPerRotation; // falcon ticks / wheel revs
-    public static final double falconFXDriveTicksPerMeterLow = falconFXGearRatioLow / (falconFXDriveWheelDiameter * Math.PI);
-    public static final double falconFXDriveTicksPerMeterHigh = falconFXGearRatioHigh / (falconFXDriveWheelDiameter * Math.PI);
+    public static final double falconFXDriveWheelDiameter = 0.1524; // meters
+    public static final double falconFXDriveTicksPerMeter = falconFXTicksPerRotation / (falconFXDriveWheelDiameter * Math.PI);
+    public static final int leftEncoderInterfaceID = 11;
+    public static final int rightEncoderInterfaceID = 10;
     
     //----- Human Input Device Values -----
     public static final int joystickID = 0;
