@@ -48,4 +48,12 @@ public class TalonSRXDrivetrain extends Drivetrain {
         double rawCount = getRightTicks() - startPosRight;
         return rawCount / Context.basicDriveTicksPerMeter;
     }
+
+    public double getLeftVel() {
+        return leftEncoder.getRate() / Context.basicDriveTicksPerMeter;
+    }
+
+    public double getRightVel() {
+        return rightEncoder.getRate() / Context.basicDriveTicksPerMeter;
+    }
 }

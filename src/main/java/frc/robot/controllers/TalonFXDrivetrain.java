@@ -73,6 +73,14 @@ public class TalonFXDrivetrain extends Drivetrain {
         return rawCount / Context.falconFXDriveTicksPerMeter;
     }
 
+    public double getLeftVel() {
+        return leftEncoderInterface.getSelectedSensorVelocity() / Context.falconFXDriveTicksPerMeter;
+    }
+
+    public double getRightVel() {
+        return rightEncoderInterface.getSelectedSensorVelocity() / Context.falconFXDriveTicksPerMeter;
+    }
+
     /**
      * Toggles low to high gears
      */

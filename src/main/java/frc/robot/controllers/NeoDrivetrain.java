@@ -43,4 +43,12 @@ public class NeoDrivetrain extends Drivetrain {
         double rawCount = getRightTicks() - startPosRight;
         return rawCount / Context.neoDriveTicksPerMeter;
     }
+
+    public double getLeftVel() {
+        return rightMotor1.getEncoder().getVelocity() / Context.neoDriveTicksPerMeter;
+    }
+
+    public double getRightVel() {
+        return leftMotor1.getEncoder().getVelocity() / Context.neoDriveTicksPerMeter;
+    }
 }
