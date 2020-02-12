@@ -20,8 +20,8 @@ public class TalonFXDrivetrain extends Drivetrain {
         LOW, HIGH;
     }
 
-    private static PID leftDrivePID = new PID(0.6, 0, 0);
-    private static PID rightDrivePID = new PID(0.6, 0, 0);
+    private static PID leftDrivePID = new PID(2.0, 0, 0);
+    private static PID rightDrivePID = new PID(2.0, 0, 0);
     
     public TalonFXDrivetrain(TalonSRX leftEncoderInterface_, TalonSRX rightEncoderInterface_) {
         super(leftDrivePID, rightDrivePID);

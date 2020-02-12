@@ -96,7 +96,7 @@ public class AutoDrive {
         // System.out.println("goal: " + trajectory.get(time));
         List<Double> wheelVelocities = TankKinematics.robotToWheelVelocities(tank, Context.TRACK_WIDTH);
 
-        System.out.println("Left: " + wheelVelocities.get(0) + ", Right: " + wheelVelocities.get(1));
+        System.out.println("LeftDes: " + wheelVelocities.get(0) + ", RightDes: " + wheelVelocities.get(1));
 
         Context.robotController.drivetrain.tankDrivePID(wheelVelocities.get(1), wheelVelocities.get(0));
     }

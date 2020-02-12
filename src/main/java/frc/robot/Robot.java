@@ -83,12 +83,8 @@ public class Robot extends TimedRobot {
   }
 
   public void testPeriodic() {
-    if (Context.robotController.driverJoystick.shiftGears()) {
-      Context.robotController.drivetrain.shiftGears();
-    }
-
-    // Context.robotController.drivetrain.printWheelDistances();
-    Context.robotController.drivetrain.tankDrive(0.1, 0.1);
+    Context.robotController.drivetrain.tankDrivePID(0.2, 0.2);
+    Context.robotController.drivetrain.printWheelVelocities();
   }
 
 }

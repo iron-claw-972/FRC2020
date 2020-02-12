@@ -35,17 +35,11 @@ public abstract class Drivetrain {
     public void tankDrivePID(double leftGoalPower, double rightGoalPower) {
         double deltaTime = (double)(System.currentTimeMillis() - pastTime);
 
-        // double leftDistTraveled = getLeftDist() - pastLeftDist;
-        // double leftVelocity = leftDistTraveled/deltaTime;
         double leftVelocity = getLeftVel();
         double leftPower = leftDrivePID.update(leftGoalPower, leftVelocity, deltaTime);
 
-        // double rightDistTraveled = getRightDist() - pastRightDist;
-        // double rightVelocity = rightDistTraveled/deltaTime;
         double rightVelocity = getRightVel();
         double rightPower = rightDrivePID.update(rightGoalPower, rightVelocity, deltaTime);
-
-        System.out.println("Left Power: " + leftVelocity + " ; Right Power: " + rightVelocity);
 
         tankDrive(leftPower, rightPower);
 
@@ -75,6 +69,10 @@ public abstract class Drivetrain {
 
     public void printWheelDistances() {
         System.out.printf("LeftDist: %f | RightDist: %f\n", getLeftDist(), getRightDist());
+    }
+
+    public void printWheelVelocities() {
+        System.out.printf("LeftVel: %f | RightVel: %f\n", getLeftVel(), getRightVel());
     }
 
 }
