@@ -74,11 +74,13 @@ public class TalonFXDrivetrain extends Drivetrain {
     }
 
     public double getLeftVel() {
-        return leftEncoderInterface.getSelectedSensorVelocity() / Context.falconFXDriveTicksPerMeter;
+        double unitsPerSec = leftEncoderInterface.getSelectedSensorVelocity() / 100.0;
+        return unitsPerSec / Context.falconFXDriveTicksPerMeter;
     }
 
     public double getRightVel() {
-        return rightEncoderInterface.getSelectedSensorVelocity() / Context.falconFXDriveTicksPerMeter;
+        double unitsPerSec = rightEncoderInterface.getSelectedSensorVelocity() / 100.0;
+        return unitsPerSec / Context.falconFXDriveTicksPerMeter;
     }
 
     /**
