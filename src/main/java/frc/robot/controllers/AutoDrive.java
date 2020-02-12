@@ -67,7 +67,7 @@ public class AutoDrive {
 
     public Trajectory generateTrajectory() {
         Path path = new PathBuilder(new Pose2d(0, 0, 0))
-                .splineTo(new Pose2d(3, 0, 0))
+                .splineTo(new Pose2d(1, 0, 0))
                 .build();
 
         return TrajectoryGenerator.INSTANCE.generateTrajectory(path, Context.BASE_CONSTRAINTS);
@@ -93,10 +93,10 @@ public class AutoDrive {
 
         Pose2d tank = getTankVelocityProfile(time);
 
-        System.out.println("goal: " + trajectory.get(time));
+        // System.out.println("goal: " + trajectory.get(time));
         List<Double> wheelVelocities = TankKinematics.robotToWheelVelocities(tank, Context.TRACK_WIDTH);
 
-        //System.out.println("Left: " + wheelVelocities.get(0) + ", Right: " + wheelVelocities.get(1));
+        System.out.println("Left: " + wheelVelocities.get(0) + ", Right: " + wheelVelocities.get(1));
 
         Context.robotController.drivetrain.tankDrivePID(wheelVelocities.get(1), wheelVelocities.get(0));
     }
