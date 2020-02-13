@@ -146,6 +146,7 @@ public class MotorParameterTest {
                     coeffFound = true;
                     
                 }
+                input = 0;
                 motor.set(ControlMode.PercentOutput, 0);
                 System.out.println("TalonVelToCurrentTest Done");
                 System.out.println("FRICTION BOUND (X-INTERCEPT): " + frictionBound + " VEL TO CURRENT RATIO: " + velToCurrentRatio);
