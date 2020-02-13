@@ -3,14 +3,14 @@ package frc.robot.controllers;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.Encoder;
-
 import frc.robot.util.*;
 
 public class TalonSRXDrivetrain extends Drivetrain {
     public TalonSRX leftMotor1, leftMotor2, rightMotor1, rightMotor2;
     public Encoder leftEncoder, rightEncoder;
-    private static PIDF leftDrivePIDF = new PIDF(1.0, 0, 0, 0);
-    private static PIDF rightDrivePIDF = new PIDF(1.0, 0, 0, 0);
+
+    private static PIDF leftDrivePIDF = new PIDF(0.0, 0, 0, 0.35);
+    private static PIDF rightDrivePIDF = new PIDF(0.0, 0, 0, 0.35);
     
     public TalonSRXDrivetrain() {
         super(leftDrivePIDF, rightDrivePIDF);
@@ -27,8 +27,8 @@ public class TalonSRXDrivetrain extends Drivetrain {
     public void tankDrive(double leftPower, double rightPower) {
         leftMotor1.set(ControlMode.PercentOutput, leftPower);
         leftMotor2.set(ControlMode.PercentOutput, leftPower);
-        rightMotor1.set(ControlMode.PercentOutput, rightPower);
-        rightMotor2.set(ControlMode.PercentOutput, rightPower);
+        rightMotor1.set(ControlMode.PercentOutput, -rightPower);
+        rightMotor2.set(ControlMode.PercentOutput, -rightPower);
     }
 
     protected double getLeftTicks() {
@@ -36,7 +36,7 @@ public class TalonSRXDrivetrain extends Drivetrain {
     }
 
     protected double getRightTicks() {
-        return rightEncoder.get();
+        return -rightEncoder.get();
     }
 
     public double getLeftDist() {
@@ -54,6 +54,6 @@ public class TalonSRXDrivetrain extends Drivetrain {
     }
 
     public double getRightVel() {
-        return rightEncoder.getRate() / Context.basicDriveTicksPerMeter;
+        return -(rightEncoder.getRate() / Context.basicDriveTicksPerMeter);
     }
 }

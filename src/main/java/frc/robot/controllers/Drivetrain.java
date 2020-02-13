@@ -41,7 +41,18 @@ public abstract class Drivetrain {
         double rightVelocity = getRightVel();
         double rightPower = rightDrivePIDF.update(rightGoalPower, rightVelocity, deltaTime);
 
-        tankDrive(leftPower, rightPower);
+        System.out.printf("LeftDesired: %f | LeftCurrent: %f | LeftPow: %f\n", leftGoalPower, leftVelocity, leftPower);
+
+        if (leftGoalPower == 0) {
+            tankDrive(0, rightPower);
+        } else {
+            tankDrive(leftPower, rightPower);
+        }
+        if (rightGoalPower == 0) {
+            tankDrive(leftPower, 0);
+        } else {
+            tankDrive(leftPower, rightPower);
+        }
 
         pastTime = System.currentTimeMillis();
         pastLeftDist = getLeftDist();

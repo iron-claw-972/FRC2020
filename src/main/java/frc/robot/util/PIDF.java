@@ -23,10 +23,10 @@ public class PIDF {
 	//@param double setpoint_(goal value), double actual (current value), double timeFrame (time since last run)
 	public double update(double setpoint, double actual, double timeFrame) {
 		//Actual PID math
-		double present = setpoint - actual;
-		integral += present * timeFrame;
-		double deriv = (present - lastError) / timeFrame;
-		lastError = present;
-		return present * pFactor + integral * iFactor + deriv * dFactor + fFactor * setpoint;
+		double error = setpoint - actual;
+		integral += error * timeFrame;
+		double deriv = (error - lastError) / timeFrame;
+		lastError = error;
+		return error * pFactor + integral * iFactor + deriv * dFactor + fFactor * setpoint;
     }
 }
