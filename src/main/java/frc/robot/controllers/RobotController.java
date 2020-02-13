@@ -44,13 +44,13 @@ public class RobotController {
 
         //----- Controllers -----
         /* Change this line when using a different drive train. Don't forget to change the motor ids in context */
-        drivetrain = new TalonFXDrivetrain();
+        drivetrain = new TalonFXDrivetrain(leftDriveMotor1, leftDriveMotor2, rightDriveMotor1, rightDriveMotor2);
         autoDrive = new AutoDrive();
         navX = new NavX(new AHRS(SPI.Port.kMXP));
         ntInterface = new NetworktablesInterface();
         driverJoystick = new DriverJoystick();
         visionAllignment = new VisionAllignment();
-        intake = new Intake();
+        intake = new Intake(rollingIntake, beltIntake);
         opticalLocalization = new OpticalLocalization();
         ballPositions = new NMFColorSensorController();
 
