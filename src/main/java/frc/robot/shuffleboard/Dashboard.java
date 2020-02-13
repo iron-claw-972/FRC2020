@@ -112,7 +112,7 @@ public class Dashboard {
         autoLayout = tab.getLayout("Auto Selection", BuiltInLayouts.kGrid)
             .withPosition(7, 4)
             .withSize(4, 1)
-            .withProperties(Map.of("Number of Rows", 1, "Number of columns", 3, "Label Position", "TOP"));
+            .withProperties(Map.of("Number of Rows", 1, "Number of columns", 3, "Label Position", "HIDDEN"));
         autoLayout.add("Starting Positions", autoStartChooser)
             .withWidget(BuiltInWidgets.kComboBoxChooser)
             .withPosition(0,0)
