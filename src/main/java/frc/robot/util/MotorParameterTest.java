@@ -45,7 +45,7 @@ public class MotorParameterTest {
     private double relativePoint;
 
     private boolean timeOut;
-    private final double TIME_OUT = 10.0;
+    private final double TIME_OUT = 15.0;
     private long startTime;
 
     public MotorParameterTest() {
@@ -84,7 +84,8 @@ public class MotorParameterTest {
                 lastVel = velSample;
                 lastAccel = accelSample;
                 lastJerk = jerkSample;
-                System.out.println(" JERK " + jerkFound + " ACCEL " + accelFound + " VEL " + velFound);
+                System.out.println("JERK: " + jerkSample + " ACCEL: " + accelSample + " VEL: " + velSample);
+                System.out.println("JERKF " + jerkFound + " ACCELF " + accelFound + " VELF " + velFound);
 
            } else {
                 motor.set(ControlMode.PercentOutput, 0);
@@ -107,7 +108,6 @@ public class MotorParameterTest {
     private boolean testStarted;
 
     public void TalonVelToCurrentTest(BaseTalon motor, Boolean orientation, int CPR, double radius) {
-        System.out.println("run" + currentCurrent + " " + Context.getRelativeTime(startTime));
 
         if(!testStarted) {
             System.out.println("testing");
@@ -116,7 +116,7 @@ public class MotorParameterTest {
         }
 
         //calculates the gains for a linear function converting a desired velocity to current
-        if(Context.getRelativeTime(startTime) > TIME_OUT) {
+        if(!coeffFound && Context.getRelativeTime(startTime) > TIME_OUT) {
             motor.set(ControlMode.PercentOutput, 0.0);
             System.out.println("TalonVelToCurrentTest timed out");
         } else {
@@ -125,10 +125,12 @@ public class MotorParameterTest {
                 currentCurrent = Context.getRelativeTime(startTime) * currentIncreaseRate;
 
                 if(currentCurrent <= MAX_CURRENT) {
+                    System.out.println("Current: " + currentCurrent);
                     input = (orientation) ? currentCurrent : -currentCurrent;
                     motor.set(ControlMode.PercentOutput, input);
-                    currentSpeed = radius * 2 * Math.PI * 10 * motor.getSelectedSensorPosition()/CPR;
+                    currentSpeed = radius * 2 * Math.PI * 10 * motor.getSelectedSensorVelocity()/CPR;
                     if(currentSpeed > 0) {
+                        System.out.println("Adding (" + currentCurrent + ", " + currentSpeed + ")");
                         currentPoints.add(currentCurrent);
                         speedPoints.add(currentSpeed);
                     }
@@ -138,12 +140,13 @@ public class MotorParameterTest {
             } else {
                 if(!coeffFound) {
                     
-                    double[] coeff = linearRegressionVelCurrent(currentPoints, speedPoints);
+                    double[] coeff = linearRegressionVelCurrent(speedPoints, currentPoints);
                     frictionBound = coeff[0];
                     velToCurrentRatio = coeff[1];
                     coeffFound = true;
                     
                 }
+                motor.set(ControlMode.PercentOutput, 0);
                 System.out.println("TalonVelToCurrentTest Done");
                 System.out.println("FRICTION BOUND (X-INTERCEPT): " + frictionBound + " VEL TO CURRENT RATIO: " + velToCurrentRatio);
             }
@@ -152,23 +155,53 @@ public class MotorParameterTest {
     }
 
     
-    public double[] linearRegressionVelCurrent(ArrayList<Double> currentPoints, ArrayList<Double> speedPoints) {
+    public double[] linearRegressionVelCurrent(ArrayList<Double> inputPoints, ArrayList<Double> outputPoints) {
 
         double[][] A = new double[2][2];
         double[] b = new double[2];
 
-        for(int i = 0; i < currentPoints.size(); i++) {
+        for(int i = 0; i < inputPoints.size(); i++) {
             A[0][0] += 1;
-            A[1][0] += currentPoints.get(i);
-            A[0][1] += currentPoints.get(i);
-            A[1][1] += currentPoints.get(i) * currentPoints.get(i);
-            b[0] = speedPoints.get(i);
-            b[1] = speedPoints.get(i) * currentPoints.get(i);
+            A[1][0] += inputPoints.get(i);
+            A[0][1] += inputPoints.get(i);
+            A[1][1] += inputPoints.get(i) * inputPoints.get(i);
+            b[0] += outputPoints.get(i);
+            b[1] += outputPoints.get(i) * inputPoints.get(i);
         }
+        System.out.println("init");
+        System.out.println(A[0][0] + " " + A[0][1] + "|" +b[0]);
+        System.out.println(A[1][0] + " " + A[1][1] + "|" +b[1]);
 
-        double[] solution = new double[2];
+        //First row division
+        A[0][1] = A[0][1]/A[0][0];
+        b[0] = b[0]/A[0][0];
+        A[0][0] = 1;
+        System.out.println("div first");
+        System.out.println(A[0][0] + " " + A[0][1] + "|" +b[0]);
+        System.out.println(A[1][0] + " " + A[1][1] + "|" +b[1]);
+        //Sub first row from second
+        A[1][1] = A[1][1] - A[1][0] * A[0][1];
+        b[1] = b[1] - A[1][0] * b[0];
+        A[1][0] = 0;
+        System.out.println("sub first");
+        System.out.println(A[0][0] + " " + A[0][1] + "|" +b[0]);
+        System.out.println(A[1][0] + " " + A[1][1] + "|" +b[1]);
+        //Div. second
+        b[1] = b[1]/A[1][1];
+        A[1][1] = 1;
+        System.out.println("div sec");
+        System.out.println(A[0][0] + " " + A[0][1] + "|" +b[0]);
+        System.out.println(A[1][0] + " " + A[1][1] + "|" +b[1]);
+        //Sub. second from first
+        b[0] = b[0] - A[0][1]*b[1];
+        A[0][1] = 0;
+        System.out.println("sub second");
+        System.out.println(A[0][0] + " " + A[0][1] + "|" +b[0]);
+        System.out.println(A[1][0] + " " + A[1][1] + "|" +b[1]);
 
-        return new double[]{0, 0};
+        double[] solution = new double[] {b[0], b[1]};
+
+        return solution;
 
     }
     

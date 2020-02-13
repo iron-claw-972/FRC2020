@@ -1,5 +1,7 @@
 package frc.robot;
 
+import java.util.ArrayList;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.RemoteFeedbackDevice;
@@ -53,7 +55,15 @@ public class Robot extends TimedRobot {
     MPT.TalonVelToCurrentTest(motor2, true, 2048, 0.12065);
     motor1.set(ControlMode.PercentOutput, -MPT.input);
 
-
+    /*
+    ArrayList<Double> dog1 = new ArrayList<>();
+    dog1.add(0.0);
+    dog1.add(1.0);
+    ArrayList<Double> dog2 = new ArrayList<>();
+    dog2.add(1.0);
+    dog2.add(2.0);
+    double[] test = MPT.linearRegressionVelCurrent(dog1, dog2);
+    System.out.println(test[0] + "   " + test[1]);*/
   }
 
   @Override
