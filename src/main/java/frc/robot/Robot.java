@@ -29,8 +29,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Context.robotController.autoDrive.loop((System.currentTimeMillis() - origTime)/1000.0);
-    // System.out.println(Context.robotController.autoDrive.getPoseEstimate());
-    // Context.robotController.drivetrain.printWheelDistances();
+    System.out.println(Context.robotController.autoDrive.getPoseEstimate());
+    Context.robotController.drivetrain.printWheelVelocities();
   }
 
   @Override
@@ -42,37 +42,37 @@ public class Robot extends TimedRobot {
   
   @Override
   public void teleopPeriodic() {
-    Context.robotController.loopAll();
+    // Context.robotController.loopAll();
 
-    double driverThrottle = Context.robotController.driverJoystick.getThrottle();
-    double driverYaw = Context.robotController.driverJoystick.getYaw();
+    double driverThrottle = -Context.robotController.driverJoystick.getThrottle()/2;
+    double driverYaw = Context.robotController.driverJoystick.getYaw()/2;
 
-    Context.robotController.autoDrive.updatePoseEstimate();
-    System.out.println(Context.robotController.autoDrive.getPoseEstimate());
+    // Context.robotController.autoDrive.updatePoseEstimate();
+    // System.out.println(Context.robotController.autoDrive.getPoseEstimate());
 
     if (Context.robotController.driverJoystick.shiftGears()) {
       Context.robotController.drivetrain.shiftGears();
     }
 
-    Context.robotController.drivetrain.printWheelDistances();
+    // Context.robotController.drivetrain.printWheelVelocities();
     
-    if (Context.robotController.driverJoystick.getToggleTrack()) {
-      if (Context.robotController.visionAllignment.isActive()) {
-        Context.robotController.visionAllignment.stopTrack();
-      } else {
-        Context.robotController.visionAllignment.startTrack();
-      }
-    }
+    // if (Context.robotController.driverJoystick.getToggleTrack()) {
+    //   if (Context.robotController.visionAllignment.isActive()) {
+    //     Context.robotController.visionAllignment.stopTrack();
+    //   } else {
+    //     Context.robotController.visionAllignment.startTrack();
+    //   }
+    // }
 
-    if (Context.robotController.driverJoystick.isInUse() || !Context.robotController.visionAllignment.isActive()) {
-      Context.robotController.visionAllignment.stopTrack();
-      Context.robotController.drivetrain.arcadeDrive(driverYaw, driverThrottle);
-    }
+    // if (Context.robotController.driverJoystick.isInUse() || !Context.robotController.visionAllignment.isActive()) {
+    //   Context.robotController.visionAllignment.stopTrack();
+      Context.robotController.drivetrain.arcadeDrive(driverThrottle, driverYaw);
+    // }
     
-    if((Context.robotController.opticalLocalization.LeftMovementX != 0) || (Context.robotController.opticalLocalization.LeftMovementY !=0))
-    {
-      System.out.println("X: " + Context.robotController.opticalLocalization.LeftMovementX + " Y: " + Context.robotController.opticalLocalization.LeftMovementY);
-    }
+    // if((Context.robotController.opticalLocalization.LeftMovementX != 0) || (Context.robotController.opticalLocalization.LeftMovementY !=0))
+    // {
+    //   System.out.println("X: " + Context.robotController.opticalLocalization.LeftMovementX + " Y: " + Context.robotController.opticalLocalization.LeftMovementY);
+    // }
     //System.out.println(String.format("X: 0x%08X, Y:  0x%08X",Context.robotController.opticalLocalization.LeftMovementX, Context.robotController.opticalLocalization.LeftMovementY));
   }
 
@@ -83,8 +83,9 @@ public class Robot extends TimedRobot {
   }
 
   public void testPeriodic() {
-    Context.robotController.drivetrain.tankDrivePID(0.2, 0.2);
-    Context.robotController.drivetrain.printWheelVelocities();
+    Context.robotController.drivetrain.tankDrivePID(0.5, 0.5);
+
+    // Context.robotController.drivetrain.printWheelVelocities();
   }
 
 }
