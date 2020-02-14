@@ -41,12 +41,15 @@ public class AutoDrive {
     public void loop(double time) {
         localizer.update();
 
-        // System.out.println("goal: " + trajectory.get(time));
+        /* Hacky fix for autism roadrunner error */
+        if (time == trajectory.duration()/2) {
+            time += 0.001;
+        }
 
+        // System.out.println("goal: " + trajectory.get(time));
         List<Double> wheelVelocities = getWheelVelocities(time);
 
         // System.out.println("LeftDes: " + wheelVelocities.get(0) + "| RightDes: " + wheelVelocities.get(1));
-
         Context.robotController.drivetrain.tankDrivePID(wheelVelocities.get(1), wheelVelocities.get(0));
     }
 
