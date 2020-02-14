@@ -102,7 +102,7 @@ public class Context {
     public static double getRelativeTime(long relativePoint) {
         /*System.out.println(System.currentTimeMillis());
         System.out.println("OUTER: " + (System.currentTimeMillis() - relativePoint)/1000);*/
-        System.out.println("TIME: " + (System.currentTimeMillis() - relativePoint)/1000.0);
+        //System.out.println("TIME: " + (System.currentTimeMillis() - relativePoint)/1000.0);
         return (System.currentTimeMillis() - relativePoint)/1000.0;
     }
 }

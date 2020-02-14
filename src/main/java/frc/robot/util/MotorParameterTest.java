@@ -12,13 +12,17 @@ public class MotorParameterTest {
 
     public final double MAX_CURRENT = 0.8;
 
-    private final int JERK_SAMPLES_THRESHOLD = 1;
-    private final int ACCEL_SAMPLES_THRESHOLD = 1;
-    private final int VEL_SAMPLES_THRESHOLD = 1;
+    private final int JERK_SAMPLES_THRESHOLD = 10;
+    private final int ACCEL_SAMPLES_THRESHOLD = 20;
+    private final int VEL_SAMPLES_THRESHOLD = 50;
 
-    private final double JERK_NOISE_TOLERANCE = 999;
-    private final double ACCEL_NOISE_TOLERANCE = 999;
-    private final double VEL_NOISE_TOLERANCE = 999;
+    private final double JERK_NOISE_TOLERANCE = 10;
+    private final double ACCEL_NOISE_TOLERANCE = 10;
+    private final double VEL_NOISE_TOLERANCE = 10;
+
+    private double maxJerk;
+    private double maxAccel;
+    private double maxVel;
 
     private double jerkSampleSum;
     private int jerkSamples;
@@ -45,8 +49,9 @@ public class MotorParameterTest {
     private double relativePoint;
 
     private boolean timeOut;
-    private final double TIME_OUT = 15.0;
+    private final double TIME_OUT = 10.0;
     private long startTime;
+    public boolean flood;
 
     public MotorParameterTest() {
         startTime = System.currentTimeMillis();
@@ -60,9 +65,22 @@ public class MotorParameterTest {
         //orientation is direction of rotation; true for right, false for left
         //CPR is CPR of related motor encoders
         //radius is radius of wheels related to encoders
+
+        if(!testStarted) {
+            System.out.println("testing");
+            startTime = System.currentTimeMillis();
+            testStarted = true;
+        }
+
         if(Context.getRelativeTime(startTime) > TIME_OUT) {
             motor.set(ControlMode.PercentOutput, 0.0);
-            System.out.println("TalonParameterTest timed out");
+            if(!flood) {
+                System.out.println("TalonParameterTest timed out");
+                System.out.println("JERK: " + maxJerk);
+                System.out.println("ACCEL: " + maxAccel);
+                System.out.println("VEL: " + maxVel);
+                flood = true;
+            }
         } else {
             double speed = (orientation) ? MAX_CURRENT : -MAX_CURRENT;
             motor.set(ControlMode.PercentOutput, speed);
@@ -77,20 +95,36 @@ public class MotorParameterTest {
                 accelSample = takeDerivative(lastVel, velSample, deltaTime);
                 jerkSample = takeDerivative(lastAccel, accelSample, deltaTime);
 
+                /*maxVel = checkMax(velSample, lastVel);
+                maxAccel = checkMax(accelSample, lastAccel);
+                maxJerk = checkMax(jerkSample, lastJerk);*/
+
                 checkParameter(parameter.VEL);
                 checkParameter(parameter.ACCEL);
                 checkParameter(parameter.JERK);
 
+                maxVel = checkMax(velSample, lastVel);
+                maxAccel = checkMax(accelSample, lastAccel);
+                maxJerk = checkMax(jerkSample, lastJerk);
+
+                System.out.println("JERKerr: " + (jerkSample - lastJerk) + " ACCELerr: " + (accelSample - lastAccel) + " VELerr: " + (velSample - lastVel));
                 lastVel = velSample;
                 lastAccel = accelSample;
                 lastJerk = jerkSample;
-                System.out.println("JERK: " + jerkSample + " ACCEL: " + accelSample + " VEL: " + velSample);
+                System.out.println("JERKr: " + jerkSample + " ACCELr: " + accelSample + " VELr: " + velSample);
                 System.out.println("JERKF " + jerkFound + " ACCELF " + accelFound + " VELF " + velFound);
 
            } else {
                 motor.set(ControlMode.PercentOutput, 0);
-                System.out.println("TalonParameterTest Done");
-                System.out.println("MAX VEL: " + velSampleSum/velSamples + " MAX ACCEL: " + accelSampleSum/accelSamples + " MAX JERK: " + jerkSampleSum/jerkSamples);
+                if(!flood) {
+                    flood = true;
+                    System.out.println(velSampleSum + " " + velSamples);
+                    System.out.println(accelSampleSum + " " + accelSamples);
+                    System.out.println(jerkSampleSum + " " + jerkSamples);
+                    System.out.println("TalonParameterTest Done");
+                    System.out.println("TRUE VEL: " + maxVel + " TRUE ACCEL: " + maxAccel + " TRUE JERK: " + maxJerk);
+                    System.out.println("MAX VEL: " + velSampleSum/velSamples + " MAX ACCEL: " + accelSampleSum/accelSamples + " MAX JERK: " + jerkSampleSum/jerkSamples);
+                }
             }
         }
     }
@@ -209,26 +243,121 @@ public class MotorParameterTest {
     
 
     private void checkParameter(parameter param) {
-        if(param == parameter.VEL) {
-            checkParameter(velSample, lastVel, velSampleSum, velSamples, velFound, VEL_NOISE_TOLERANCE, VEL_SAMPLES_THRESHOLD);
-        } else if (param == parameter.ACCEL) {
-            checkParameter(accelSample, lastAccel, accelSampleSum, accelSamples, accelFound, ACCEL_NOISE_TOLERANCE, ACCEL_SAMPLES_THRESHOLD);
-        } else if (param == parameter.JERK) {
-            checkParameter(jerkSample, lastJerk, jerkSampleSum, jerkSamples, jerkFound, JERK_NOISE_TOLERANCE, JERK_SAMPLES_THRESHOLD);
+        if(param == parameter.VEL && !velFound && Context.getRelativeTime(startTime) > 6) {
+            if(Math.abs(velSample - lastVel) > VEL_NOISE_TOLERANCE && !velFound) {
+                //if the samples are changing too much, reset the sample collection process
+                velSampleSum = 0;
+                velSamples = 0;
+                System.out.println(param + " drop");
+            } else {
+                velSampleSum += velSample;
+                velSamples++;
+                System.out.println(param + "add");
+                if(velSampleSum >= VEL_SAMPLES_THRESHOLD) {
+                    System.out.println(param + "done");
+                    switch(param) {
+                        case JERK:
+                            jerkFound = true;
+                        break;
+                        case ACCEL:
+                            accelFound = true;
+                        break;
+                        case VEL:
+                            velFound = true;
+                        break;
+                    }
+                    System.out.println(jerkFound + " " + accelFound + " " + velFound);
+                }
+            }
+        } else if (param == parameter.ACCEL && !accelFound) {
+            if(Math.abs(accelSample - lastAccel) > ACCEL_NOISE_TOLERANCE && !accelFound) {
+                //if the samples are changing too much, reset the sample collection process
+                accelSampleSum = 0;
+                accelSamples = 0;
+                System.out.println(param + " drop");
+            } else {
+                accelSampleSum += accelSample;
+                accelSamples++;
+                System.out.println(param + "add");
+                if(accelSampleSum >= ACCEL_SAMPLES_THRESHOLD) {
+                    System.out.println(param + "done");
+                    switch(param) {
+                        case JERK:
+                            jerkFound = true;
+                        break;
+                        case ACCEL:
+                            accelFound = true;
+                        break;
+                        case VEL:
+                            velFound = true;
+                        break;
+                    }
+                    System.out.println(jerkFound + " " + accelFound + " " + velFound);
+                }
+            }
+        } else if (param == parameter.JERK && !jerkFound) {
+            if(Math.abs(jerkSample - lastJerk) > JERK_NOISE_TOLERANCE && !jerkFound) {
+                //if the samples are changing too much, reset the sample collection process
+                jerkSampleSum = 0;
+                jerkSamples = 0;
+                System.out.println(param + " drop");
+            } else {
+                jerkSampleSum += jerkSample;
+                jerkSamples++;
+                System.out.println(param + "add");
+                if(jerkSampleSum >= JERK_SAMPLES_THRESHOLD) {
+                    System.out.println(param + "done");
+                    switch(param) {
+                        case JERK:
+                            jerkFound = true;
+                        break;
+                        case ACCEL:
+                            accelFound = true;
+                        break;
+                        case VEL:
+                            velFound = true;
+                        break;
+                    }
+                    System.out.println(jerkFound + " " + accelFound + " " + velFound);
+                }
+            }
         }
     }
 
-    private void checkParameter(double parameterSample, double lastParameter, double parameterSampleSum, int parameterSamples, boolean parameterFound, double PARAMETER_NOISE_TOLERANCE, double PARAMETER_SAMPLES_THRESHOLD) {
+    private void checkParameter(parameter param, double parameterSample, double lastParameter, double parameterSampleSum, int parameterSamples, boolean parameterFound, double PARAMETER_NOISE_TOLERANCE, double PARAMETER_SAMPLES_THRESHOLD) {
         if(Math.abs(parameterSample - lastParameter) > PARAMETER_NOISE_TOLERANCE && !parameterFound) {
             //if the samples are changing too much, reset the sample collection process
             parameterSampleSum = 0;
             parameterSamples = 0;
+            System.out.println(param + " drop");
         } else {
             parameterSampleSum += parameterSample;
             parameterSamples++;
+            System.out.println(param + "add");
             if(parameterSampleSum >= PARAMETER_SAMPLES_THRESHOLD) {
-                parameterFound = true;
+                System.out.println(param + "done");
+                switch(param) {
+                    case JERK:
+                        jerkFound = true;
+                    break;
+                    case ACCEL:
+                        accelFound = true;
+                    break;
+                    case VEL:
+                        velFound = true;
+                    break;
+                }
+                System.out.println(jerkFound + " " + accelFound + " " + velFound);
             }
+        }
+    }
+
+    public double checkMax(double newSample, double oldSample) {
+        if(Math.abs(newSample) > Math.abs(oldSample)) {
+            System.out.println("update");
+            return newSample;
+        } else {
+            return oldSample;
         }
     }
 

@@ -52,8 +52,12 @@ public class Robot extends TimedRobot {
       motor2.set(ControlMode.PercentOutput, 0);
     }*/
 
-    MPT.TalonVelToCurrentTest(motor2, true, 2048, 0.12065);
-    motor1.set(ControlMode.PercentOutput, -MPT.input);
+    MPT.TalonParameterTest(motor2, true, 2048, 0.12065);
+    if(!MPT.flood) {
+      motor1.set(ControlMode.PercentOutput, -MPT.MAX_CURRENT);
+    } else {
+      motor1.set(ControlMode.PercentOutput, 0);
+    }
 
     /*
     ArrayList<Double> dog1 = new ArrayList<>();
