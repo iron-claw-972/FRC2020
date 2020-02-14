@@ -22,21 +22,21 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     Context.robotController.drivetrain.resetEncoders();
-    Context.robotController.autoDrive.resetLocalization();
+    Context.robotController.autoDrive.localizer.resetLocalization();
     origTime = System.currentTimeMillis();
   }
 
   @Override
   public void autonomousPeriodic() {
     Context.robotController.autoDrive.loop((System.currentTimeMillis() - origTime)/1000.0);
-    System.out.println(Context.robotController.autoDrive.getPoseEstimate());
+    System.out.println(Context.robotController.autoDrive.localizer.getPoseEstimate());
     Context.robotController.drivetrain.printWheelVelocities();
   }
 
   @Override
   public void teleopInit() {
     Context.robotController.drivetrain.resetEncoders();
-    Context.robotController.autoDrive.resetLocalization();
+    Context.robotController.autoDrive.localizer.resetLocalization();
     Context.robotController.initAll();
   }
   
@@ -78,7 +78,7 @@ public class Robot extends TimedRobot {
 
   public void testInit() {
     Context.robotController.drivetrain.resetEncoders();
-    Context.robotController.autoDrive.resetLocalization();
+    Context.robotController.autoDrive.localizer.resetLocalization();
     origTime = System.currentTimeMillis();
   }
 

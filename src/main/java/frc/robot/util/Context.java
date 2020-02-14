@@ -81,9 +81,10 @@ public class Context {
         maxDrivingSpeed, maxDrivingAcceleration, maxDrivingJerk, maxTurningSpeed, maxTurningAcceleration, maxTurningJerk
     );
     public static final double TRACK_WIDTH = 0.675; // meters
-    public static final double kA = 0.2; // m/s/s
+    /* Also not useful anywhere */
+    public static final double kA = 0.0; // m/s/s
     public static final double kStatic = 0.0;
-    public static final double kV = 0.04;
+    public static final double kV = 0.0;
 
     //----- Time Function -----
     public static double getRelativeTime(double relativePoint) {

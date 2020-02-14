@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.Compressor;
+import frc.robot.controllers.auto.AutoDrive;
 import frc.robot.util.Context;
 
 public class RobotController {
