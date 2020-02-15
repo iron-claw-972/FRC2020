@@ -1,4 +1,4 @@
-package frc.robot.controllers;
+package frc.robot.controllers.drive;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
