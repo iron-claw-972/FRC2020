@@ -43,8 +43,6 @@ public abstract class Drivetrain {
         double rightVelocity = rightDistTraveled/deltaTime;
         double rightPower = rightDrivePID.update(rightGoalPower, rightVelocity, deltaTime);
 
-        // System.out.println("Left Power: " + leftPower + " ; Right Power: " + rightPower);
-
         tankDrive(leftPower, rightPower);
 
         pastTime = System.currentTimeMillis();

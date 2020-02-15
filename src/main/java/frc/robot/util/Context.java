@@ -15,7 +15,7 @@ public class Context {
     public static final int rightMotor1ID = 3;
     public static final int rightMotor2ID = 4;
   
-      //----- Flywheel Shooter Values -----
+    //----- Flywheel Shooter Values -----
     public static final int shooterMotorID = 2;
     public static final int FALCON_ENCODER_CPR = 2048;
 
@@ -38,12 +38,12 @@ public class Context {
     public static final double neoDriveTicksPerMeter = neoDriveMotorGearRatio / (neoDriveWheelDiameter * Math.PI);
 
     // Falcon Drivetrain Values
+    public static final int leftEncoderInterfaceID = 9;
+    public static final int rightEncoderInterfaceID = 10;
     public static final double falconFXTicksPerRotation = 4096;
     public static final double falconFXDriveWheelDiameter = 0.1; // meters
-    public static final double falconFXGearRatioLow = (1/10.0) * falconFXTicksPerRotation; // falcon ticks / wheel revs
-    public static final double falconFXGearRatioHigh = (1/15.2) * falconFXTicksPerRotation; // falcon ticks / wheel revs
-    public static final double falconFXDriveTicksPerMeterLow = falconFXGearRatioLow / (falconFXDriveWheelDiameter * Math.PI);
-    public static final double falconFXDriveTicksPerMeterHigh = falconFXGearRatioHigh / (falconFXDriveWheelDiameter * Math.PI);
+    public static final double falconFXDriveTicksPerMeter = falconFXTicksPerRotation / (falconFXDriveWheelDiameter * Math.PI);
+    
 
     // Falcon Drivetrain Pneumatics
     public static final int gearShifterChannelA = 0;

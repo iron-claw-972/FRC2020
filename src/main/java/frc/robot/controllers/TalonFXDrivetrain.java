@@ -6,16 +6,15 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 import com.ctre.phoenix.motorcontrol.*;
+import com.ctre.phoenix.motorcontrol.can.*;
 
 import frc.robot.util.*;
 
 public class TalonFXDrivetrain extends Drivetrain {
-    public TalonFX leftMotor1, leftMotor2, rightMotor1, rightMotor2;
+    private TalonFX leftMotor1, leftMotor2, rightMotor1, rightMotor2;
+    private TalonSRX leftEncoderInterface, rightEncoderInterface;
     private DoubleSolenoid gearShifterSolenoid;
     public Gear gear = Gear.LOW;
-    // To keep track of how far we've traveled since last shifting gears (in meters)
-    private double leftDistTraveled = 0;
-    private double rightDistTraveled = 0;
     
     public enum Gear {
         LOW, HIGH;
@@ -24,26 +23,36 @@ public class TalonFXDrivetrain extends Drivetrain {
     private static PID leftDrivePID = new PID(0.6, 0, 0);
     private static PID rightDrivePID = new PID(0.6, 0, 0);
     
-    public TalonFXDrivetrain(TalonFX leftMotor1_, TalonFX leftMotor2_, TalonFX rightMotor1_, TalonFX rightMotor2_) {
+    public TalonFXDrivetrain(TalonFX leftMotor1_, TalonFX leftMotor2_, TalonFX rightMotor1_, TalonFX rightMotor2_, TalonSRX leftEncoderInterface_, TalonSRX rightEncoderInterface_) {
         super(leftDrivePID, rightDrivePID);
 
         leftMotor1 = leftMotor1_;
         leftMotor1.configFactoryDefault();
         leftMotor1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        leftMotor1.setNeutralMode(NeutralMode.Coast);
 
         leftMotor2 = leftMotor2_;
         leftMotor2.configFactoryDefault();
         leftMotor2.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        leftMotor2.setNeutralMode(NeutralMode.Coast);
 
         rightMotor1 = rightMotor1_;
         rightMotor1.configFactoryDefault();
         rightMotor1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        rightMotor1.setNeutralMode(NeutralMode.Coast);
 
         rightMotor2 = rightMotor2_;
         rightMotor2.configFactoryDefault();
         rightMotor2.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        rightMotor2.setNeutralMode(NeutralMode.Coast);
 
         gearShifterSolenoid = new DoubleSolenoid(Context.gearShifterChannelA, Context.gearShifterChannelB);
+
+        leftEncoderInterface = leftEncoderInterface_;
+        leftEncoderInterface.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+
+        rightEncoderInterface = rightEncoderInterface_;
+        leftEncoderInterface.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
     }
 
     public void tankDrive(double leftPower, double rightPower) {
@@ -54,37 +63,19 @@ public class TalonFXDrivetrain extends Drivetrain {
     }
 
      protected double getLeftTicks() {
-        return leftMotor1.getSelectedSensorPosition();
+        return leftEncoderInterface.getSelectedSensorPosition();
     }
 
     protected double getRightTicks() {
-        return -rightMotor1.getSelectedSensorPosition();
+        return -rightEncoderInterface.getSelectedSensorPosition();
     }
 
     public double getLeftDist() {
-        double rawCount = getLeftTicks() - startPosLeft;
-        switch(gear) {
-        case LOW:
-            return (rawCount / Context.falconFXDriveTicksPerMeterLow) + leftDistTraveled;
-        case HIGH:
-            return (rawCount / Context.falconFXDriveTicksPerMeterHigh) + leftDistTraveled;
-        default:
-            System.out.println("Gear is not high or low (This should never happen");
-            return -1.0;
-        }
+        return (getLeftTicks() - startPosLeft) / Context.falconFXDriveTicksPerMeter;
     }
 
     public double getRightDist() {
-        double rawCount = getRightTicks() - startPosRight;
-        switch(gear) {
-        case LOW:
-            return (rawCount / Context.falconFXDriveTicksPerMeterLow) + rightDistTraveled;
-        case HIGH:
-            return (rawCount / Context.falconFXDriveTicksPerMeterHigh) + rightDistTraveled;
-        default:
-            System.out.println("Gear is not high or low (This should never happen");
-            return -1.0;
-        }
+        return (getRightTicks() - startPosRight) / Context.falconFXDriveTicksPerMeter;
     }
 
     /**
@@ -114,9 +105,6 @@ public class TalonFXDrivetrain extends Drivetrain {
             break;
         }
         gear = desiredGear;
-        leftDistTraveled = getLeftDist();
-        rightDistTraveled = getRightDist();
-        resetEncoders();
         System.out.println("Gear: " + gear);
     }
 
