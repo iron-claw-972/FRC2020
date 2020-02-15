@@ -107,16 +107,17 @@ public class TalonFXDrivetrain extends Drivetrain {
     public void shiftGears(Gear desiredGear) {
         switch(desiredGear) {
         case LOW:
-            gearShifterSolenoid.set(Value.kForward);
+            gearShifterSolenoid.set(Value.kReverse);
             break;
         case HIGH:
-            gearShifterSolenoid.set(Value.kReverse);
+            gearShifterSolenoid.set(Value.kForward);
             break;
         }
         gear = desiredGear;
         leftDistTraveled = getLeftDist();
         rightDistTraveled = getRightDist();
         resetEncoders();
+        System.out.println("Gear: " + gear);
     }
 
 }
