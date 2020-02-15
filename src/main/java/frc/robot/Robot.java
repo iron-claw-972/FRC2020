@@ -39,13 +39,15 @@ public class Robot extends TimedRobot {
     Context.robotController.autoDrive.localizer.resetLocalization();
     Context.robotController.initAll();
   }
+
+  double maxSpeed = 1; // m/s
   
   @Override
   public void teleopPeriodic() {
     // Context.robotController.loopAll();
 
-    double driverThrottle = Context.robotController.driverJoystick.getThrottle()*2;
-    double driverYaw = -Context.robotController.driverJoystick.getYaw()*2;
+    double driverThrottle = Context.robotController.driverJoystick.getThrottle()*maxSpeed;
+    double driverYaw = -Context.robotController.driverJoystick.getYaw()*maxSpeed;
 
     // Context.robotController.autoDrive.updatePoseEstimate();
     // System.out.println(Context.robotController.autoDrive.getPoseEstimate());
@@ -83,7 +85,7 @@ public class Robot extends TimedRobot {
   }
 
   public void testPeriodic() {
-    Context.robotController.drivetrain.tankDrivePID(0.5, 0.5);
+    Context.robotController.drivetrain.tankDrivePID(1.0, 1.0);
 
     // Context.robotController.drivetrain.printWheelVelocities();
   }
