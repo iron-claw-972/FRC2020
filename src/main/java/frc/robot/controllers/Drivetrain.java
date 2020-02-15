@@ -26,8 +26,8 @@ public abstract class Drivetrain {
     public void arcadeDrive(double power, double turn) {
         power *= speedFac;
         turn *=  turnFac;
-        double leftPower = turn - power;
-        double rightPower = turn + power;
+        double leftPower = power - turn;
+        double rightPower = power + turn;
 
         tankDrivePID(leftPower, rightPower);
     }

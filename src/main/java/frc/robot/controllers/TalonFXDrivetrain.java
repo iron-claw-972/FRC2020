@@ -20,8 +20,8 @@ public class TalonFXDrivetrain extends Drivetrain {
         LOW, HIGH;
     }
 
-    private static PIDF leftDrivePIDF = new PIDF(0.2, 0, 0.05, 0.325);
-    private static PIDF rightDrivePIDF = new PIDF(0.2, 0, 0.05, 0.325);
+    private static PIDF leftDrivePIDF = new PIDF(0.0, 0, 0.0, 0.325);
+    private static PIDF rightDrivePIDF = new PIDF(0.0, 0, 0.0, 0.325);
     
     public TalonFXDrivetrain(TalonSRX leftEncoderInterface_, TalonSRX rightEncoderInterface_) {
         super(leftDrivePIDF, rightDrivePIDF);
@@ -103,10 +103,12 @@ public class TalonFXDrivetrain extends Drivetrain {
     public void shiftGears(Gear desiredGear) {
         switch(desiredGear) {
         case LOW:
-            gearShifterSolenoid.set(Value.kForward);
+            System.out.println("Low Gear");
+            gearShifterSolenoid.set(Value.kReverse);
             break;
         case HIGH:
-            gearShifterSolenoid.set(Value.kReverse);
+            System.out.println("High Gear");
+            gearShifterSolenoid.set(Value.kForward);
             break;
         }
         gear = desiredGear;

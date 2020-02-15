@@ -29,7 +29,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Context.robotController.autoDrive.loop((System.currentTimeMillis() - origTime)/1000.0);
-    System.out.println(Context.robotController.autoDrive.localizer.getPoseEstimate());
+    // System.out.println(Context.robotController.autoDrive.localizer.getPoseEstimate());
     Context.robotController.drivetrain.printWheelVelocities();
   }
 
@@ -44,8 +44,8 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     // Context.robotController.loopAll();
 
-    double driverThrottle = -Context.robotController.driverJoystick.getThrottle()/2;
-    double driverYaw = Context.robotController.driverJoystick.getYaw()/2;
+    double driverThrottle = Context.robotController.driverJoystick.getThrottle()*2;
+    double driverYaw = -Context.robotController.driverJoystick.getYaw()*2;
 
     // Context.robotController.autoDrive.updatePoseEstimate();
     // System.out.println(Context.robotController.autoDrive.getPoseEstimate());
