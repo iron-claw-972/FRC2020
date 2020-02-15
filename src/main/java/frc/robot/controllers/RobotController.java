@@ -34,32 +34,31 @@ public class RobotController {
     public UsbCamera camera;
 
     public RobotController () {
-        // //----- Motors -----
-        // leftDriveMotor1 = new TalonFX(Context.leftMotor1ID);
-        // leftDriveMotor2 = new TalonFX(Context.leftMotor2ID);
-        // rightDriveMotor1 = new TalonFX(Context.rightMotor1ID);
-        // rightDriveMotor2 = new TalonFX(Context.rightMotor2ID);
-        // rollingIntake = new TalonSRX(-1);
-        // beltIntake = new TalonSRX(-1);
+        //----- Motors -----
+        leftDriveMotor1 = new TalonFX(Context.leftMotor1ID);
+        leftDriveMotor2 = new TalonFX(Context.leftMotor2ID);
+        rightDriveMotor1 = new TalonFX(Context.rightMotor1ID);
+        rightDriveMotor2 = new TalonFX(Context.rightMotor2ID);
+        rollingIntake = new TalonSRX(-1);
+        beltIntake = new TalonSRX(-1);
 
-        // //----- Pneumatics -----
-        // compressor = new Compressor();
-        // compressor.setClosedLoopControl(true);
+        //----- Pneumatics -----
+        compressor = new Compressor();
+        compressor.setClosedLoopControl(true);
 
-        // //----- Controllers -----
-        // /* Change this line when using a different drive train. Don't forget to change the motor ids in context */
-        // drivetrain = new TalonFXDrivetrain(leftDriveMotor1, leftDriveMotor2, rightDriveMotor1, rightDriveMotor2);
-        // autoDrive = new AutoDrive();
-        // navX = new NavX();
-        // ntInterface = new NetworktablesInterface();
-        // driverJoystick = new DriverJoystick();
-        // visionAllignment = new VisionAllignment();
-        // intake = new Intake(rollingIntake, beltIntake);
-        // opticalLocalization = new OpticalLocalization();
-        //ballPositions = new NMFColorSensorController();
+        //----- Controllers -----
+        /* Change this line when using a different drive train. Don't forget to change the motor ids in context */
+        drivetrain = new TalonFXDrivetrain(leftDriveMotor1, leftDriveMotor2, rightDriveMotor1, rightDriveMotor2);
+        autoDrive = new AutoDrive();
+        navX = new NavX();
+        ntInterface = new NetworktablesInterface();
+        driverJoystick = new DriverJoystick();
+        visionAllignment = new VisionAllignment();
+        intake = new Intake();
+        opticalLocalization = new OpticalLocalization();
+        ballPositions = new NMFColorSensorController();
 
         driverStation = DriverStation.getInstance();
-        //pdp = new PowerDistributionPanel(0);
 
         Context.robotController = this;
     }

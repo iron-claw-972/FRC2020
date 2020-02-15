@@ -69,6 +69,11 @@ public class Context {
     public static final double maxTurnPower = 2.0; // SAFETY
 
 
+    //----- Intake System -----
+    public static final int IntakeFlipChannelA = -1;
+    public static final int IntakeFlipChannelB = -1;
+    public static final int intakeMotorId = -1;
+
     //----- Climbing System -----
     public static final int climberMotorID = 10;
     public static final double coilSpeed = 0.5;
