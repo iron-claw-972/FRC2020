@@ -8,9 +8,9 @@ public class RecursiveMotionProfile {
 
     private long startTime;
 
-    private double MAX_JERK;
-    private double MAX_ACCEL;
-    private double MAX_VEL;
+    private double MAX_JERK = 65;
+    private double MAX_ACCEL = 200;
+    private double MAX_VEL = 10;
     private double DECEL_THRESHOLD;
 
     private double currentAccel;

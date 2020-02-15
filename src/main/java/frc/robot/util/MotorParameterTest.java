@@ -10,9 +10,11 @@ public class MotorParameterTest {
         POS, VEL, ACCEL, JERK
     }
 
+    private final double special = 6;
+    private final double TIME_OUT = 10.0;
     public final double MAX_CURRENT = 0.8;
 
-    private final int JERK_SAMPLES_THRESHOLD = 10;
+    private final int JERK_SAMPLES_THRESHOLD = 1;
     private final int ACCEL_SAMPLES_THRESHOLD = 20;
     private final int VEL_SAMPLES_THRESHOLD = 50;
 
@@ -49,7 +51,6 @@ public class MotorParameterTest {
     private double relativePoint;
 
     private boolean timeOut;
-    private final double TIME_OUT = 10.0;
     private long startTime;
     public boolean flood;
 
@@ -103,9 +104,9 @@ public class MotorParameterTest {
                 checkParameter(parameter.ACCEL);
                 checkParameter(parameter.JERK);
 
-                maxVel = checkMax(velSample, lastVel);
-                maxAccel = checkMax(accelSample, lastAccel);
-                maxJerk = checkMax(jerkSample, lastJerk);
+                maxVel = checkMax(velSample, maxVel);
+                maxAccel = checkMax(accelSample, maxAccel);
+                maxJerk = checkMax(jerkSample, maxJerk);
 
                 System.out.println("JERKerr: " + (jerkSample - lastJerk) + " ACCELerr: " + (accelSample - lastAccel) + " VELerr: " + (velSample - lastVel));
                 lastVel = velSample;
@@ -203,6 +204,8 @@ public class MotorParameterTest {
             b[0] += outputPoints.get(i);
             b[1] += outputPoints.get(i) * inputPoints.get(i);
         }
+
+        /*
         System.out.println("init");
         System.out.println(A[0][0] + " " + A[0][1] + "|" +b[0]);
         System.out.println(A[1][0] + " " + A[1][1] + "|" +b[1]);
@@ -233,6 +236,7 @@ public class MotorParameterTest {
         System.out.println("sub second");
         System.out.println(A[0][0] + " " + A[0][1] + "|" +b[0]);
         System.out.println(A[1][0] + " " + A[1][1] + "|" +b[1]);
+        */
 
         double[] solution = new double[] {b[0], b[1]};
 
@@ -243,7 +247,7 @@ public class MotorParameterTest {
     
 
     private void checkParameter(parameter param) {
-        if(param == parameter.VEL && !velFound && Context.getRelativeTime(startTime) > 6) {
+        if(param == parameter.VEL && !velFound && Context.getRelativeTime(startTime) > special) {
             if(Math.abs(velSample - lastVel) > VEL_NOISE_TOLERANCE && !velFound) {
                 //if the samples are changing too much, reset the sample collection process
                 velSampleSum = 0;
@@ -352,12 +356,12 @@ public class MotorParameterTest {
         }
     }
 
-    public double checkMax(double newSample, double oldSample) {
-        if(Math.abs(newSample) > Math.abs(oldSample)) {
+    public double checkMax(double newSample, double maxSample) {
+        if(Math.abs(newSample) > Math.abs(maxSample)) {
             System.out.println("update");
             return newSample;
         } else {
-            return oldSample;
+            return maxSample;
         }
     }
 
