@@ -6,12 +6,12 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.util.*;
 
 public class NeoDrivetrain extends Drivetrain {
-    public CANSparkMax leftMotor1, leftMotor2, rightMotor1, rightMotor2;
-    private static PID leftDrivePID = new PID(0.09, 0, 0);
-    private static PID rightDrivePID = new PID(0.09, 0, 0);
+    private CANSparkMax leftMotor1, leftMotor2, rightMotor1, rightMotor2;
+    private static PIDF leftDrivePIDF = new PIDF(0.2, 0, 0, 0.4);
+    private static PIDF rightDrivePIDF = new PIDF(0.2, 0, 0, 0.4);
     
     public NeoDrivetrain(CANSparkMax leftMotor1_, CANSparkMax leftMotor2_, CANSparkMax rightMotor1_, CANSparkMax rightMotor2_) {
-        super(leftDrivePID, rightDrivePID);
+        super(leftDrivePIDF, rightDrivePIDF);
 
         leftMotor1 = leftMotor1_;
         leftMotor2 = leftMotor2_;

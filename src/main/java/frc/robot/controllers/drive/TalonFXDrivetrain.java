@@ -20,11 +20,11 @@ public class TalonFXDrivetrain extends Drivetrain {
         LOW, HIGH;
     }
 
-    private static PID leftDrivePID = new PID(0.6, 0, 0);
-    private static PID rightDrivePID = new PID(0.6, 0, 0);
+    private static PIDF leftDrivePIDF = new PIDF(0.2, 0, 0, 0.4);
+    private static PIDF rightDrivePIDF = new PIDF(0.2, 0, 0, 0.4);
     
     public TalonFXDrivetrain(TalonFX leftMotor1_, TalonFX leftMotor2_, TalonFX rightMotor1_, TalonFX rightMotor2_, TalonSRX leftEncoderInterface_, TalonSRX rightEncoderInterface_) {
-        super(leftDrivePID, rightDrivePID);
+        super(leftDrivePIDF, rightDrivePIDF);
 
         leftMotor1 = leftMotor1_;
         leftMotor1.configFactoryDefault();

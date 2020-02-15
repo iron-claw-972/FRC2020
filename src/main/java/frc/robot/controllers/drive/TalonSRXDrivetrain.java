@@ -7,13 +7,13 @@ import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.util.*;
 
 public class TalonSRXDrivetrain extends Drivetrain {
-    public TalonSRX leftMotor1, leftMotor2, rightMotor1, rightMotor2;
-    public Encoder leftEncoder, rightEncoder;
-    private static PID leftDrivePID = new PID(1.0, 0, 0);
-    private static PID rightDrivePID = new PID(1.0, 0, 0);
+    private TalonSRX leftMotor1, leftMotor2, rightMotor1, rightMotor2;
+    private Encoder leftEncoder, rightEncoder;
+    private static PIDF leftDrivePIDF = new PIDF(0.2, 0, 0, 0.4);
+    private static PIDF rightDrivePIDF = new PIDF(0.2, 0, 0, 0.4);
     
     public TalonSRXDrivetrain() {
-        super(leftDrivePID, rightDrivePID);
+        super(leftDrivePIDF, rightDrivePIDF);
 
         leftMotor1 = new TalonSRX(Context.leftMotor1ID);
         leftMotor2 = new TalonSRX(Context.leftMotor2ID);
