@@ -1,4 +1,5 @@
 package frc.robot.controllers;
+import frc.robot.util.PID;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.I2C;
@@ -22,8 +23,8 @@ public class Intake
 {
     private final I2C.Port i2cPort = I2C.Port.kOnboard;
     private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
-    /*private final ColorMatch m_colorMatcher = new ColorMatch();
-    Color detectedColor = m_colorSensor.getColor();
+    private final ColorMatch m_colorMatcher = new ColorMatch();
+    /*Color detectedColor = m_colorSensor.getColor();
 
     private final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
     private final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
@@ -36,10 +37,16 @@ public class Intake
     TalonSRX beltIntake = new TalonSRX(1);
     PID beltSpeed = new PID(1, 0, 0);
     DigitalInput limitSwitch = new DigitalInput(1);
+    
+    double currentSpeed;
+    double targetSpeed;
+    double timeFrame;
+
+    public long pastTime;
 
     public Intake()
     {
-        
+        pastTime = System.currentTimeMillis();
     }
 
     public void init()
@@ -48,7 +55,6 @@ public class Intake
         m_colorMatcher.addColorMatch(kGreenTarget);
         m_colorMatcher.addColorMatch(kRedTarget);
         m_colorMatcher.addColorMatch(kYellowTarget);*/  
-        
     }
 
     public void loop()
@@ -62,7 +68,7 @@ public class Intake
          */
         double IR = m_colorSensor.getIR();
         double hue = hsv[0];
-        char color = "";
+        char color;
         
         if( (hue >= 0) && (hue<=60) )
         {
@@ -85,6 +91,7 @@ public class Intake
             color = 'N';
         }
 
+        double deltaTime = (double)(System.currentTimeMillis() - pastTime);
 
         String gameData;
         gameData = DriverStation.getInstance().getGameSpecificMessage();
@@ -92,9 +99,19 @@ public class Intake
         {
             if(color == gameData.charAt(0))
             {
-
+                targetSpeed = .5;
+                currentSpeed = beltSpeed.update(targetSpeed, currentSpeed, deltaTime);
+                beltIntake.set(ControlMode.PercentOutput, currentSpeed);
             }
         }
+        else
+        {
+            targetSpeed = 0;
+            currentSpeed = beltSpeed.update(targetSpeed, currentSpeed, deltaTime);
+            beltIntake.set(ControlMode.PercentOutput, currentSpeed);
+        }
+
+        pastTime = System.currentTimeMillis();
         /**
          * Open Smart Dashboard or Shuffleboard to see the color detected by the 
          * sensor.
@@ -103,7 +120,7 @@ public class Intake
         SmartDashboard.putNumber("Green", detectedColor.green);
         SmartDashboard.putNumber("Blue", detectedColor.blue);
         SmartDashboard.putNumber("IR", IR);
-        SmartDashboard.putString("Color", String(color))
+        SmartDashboard.putString("Color", String.valueOf(color));
 
         /**
          * In addition to RGB IR values, the color sensor can also return an 
@@ -146,6 +163,8 @@ public class Intake
             beltIntake.set(ControlMode.PercentOutput, 0.5);
         }
     }*/
+
+
     public static double[] RGBtoHSV(double r, double g, double b){
 
         double h, s, v;
