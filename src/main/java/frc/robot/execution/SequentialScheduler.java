@@ -1,4 +1,4 @@
-package frc.robot.controllers;
+package frc.robot.execution;
 
 import frc.robot.actions.Action;
 import java.util.*;
@@ -17,12 +17,18 @@ public class SequentialScheduler {
     {
         for (Action action : actions)
         {
-            pendingActions.add(action);
+            add(action);
         }
     }
 
     public void loop() 
     {
+        if (currentAction == null || currentAction.isComplete) {
+            currentAction = pendingActions.remove(0);
+            actionStart = System.currentTimeMillis();
+            currentAction.start();
+        }
+
         if (currentAction != null) {
             if (!currentAction.isComplete) {
                 currentAction.loop();
@@ -31,12 +37,6 @@ public class SequentialScheduler {
 
         if (pendingActions.size() == 0) {
             return;
-        }
-
-        if (currentAction == null || currentAction.isComplete) {
-            currentAction = pendingActions.remove(0);
-            actionStart = System.currentTimeMillis();
-            currentAction.start();
         }
     }
 
