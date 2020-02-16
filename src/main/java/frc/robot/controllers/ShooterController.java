@@ -8,11 +8,12 @@ import frc.robot.util.*;
 
 public class ShooterController {
 
+    private final double kP = 0.2;
     private final double kF = 0.00005;
-    private final double kI = 0.9;
+    private final double kI = 0.92;
     public final double kLoadRatio = 1.16;
 
-    private JRAD velocityJRAD;
+    private JRADD velocityJRADD;
 
     private double time; //time that has passed since start
     private double lastTime; //time of last update
@@ -44,9 +45,10 @@ public class ShooterController {
         //initialize parameters
         this.shooterID = shooterID;
         shooterTalon = new TalonFX(shooterID);
+        shooterTalon.setNeutralMode(NeutralMode.Brake);
         this.orientation = orientation;
         shooterTalon.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-        velocityJRAD = new JRAD(kF, kI, kLoadRatio); //need tuning
+        velocityJRADD = new JRADD(kP, kF, kI, kLoadRatio); //need tuning
         M_SHOOTING_RADIUS = Context.M_FLYWHEEL_RADIUS + Context.M_BALL_DIAMETER/2;
         startTime = System.currentTimeMillis();
         //motionProf = new RecursiveMotionProfile(50, 200, 9);
@@ -56,7 +58,7 @@ public class ShooterController {
         //updates all necessary
         if(!shooting) {
             lastTime = Context.getRelativeTime(startTime);
-            velocityJRAD = new JRAD(kF, kI, kLoadRatio);
+            velocityJRADD = new JRADD(kP, kF, kI, kLoadRatio);
             lastVelocity = flywheelVelocity()/2;
             shooting = true;
         } else {
@@ -68,7 +70,7 @@ public class ShooterController {
         actualAccel = (actualVelocity - lastVelocity)/deltaTime;
         lastVelocity = actualVelocity;
         //motionProf.updateParameters(desiredVelocity, actualVelocity, actualAccel);;
-        setVelocity = velocityJRAD.update(desiredVelocity /*motionProf.getVelNext()*/, actualVelocity, deltaTime);
+        setVelocity = velocityJRADD.update(desiredVelocity /*motionProf.getVelNext()*/, actualVelocity, deltaTime);
     }
 
     private void updateVelocity() {
