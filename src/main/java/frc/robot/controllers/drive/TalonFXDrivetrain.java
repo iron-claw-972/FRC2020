@@ -14,7 +14,11 @@ public class TalonFXDrivetrain extends Drivetrain {
     private TalonFX leftMotor1, leftMotor2, rightMotor1, rightMotor2;
     private TalonSRX leftEncoderInterface, rightEncoderInterface;
     private DoubleSolenoid gearShifterSolenoid;
-    public Gear gear = Gear.LOW;
+    private final Gear defaultGear = Gear.LOW;
+    public Gear gear;
+
+    private final double lowGearCurrentLimit = 65;
+    private final double highGearCurrentLimit = 85;
     
     public enum Gear {
         LOW, HIGH;
@@ -24,9 +28,9 @@ public class TalonFXDrivetrain extends Drivetrain {
     private static PIDF rightDrivePIDF = new PIDF(0.2, 0, 0, 0.4);
 
     // Gearbox Calculations
-    private static final double falconFXTicksPerRotation = 4096;
-    private static final double falconFXDriveWheelDiameter = 0.1; // meters
-    private static final double falconFXDriveTicksPerMeter = falconFXTicksPerRotation / (falconFXDriveWheelDiameter * Math.PI);
+    private final double falconFXTicksPerRotation = 4096;
+    private final double falconFXDriveWheelDiameter = 0.1; // meters
+    private final double falconFXDriveTicksPerMeter = falconFXTicksPerRotation / (falconFXDriveWheelDiameter * Math.PI);
     
     public TalonFXDrivetrain(TalonFX leftMotor1_, TalonFX leftMotor2_, TalonFX rightMotor1_, TalonFX rightMotor2_, TalonSRX leftEncoderInterface_, TalonSRX rightEncoderInterface_) {
         super(leftDrivePIDF, rightDrivePIDF);
@@ -51,13 +55,16 @@ public class TalonFXDrivetrain extends Drivetrain {
         // rightMotor2.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
         rightMotor2.setNeutralMode(NeutralMode.Coast);
 
-        gearShifterSolenoid = new DoubleSolenoid(Context.gearShifterChannelA, Context.gearShifterChannelB);
-
         leftEncoderInterface = leftEncoderInterface_;
         leftEncoderInterface.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
 
         rightEncoderInterface = rightEncoderInterface_;
         leftEncoderInterface.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+
+        // Gear shifting setup
+        gearShifterSolenoid = new DoubleSolenoid(Context.gearShifterChannelA, Context.gearShifterChannelB);
+        gear = defaultGear;
+        shiftGears(gear);
     }
 
     public void tankDrive(double leftPower, double rightPower) {
@@ -67,7 +74,7 @@ public class TalonFXDrivetrain extends Drivetrain {
         rightMotor2.set(ControlMode.PercentOutput, rightPower);
     }
 
-     protected double getLeftTicks() {
+    protected double getLeftTicks() {
         return leftEncoderInterface.getSelectedSensorPosition();
     }
 
@@ -103,9 +110,11 @@ public class TalonFXDrivetrain extends Drivetrain {
     public void shiftGears(Gear desiredGear) {
         switch(desiredGear) {
         case LOW:
+            setCurrentLimiting(lowGearCurrentLimit, lowGearCurrentLimit, true);
             gearShifterSolenoid.set(Value.kReverse);
             break;
         case HIGH:
+            setCurrentLimiting(highGearCurrentLimit, highGearCurrentLimit, true);
             gearShifterSolenoid.set(Value.kForward);
             break;
         }

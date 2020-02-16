@@ -13,10 +13,10 @@ public class TalonSRXDrivetrain extends Drivetrain {
     private static PIDF rightDrivePIDF = new PIDF(0.2, 0, 0, 0.4);
 
     // Gearbox Calculations
-    private static final double amtTicksPerRotation = 2048;
-    private static final double basicDriveWheelDiameter = 0.1; // meters
-    private static final double basicDriveMotorGearRatio = (1/12.0) * (50.0) * (1/34.0) * (40.0) * amtTicksPerRotation; // amt ticks / wheel revs
-    private static final double basicDriveTicksPerMeter = basicDriveMotorGearRatio / (basicDriveWheelDiameter * Math.PI);
+    private final double amtTicksPerRotation = 2048;
+    private final double basicDriveWheelDiameter = 0.1; // meters
+    private final double basicDriveMotorGearRatio = (1/12.0) * (50.0) * (1/34.0) * (40.0) * amtTicksPerRotation; // amt ticks / wheel revs
+    private final double basicDriveTicksPerMeter = basicDriveMotorGearRatio / (basicDriveWheelDiameter * Math.PI);
     
     public TalonSRXDrivetrain() {
         super(leftDrivePIDF, rightDrivePIDF);

@@ -10,9 +10,9 @@ public class NeoDrivetrain extends Drivetrain {
     private static PIDF rightDrivePIDF = new PIDF(0.2, 0, 0, 0.4);
 
     // Gearbox Calculations
-    private static final double neoDriveWheelDiameter = 0.1; // meters
-    private static final double neoDriveMotorGearRatio = (1/12.0) * (50.0) * (1/34.0) * (40.0); // neo revs / wheel revs
-    private static final double neoDriveTicksPerMeter = neoDriveMotorGearRatio / (neoDriveWheelDiameter * Math.PI);
+    private final double neoDriveWheelDiameter = 0.1; // meters
+    private final double neoDriveMotorGearRatio = (1/12.0) * (50.0) * (1/34.0) * (40.0); // neo revs / wheel revs
+    private final double neoDriveTicksPerMeter = neoDriveMotorGearRatio / (neoDriveWheelDiameter * Math.PI);
     
     public NeoDrivetrain(CANSparkMax leftMotor1_, CANSparkMax leftMotor2_, CANSparkMax rightMotor1_, CANSparkMax rightMotor2_) {
         super(leftDrivePIDF, rightDrivePIDF);
