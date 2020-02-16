@@ -3,7 +3,9 @@ package frc.robot.controllers.drive;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.*;
@@ -12,6 +14,9 @@ import frc.robot.util.*;
 
 public class TalonFXDrivetrain extends Drivetrain {
     private TalonFX leftMotor1, leftMotor2, rightMotor1, rightMotor2;
+    private WPI_TalonFX WPI_leftMotor1, WPI_leftMotor2, WPI_rightMotor1, WPI_rightMotor2;
+    private SpeedControllerGroup leftSide, rightSide;
+    private DifferentialDrive differentialDrive;
     private TalonSRX leftEncoderInterface, rightEncoderInterface;
     private DoubleSolenoid gearShifterSolenoid;
     public Gear gear = Gear.LOW;
@@ -53,6 +58,16 @@ public class TalonFXDrivetrain extends Drivetrain {
 
         rightEncoderInterface = rightEncoderInterface_;
         leftEncoderInterface.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+
+        WPI_leftMotor1 = new WPI_TalonFX(Context.leftMotor1ID);
+        WPI_leftMotor2 = new WPI_TalonFX(Context.leftMotor2ID);
+        WPI_rightMotor1 = new WPI_TalonFX(Context.rightMotor1ID);
+        WPI_rightMotor2 = new WPI_TalonFX(Context.rightMotor2ID);
+
+        leftSide = new SpeedControllerGroup(WPI_leftMotor1, WPI_leftMotor2);
+        rightSide = new SpeedControllerGroup(WPI_rightMotor1, WPI_rightMotor2);
+
+        differentialDrive = new DifferentialDrive(leftSide, rightSide);
     }
 
     public void tankDrive(double leftPower, double rightPower) {
@@ -60,6 +75,10 @@ public class TalonFXDrivetrain extends Drivetrain {
         leftMotor2.set(ControlMode.PercentOutput, -leftPower);
         rightMotor1.set(ControlMode.PercentOutput, rightPower);
         rightMotor2.set(ControlMode.PercentOutput, rightPower);
+    }
+
+    public void curvatureDrive(double power, double turn, boolean isQuickTurn) {
+        super.curvatureDrive(differentialDrive, power, turn, isQuickTurn);
     }
 
      protected double getLeftTicks() {

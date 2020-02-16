@@ -1,13 +1,14 @@
 package frc.robot.controllers.drive;
 
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.util.*;
 
 public abstract class Drivetrain {
-    public final double speedFac = -1, turnFac = -1;
+    private final double speedFac = -1, turnFac = -1;
 
-    public double startPosLeft = 0, startPosRight = 0;
-    public double pastLeftDist = 0, pastRightDist = 0;
-    public long pastTime;
+    protected double startPosLeft = 0, startPosRight = 0;
+    protected double pastLeftDist = 0, pastRightDist = 0;
+    protected long pastTime;
 
     private PIDF leftDrivePIDF, rightDrivePIDF;
     
@@ -30,6 +31,10 @@ public abstract class Drivetrain {
         double rightPower = turn + power;
 
         tankDrivePIDF(leftPower, rightPower);
+    }
+
+    protected void curvatureDrive(DifferentialDrive differentialDrive, double power, double turn, boolean isQuickTurn) {
+        differentialDrive.curvatureDrive(power, turn, isQuickTurn);
     }
 
     public void tankDrivePIDF(double leftGoalPower, double rightGoalPower) {
