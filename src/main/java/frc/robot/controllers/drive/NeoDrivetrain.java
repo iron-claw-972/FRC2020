@@ -47,4 +47,14 @@ public class NeoDrivetrain extends Drivetrain {
         double rawCount = getRightTicks() - startPosRight;
         return rawCount / neoDriveTicksPerMeter;
     }
+
+    /**
+     * Neos do not have current limiting capabilities!!
+     * @param amps
+     * @param activationAmps
+     * @param enableCurrentLimiting
+     */
+    public void setCurrentLimiting(double amps, double activationAmps, boolean enableCurrentLimiting) {
+        System.out.println("Neos are not capable of current limiting!");
+    }
 }

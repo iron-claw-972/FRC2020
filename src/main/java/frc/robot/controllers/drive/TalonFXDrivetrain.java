@@ -3,9 +3,7 @@ package frc.robot.controllers.drive;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.*;
@@ -113,6 +111,14 @@ public class TalonFXDrivetrain extends Drivetrain {
         }
         gear = desiredGear;
         System.out.println("Gear: " + gear);
+    }
+
+    public void setCurrentLimiting(double amps, double activationAmps, boolean enableCurrentLimiting) {
+        SupplyCurrentLimitConfiguration currentLimitConfiguration = new SupplyCurrentLimitConfiguration(enableCurrentLimiting, amps, activationAmps, 100);
+        leftMotor1.configGetSupplyCurrentLimit(currentLimitConfiguration);
+        leftMotor2.configGetSupplyCurrentLimit(currentLimitConfiguration);
+        rightMotor1.configGetSupplyCurrentLimit(currentLimitConfiguration);
+        rightMotor1.configGetSupplyCurrentLimit(currentLimitConfiguration);
     }
 
 }

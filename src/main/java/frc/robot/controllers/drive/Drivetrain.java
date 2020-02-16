@@ -151,6 +151,12 @@ public abstract class Drivetrain {
    */
   public abstract void tankDrive(double leftPower, double rightPower);
 
+  /**
+   * @param amps for each motor
+   * @param activationAmps the amperage that current limiting will be activated at
+   */
+  public abstract void setCurrentLimiting(double amps, double activationAmps, boolean enableCurrentLimiting);
+
   protected abstract double getLeftTicks();
 
   protected abstract double getRightTicks();

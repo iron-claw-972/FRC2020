@@ -54,4 +54,29 @@ public class TalonSRXDrivetrain extends Drivetrain {
         double rawCount = getRightTicks() - startPosRight;
         return rawCount / basicDriveTicksPerMeter;
     }
+
+    /**
+     * Can only enter whole number of amps
+     */
+    public void setCurrentLimiting(double amps, double activationAmps, boolean enableCurrentLimiting) {
+        leftMotor1.configPeakCurrentLimit((int)amps); // don't activate current limit until current exceeds 30 A ...
+        leftMotor1.configPeakCurrentDuration(100); // ... for at least 100 ms
+        leftMotor1.configContinuousCurrentLimit((int)activationAmps); // once current-limiting is actived, hold at 20A
+        leftMotor1.enableCurrentLimit(enableCurrentLimiting);
+
+        leftMotor2.configPeakCurrentLimit((int)amps); // don't activate current limit until current exceeds 30 A ...
+        leftMotor2.configPeakCurrentDuration(100); // ... for at least 100 ms
+        leftMotor2.configContinuousCurrentLimit((int)activationAmps); // once current-limiting is actived, hold at 20A
+        leftMotor2.enableCurrentLimit(enableCurrentLimiting);
+
+        rightMotor1.configPeakCurrentLimit((int)amps); // don't activate current limit until current exceeds 30 A ...
+        rightMotor1.configPeakCurrentDuration(100); // ... for at least 100 ms
+        rightMotor1.configContinuousCurrentLimit((int)activationAmps); // once current-limiting is actived, hold at 20A
+        rightMotor1.enableCurrentLimit(enableCurrentLimiting);
+
+        rightMotor2.configPeakCurrentLimit((int)amps); // don't activate current limit until current exceeds 30 A ...
+        rightMotor2.configPeakCurrentDuration(100); // ... for at least 100 ms
+        rightMotor2.configContinuousCurrentLimit((int)activationAmps); // once current-limiting is actived, hold at 20A
+        rightMotor2.enableCurrentLimit(enableCurrentLimiting);
+    }
 }
