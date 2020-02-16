@@ -1,6 +1,6 @@
 package frc.robot.controllers;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.*;
 
 import edu.wpi.first.wpilibj.*;
@@ -9,24 +9,49 @@ import frc.robot.util.*;
 
 public class Intake {
     private DoubleSolenoid flipSolenoid;
-    private TalonSRX intakeMotor;
+    private TalonSRX intakeTalon;
 
-    public static final double targetIntake = 0.1;
+    public double currentIntakeSpeed;
+    public double setIntakeSpeed;
+    public final double targetIntakeSpeed = 1.0; //RPM
+    public PID intakePID = new PID(0, 0, 0); //Need to tune
 
     private boolean intaking;
 
+    private double startTime;
+    private double lastTime;
+    private double currentTime;
+    private double deltaTime;
+
     public Intake() {
         flipSolenoid = new DoubleSolenoid(Context.IntakeFlipChannelA, Context.IntakeFlipChannelB);
-        intakeMotor = new TalonSRX(Context.intakeMotorId);
+        intakeTalon = new TalonSRX(Context.intakeMotorId);
+
+        intakeTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+        startTime = System.currentTimeMillis();
+    }
+
+    public void startIntaking() {
+        flipSolenoid.set(DoubleSolenoid.Value.kForward);
+        intaking = true;
+    }
+
+    public void stopIntaking() {
+        flipSolenoid.set(DoubleSolenoid.Value.kReverse);
+        intaking = false;
     }
 
     public void loop() {
+        lastTime = currentTime;
+        currentTime = Context.getRelativeTime(startTime);
+        deltaTime = currentTime - lastTime;
+
+        currentIntakeSpeed = intakeTalon.getSensorCollection().getQuadratureVelocity();
+
         if (intaking) {
-            flipSolenoid.set(DoubleSolenoid.Value.kForward);
-            intakeMotor.set(ControlMode.PercentOutput, targetIntake);
+            setIntakeSpeed = intakePID.update(targetIntakeSpeed, currentIntakeSpeed, deltaTime);
         } else {
-            flipSolenoid.set(DoubleSolenoid.Value.kReverse);
-            intakeMotor.set(ControlMode.PercentOutput, 0);
+            setIntakeSpeed = intakePID.update(0, currentIntakeSpeed, deltaTime);
         }
     }
 }
