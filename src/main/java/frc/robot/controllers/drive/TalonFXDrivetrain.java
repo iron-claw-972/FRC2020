@@ -24,6 +24,11 @@ public class TalonFXDrivetrain extends Drivetrain {
 
     private static PIDF leftDrivePIDF = new PIDF(0.2, 0, 0, 0.4);
     private static PIDF rightDrivePIDF = new PIDF(0.2, 0, 0, 0.4);
+
+    // Gearbox Calculations
+    private static final double falconFXTicksPerRotation = 4096;
+    private static final double falconFXDriveWheelDiameter = 0.1; // meters
+    private static final double falconFXDriveTicksPerMeter = falconFXTicksPerRotation / (falconFXDriveWheelDiameter * Math.PI);
     
     public TalonFXDrivetrain(TalonFX leftMotor1_, TalonFX leftMotor2_, TalonFX rightMotor1_, TalonFX rightMotor2_, TalonSRX leftEncoderInterface_, TalonSRX rightEncoderInterface_) {
         super(leftDrivePIDF, rightDrivePIDF);
@@ -73,11 +78,11 @@ public class TalonFXDrivetrain extends Drivetrain {
     }
 
     public double getLeftDist() {
-        return (getLeftTicks() - startPosLeft) / Context.falconFXDriveTicksPerMeter;
+        return (getLeftTicks() - startPosLeft) / falconFXDriveTicksPerMeter;
     }
 
     public double getRightDist() {
-        return (getRightTicks() - startPosRight) / Context.falconFXDriveTicksPerMeter;
+        return (getRightTicks() - startPosRight) / falconFXDriveTicksPerMeter;
     }
 
     /**

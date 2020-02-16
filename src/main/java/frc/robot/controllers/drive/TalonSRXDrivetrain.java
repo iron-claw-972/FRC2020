@@ -11,6 +11,12 @@ public class TalonSRXDrivetrain extends Drivetrain {
     private Encoder leftEncoder, rightEncoder;
     private static PIDF leftDrivePIDF = new PIDF(0.2, 0, 0, 0.4);
     private static PIDF rightDrivePIDF = new PIDF(0.2, 0, 0, 0.4);
+
+    // Gearbox Calculations
+    private static final double amtTicksPerRotation = 2048;
+    private static final double basicDriveWheelDiameter = 0.1; // meters
+    private static final double basicDriveMotorGearRatio = (1/12.0) * (50.0) * (1/34.0) * (40.0) * amtTicksPerRotation; // amt ticks / wheel revs
+    private static final double basicDriveTicksPerMeter = basicDriveMotorGearRatio / (basicDriveWheelDiameter * Math.PI);
     
     public TalonSRXDrivetrain() {
         super(leftDrivePIDF, rightDrivePIDF);
@@ -41,11 +47,11 @@ public class TalonSRXDrivetrain extends Drivetrain {
 
     public double getLeftDist() {
         double rawCount = getLeftTicks() - startPosLeft;
-        return rawCount / Context.basicDriveTicksPerMeter;
+        return rawCount / basicDriveTicksPerMeter;
     }
 
     public double getRightDist() {
         double rawCount = getRightTicks() - startPosRight;
-        return rawCount / Context.basicDriveTicksPerMeter;
+        return rawCount / basicDriveTicksPerMeter;
     }
 }

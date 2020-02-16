@@ -48,8 +48,8 @@ public class Robot extends TimedRobot {
   {
     Context.robotController.loopAll();
 
-    double driverThrottle = -Context.robotController.driverJoystick.getThrottle();
-    double driverYaw = -Context.robotController.driverJoystick.getYaw();
+    double driverThrottle = Context.robotController.driverJoystick.getThrottle();
+    double driverYaw = Context.robotController.driverJoystick.getYaw();
 
     if (Context.robotController.driverJoystick.shiftGears()) {
       Context.robotController.drivetrain.shiftGears();
