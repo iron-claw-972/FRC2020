@@ -55,6 +55,7 @@ public class Robot extends TimedRobot {
   }
 
   int testNeen;
+  double setSpeed = 20.0;
 
   @Override
   public void teleopPeriodic() {
@@ -68,10 +69,11 @@ public class Robot extends TimedRobot {
       motor2.set(ControlMode.PercentOutput, 0);
     }*/
 
-    testCon2.loop(20.0);
-    testCon1.loop(20.0);
+    testCon2.loop(setSpeed);
+    testCon1.loop(setSpeed);
     JPT.JRADStatTest(joy.getRawButton(1), false);
-    System.out.println((testCon2.getDesiredVelocity() - testCon2.flywheelVelocity()/2));
+    System.out.println((testCon2.kLoadRatio*testCon2.getDesiredVelocity() - testCon2.flywheelVelocity()/2));
+    System.out.println(testCon2.flywheelRPM());
     //System.out.println("break");
     //System.out.println("2 - DESIRED VEL: " + 2*testCon2.getDesiredVelocity() + " SET VEL: " + testCon2.getSetVelocity() + " TRUE VEL: " + testCon2.flywheelVelocity());
     //System.out.println("1 - DESIRED VEL: " + 2*testCon1.getDesiredVelocity() + " SET VEL: " + testCon1.getSetVelocity() + " TRUE VEL: " + testCon1.flywheelVelocity());

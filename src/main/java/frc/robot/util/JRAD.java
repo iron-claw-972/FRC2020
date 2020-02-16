@@ -16,7 +16,7 @@ public class JRAD {
     //Offset ratio to account for flywheel loss of energy
     //when firing ball
     
-    private double updateValue;
+    public double updateValue;
     //Returned double from the update method
 
     //@param double kF (feed forward coeff), kI (integral coeff), double kLoadRatio (offset for setpoint coeff)

@@ -8,9 +8,9 @@ import frc.robot.util.*;
 
 public class ShooterController {
 
-    private final double kF = 0;
-    private final double kI = 0.23;
-    private final double kLoadRatio = 1;
+    private final double kF = 0.00005;
+    private final double kI = 0.9;
+    public final double kLoadRatio = 1.16;
 
     private JRAD velocityJRAD;
 
@@ -18,6 +18,7 @@ public class ShooterController {
     private double lastTime; //time of last update
     private double deltaTime; //time from last update
     private long startTime; //time at which game starts/obj. init.
+    private boolean shooting;
 
     private double desiredVelocity; //desired velocity from flywheel
     private double actualVelocity; //actual velocity from flywheel
@@ -53,7 +54,14 @@ public class ShooterController {
 
     private void updateParameters() {
         //updates all necessary
-        lastTime = time;
+        if(!shooting) {
+            lastTime = Context.getRelativeTime(startTime);
+            velocityJRAD = new JRAD(kF, kI, kLoadRatio);
+            lastVelocity = flywheelVelocity()/2;
+            shooting = true;
+        } else {
+            lastTime = time;
+        }
         time = Context.getRelativeTime(startTime);
         deltaTime = time - lastTime;
         actualVelocity = flywheelVelocity()/2; //accounts for fact that ball rolls on inside of hood
@@ -70,9 +78,7 @@ public class ShooterController {
     }
 
     public void startShooting() {
-        lastTime = Context.getRelativeTime(startTime);
-        velocityJRAD = new JRAD(kF, kI, kLoadRatio);
-        lastVelocity = flywheelVelocity()/2;
+        shooting = false;
     }
 
     public void loop() {

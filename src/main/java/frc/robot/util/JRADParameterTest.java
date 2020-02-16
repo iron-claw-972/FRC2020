@@ -9,7 +9,7 @@ public class JRADParameterTest {
 
     private double startTime;
 
-    private final double FIRING_THRESHOLD = 0.5;
+    private final double FIRING_THRESHOLD = 0.2;
     private final double RESET_VEL_THRESHOLD = 1;
     private final int RESET_SAMPLES_THRESHOLD = 25;
     private final int MAX_STABLE_SAMPLES = 50;
@@ -39,6 +39,7 @@ public class JRADParameterTest {
     private double reloadTime; //Time from ball fired to reset
 
     private double loadRatio; //Predicted Offset gain in JRAD Controller to account for lost RPM
+    private double error; //Lowest vel desired vel difference
 
     private boolean tested;
 
@@ -72,6 +73,7 @@ public class JRADParameterTest {
                 reloadTime = totalFiringTime - ballFireTime;
                 //loadRatio = shooterController.getDesiredVelocity()/ballFireVelocity;
                 loadRatio = shooterController.getDesiredVelocity()/lowestVelocity;
+                error = shooterController.getDesiredVelocity() - lowestVelocity;
                 tested = true;
             }
         }
@@ -141,8 +143,8 @@ public class JRADParameterTest {
     private void printStatements() {
         System.out.println("TOTAL TIME: " + totalFiringTime + " RISE TIME: " + riseTime);
         //System.out.println("DESIRED: " + shooterController.getDesiredVelocity() + " ACTUAL: " + ballFireVelocity + " ERROR: " + (shooterController.getDesiredVelocity() - ballFireVelocity));
-        //System.out.println("LOAD RATIO: " + loadRatio);
-        //System.out.println("STABLE VELOCITY: " + stableVelocity + " LOWEST VELOCITY: " + lowestVelocity);
+        System.out.println("LOAD RATIO: " + loadRatio + " ERROR: " + error);
+        System.out.println("STABLE VELOCITY: " + stableVelocity + " LOWEST VELOCITY: " + lowestVelocity);
     }
 
 }
