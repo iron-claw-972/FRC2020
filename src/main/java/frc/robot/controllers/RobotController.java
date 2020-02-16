@@ -21,6 +21,7 @@ public class RobotController {
     public Intake intake;
     public OpticalLocalization opticalLocalization;
     public NMFColorSensorController ballPositions;
+    public NMFController nmf;
 
     public TalonFX leftDriveMotor1;
     public TalonFX leftDriveMotor2;
@@ -50,9 +51,10 @@ public class RobotController {
         ntInterface = new NetworktablesInterface();
         driverJoystick = new DriverJoystick();
         visionAllignment = new VisionAllignment();
-        intake = new Intake(rollingIntake, beltIntake);
+        intake = new Intake();
         opticalLocalization = new OpticalLocalization();
         ballPositions = new NMFColorSensorController();
+        nmf = new NMFController();
 
         Context.robotController = this;
     }

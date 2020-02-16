@@ -1,7 +1,7 @@
 package frc.robot.util;
 
 import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
-
+import edu.wpi.first.wpilibj.I2C;
 import frc.robot.controllers.RobotController;
 
 public class Context {
@@ -49,6 +49,18 @@ public class Context {
     public static final int gearShifterChannelA = 0;
     public static final int gearShifterChannelB = 1;
 
+    //i2c Ports
+    public static final I2C.Port NavXi2cPort = I2C.Port.kMXP;
+    public static final I2C.Port Onboardi2cPort = I2C.Port.kOnboard;
+
+    //NMF values
+    public static final int indexerTalonID = -1;
+    public static final int omniTalonID = -1;
+
+    //Intake values
+    public static final int intakePistonChannelA = -1;
+    public static final int intakePistonChannelB = -1;
+    public static final int intakeTalonID = -1;
 
     //----- Human Input Device Values -----
     public static final int joystickID = 0;

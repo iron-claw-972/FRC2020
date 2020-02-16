@@ -12,11 +12,11 @@ import edu.wpi.first.wpilibj.util.Color;
 import com.revrobotics.*;
 
 public class NMFColorSensorController {
-    private final I2C.Port i2cPort = I2C.Port.kMXP;
+    private I2C.Port i2cPort = Context.NavXi2cPort;
     public String previousColor = "None";
     public String currentColor = "None";
-    public int currentPosition = 0;
-    public boolean[] ballPositions = {false, false, false, false, false};
+    public int currentPosition = 0; //current sector sensing in 
+    public boolean[] ballPositions = {false, false, false, false, false}; //list of each sector and if it has a ball or not
     public boolean currentSectorYellow = false;
 
     private final ColorSensorV3 m_colorSensor; //sometimes reads as error, still builds. Same issue for other colorsensor references
@@ -28,7 +28,6 @@ public class NMFColorSensorController {
      * This object uses a simple euclidian distance to estimate the closest match
      * with given confidence range.
      */
-    private final ColorMatch m_colorMatcher = new ColorMatch();
 
     public NMFColorSensorController(){
       m_colorSensor = new ColorSensorV3(i2cPort);
@@ -53,7 +52,7 @@ public class NMFColorSensorController {
     public void loop(){
       Color detectedColor = m_colorSensor.getColor();
       //System.out.println(detectedColor.red +" "+ detectedColor.green + " "+ detectedColor.blue);
-      if (isYellow(detectedColor.red, detectedColor.green, detectedColor.blue)){
+      if (isYellow(detectedColor.red, detectedColor.green, detectedColor.blue)){ //detect color
         currentColor = "yellow";
       }
       else{
@@ -65,7 +64,7 @@ public class NMFColorSensorController {
         }
         
       }
-      if (currentColor!=previousColor){
+      if (currentColor!=previousColor){ //update when color changes
         if (currentPosition==5){ currentPosition=0;}
         switch (currentColor){
           case ("blue"): {
@@ -83,7 +82,7 @@ public class NMFColorSensorController {
             break;
             
           }
-          case("none"):{
+          case("none"): {
             if (currentPosition==5){ currentPosition=0;}
             if (!currentSectorYellow){
               ballPositions[currentPosition] = false;
@@ -103,5 +102,8 @@ public class NMFColorSensorController {
 
     public boolean[] getBallPositions(){
         return ballPositions;
+    }
+    public int getBallCount(){
+      return ballPositions.length;
     }
 }
