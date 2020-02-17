@@ -70,9 +70,11 @@ public class Context {
 
 
     //----- Intake System -----
-    public static final int IntakeFlipChannelA = -1;
-    public static final int IntakeFlipChannelB = -1;
+    public static final int intakeFlipChannelA = -1;
+    public static final int intakeFlipChannelB = -1;
     public static final int intakeMotorId = -1;
+    public static final int intakeEncoderChannelA = -1;
+    public static final int intakeEncoderChannelB = -1;
 
     //----- Climbing System -----
     public static final int climberMotorID = 10;

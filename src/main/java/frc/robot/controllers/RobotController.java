@@ -67,9 +67,10 @@ public class RobotController {
     }
 
     public void loopAll() {
-        // ntInterface.loop();
-        // opticalLocalization.Update();
-        // visionAllignment.loop();
-        // ballPositions.loop();
+        ntInterface.loop();
+        opticalLocalization.Update();
+        visionAllignment.loop();
+        ballPositions.loop();
+        intake.loop();
     }
 }
