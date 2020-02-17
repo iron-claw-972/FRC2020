@@ -105,19 +105,19 @@ public class Context {
     }
 
     //----- Camera Constants -----
-    public static final int cameraWidth = 1;
+    public static final int cameraWidth = 1; //To be changed
     public static final int cameraHeight = 1;
     public static final int cameraFPS = 1;
 
     //----- WOF Colors -----
     public static char WOFTargetColor = 'N'; //N for none. B,G,R,Y for other colors.
-    public static final Map<Character, String> WOFColors = Map.of(
+    public static final Map<Character, String> WOFColors = Map.of( //Map of Driver Station Colors
         'B', "#0000FF",
         'G', "#00FF00",
         'R', "#FF0000",
         'Y', "#FFFF00",
         'N', "#DDDDDD");
-    public static void setWOFTargetColor() {
+    public static void setWOFTargetColor() { //Sets WOFTargetColor based on Driver Station
         if(robotController.driverStation.getGameSpecificMessage().length() > 0) {
             System.out.println(robotController.driverStation.getGameSpecificMessage().charAt(0));
             char color = robotController.driverStation.getGameSpecificMessage().charAt(0);
