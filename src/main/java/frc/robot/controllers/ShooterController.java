@@ -8,17 +8,20 @@ import frc.robot.util.*;
 
 public class ShooterController {
 
-    public final double kP = 1; //0.0003125
+    public final double kP = 1;
     public final double kT = 0.87;
     public final double kF = 0.00005;
     public final double kI = 0.92;
     public final double loadRatioConstant = 1.375562266718773;
     public final double loadRatioRate = -0.011438971256922784;
-    public final double kLoadRatio = 1;
+    public final double kLoadRatio = 1.0;
 
     private JRADD velocityJRADD;
 
-    private double time; //time 7that has passed since start
+    private final double velCorrectCoeff = 0.582781; 
+    //Coefficient to account for true velocity when slipping in shooter hood
+
+    private double time; //time that has passed since start
     private double lastTime; //time of last update
     private double deltaTime; //time from last update
     private long startTime; //time at which game starts/obj. init.
@@ -108,7 +111,7 @@ public class ShooterController {
     public double flywheelVelocity() {
         //get the linear speed of the flywheel
         //Sensor output is clicks/0.1s
-        return M_SHOOTING_RADIUS * 2 * Math.PI * 10 * shooterTalon.getSelectedSensorVelocity()/Context.FALCON_ENCODER_CPR;
+        return velCorrectCoeff * M_SHOOTIN //Coefficient to account for true velocity when slipping in shooter hoodG_RADIUS * 2 * Math.PI * 10 * shooterTalon.getSelectedSensorVelocity()/Context.FALCON_ENCODER_CPR;
     }
 
     public double flywheelRPM() {

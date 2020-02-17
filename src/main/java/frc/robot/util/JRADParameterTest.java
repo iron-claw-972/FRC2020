@@ -82,7 +82,7 @@ public class JRADParameterTest {
                     DesiredPoints.add(Math.abs(shooterController.flywheelVelocity()/2));
                 }*/
                 sol = linearRegressionDesiredLoadRatio(DesiredPoints, LRPoints);
-                error = shooterController.getDesiredVelocity() - lowestVelocity;
+                error = Math.abs(shooterController.getDesiredVelocity()) - Math.abs(lowestVelocity);
                 tested = true;
             }
         }
@@ -150,19 +150,19 @@ public class JRADParameterTest {
     }
 
     private void printStatements() {
-        //System.out.println("TOTAL TIME: " + totalFiringTime + " RISE TIME: " + riseTime);
+        System.out.println("TOTAL TIME: " + totalFiringTime + " RISE TIME: " + riseTime);
         //System.out.println("DESIRED: " + shooterController.getDesiredVelocity() + " ACTUAL: " + ballFireVelocity + " ERROR: " + (shooterController.getDesiredVelocity() - ballFireVelocity));
-        System.out.println("LOAD RATIO: " + loadRatio + " ERROR: " + error + " DESIRED: " + shooterController.getDesiredVelocity());
+        System.out.println(/*"LOAD RATIO: " + loadRatio + */" ERROR: " + error + " DESIRED: " + Math.abs(shooterController.getDesiredVelocity()));
         //System.out.println("Constant: " + sol[0] + " Ratio: " + sol[1]);
         //System.out.println("LR: " + Arrays.toString(LRPoints.toArray()));
         //System.out.println("DesiredPoints: " + Arrays.toString(DesiredPoints.toArray()));
-        //System.out.println("STABLE VELOCITY: " + stableVelocity + " LOWEST VELOCITY: " + lowestVelocity);
+        System.out.println("STABLE VELOCITY: " + stableVelocity + " LOWEST VELOCITY: " + lowestVelocity);
     }
 
     public ArrayList<Double> LRPoints = new ArrayList<>();
     public ArrayList<Double> DesiredPoints = new ArrayList<>();
     public double[] sol = new double[2];
-    public Joystick joy = new Joystick(1);
+    public Joystick joy = new Joystick(0);
 
     public double[] linearRegressionDesiredLoadRatio(ArrayList<Double> inputPoints, ArrayList<Double> outputPoints) {
 

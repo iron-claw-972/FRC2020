@@ -29,7 +29,7 @@ public class Robot extends TimedRobot {
     motor2 = new TalonFX(18);
     motor2.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     motor1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-    joy = new Joystick(1);
+    joy = new Joystick(0);
   }
 
   @Override
