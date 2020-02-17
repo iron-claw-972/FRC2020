@@ -3,9 +3,9 @@ package frc.robot.util;
 public class JRADD {
     /*
     Intersection of 254's JRAD with a P gain (so as to offset late-stage kF accumulation).
+    ///////////////////OUT OF DATE///////////////////////////
     v'[t + dt] = kF * setpoint + v'[t] + kI * dt * (kLoadRatio * setpoint – actual)
     v[t + dt] = v'[t + dt] + kP * (kT * setpoint - actual)
-    kP calculated by ~ kF/(kLoadRatio - kT), where Thres. is >=1, <=kLoadRatio
         removes kF control at peak and slows the shooter
     */
 
@@ -32,6 +32,10 @@ public class JRADD {
     //Returned double from the update method
     private double loadRatio;
     //Offset on desired to account for energy loss, calculated via testing
+    private double proportional;
+    //Braking term using to counteract kF accumulation at target point/overshoot
+    private double output;
+    //Final value returned
 
     //@param double kF (feed forward coeff), kI (integral coeff), double kLoadRatio (offset for setpoint coeff)
     public JRADD(double kP, double kT, double kF, double kI, double kLoadRatio, double loadRatioConstant, double loadRatioRate) {
@@ -49,8 +53,11 @@ public class JRADD {
     //@param double setpoint (desired value), double actual (actual state of value), dt (time since last update)
     public double update(double setpoint, double actual, double dt) {
         //JRAD Math
-        loadRatio = loadRatioConstant + loadRatioRate * setpoint;
+        loadRatio = loadRatioConstant + loadRatioRate * Math.abs(setpoint);
         updateValue = kF * setpoint + updateValue + kI * dt * (kLoadRatio * loadRatio * setpoint - actual);
-        return updateValue + kP * (kT * setpoint - actual);
+        proportional = kF/((1 - kT) * kLoadRatio * loadRatio);
+        output = updateValue + kP * proportional * (kT * kLoadRatio * loadRatio * setpoint - actual);
+        //System.out.println("proportional: " + proportional + " output: " + output + " updateValue: " + updateValue + " loadRatio: " + loadRatio + " setpoint: " + (kLoadRatio * loadRatio * setpoint));
+        return output;
     }
 }

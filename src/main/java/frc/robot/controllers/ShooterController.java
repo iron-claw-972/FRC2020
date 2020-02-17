@@ -8,17 +8,17 @@ import frc.robot.util.*;
 
 public class ShooterController {
 
-    private final double kP = 0; //0.0003125
-    private final double kT = 1;
-    private final double kF = 0.00005;
-    private final double kI = 0.92;
-    private final double loadRatioConstant = 1.375562266718773;
-    private final double loadRatioRate = -0.011438971256922784;
+    public final double kP = 1; //0.0003125
+    public final double kT = 0.87;
+    public final double kF = 0.00005;
+    public final double kI = 0.92;
+    public final double loadRatioConstant = 1.375562266718773;
+    public final double loadRatioRate = -0.011438971256922784;
     public final double kLoadRatio = 1;
 
     private JRADD velocityJRADD;
 
-    private double time; //time that has passed since start
+    private double time; //time 7that has passed since start
     private double lastTime; //time of last update
     private double deltaTime; //time from last update
     private long startTime; //time at which game starts/obj. init.
@@ -51,7 +51,7 @@ public class ShooterController {
         shooterTalon.setNeutralMode(NeutralMode.Brake);
         this.orientation = orientation;
         shooterTalon.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-        velocityJRADD = new JRADD(kP, kT, kF, kI, kLoadRatio); //need tuning
+        velocityJRADD = new JRADD(kP, kT, kF, kI, kLoadRatio, loadRatioConstant, loadRatioRate); //need tuning
         M_SHOOTING_RADIUS = Context.M_FLYWHEEL_RADIUS + Context.M_BALL_DIAMETER/2;
         startTime = System.currentTimeMillis();
         motionProf = new RecursiveMotionProfile(50, 200, 9);
@@ -61,7 +61,7 @@ public class ShooterController {
         //updates all necessary
         if(!shooting) {
             lastTime = Context.getRelativeTime(startTime);
-            velocityJRADD = new JRADD(kP, kT, kF, kI, kLoadRatio);
+            velocityJRADD = new JRADD(kP, kT, kF, kI, kLoadRatio, loadRatioConstant, loadRatioRate);
             lastVelocity = flywheelVelocity()/2;
             shooting = true;
         } else {
@@ -74,6 +74,7 @@ public class ShooterController {
         lastVelocity = actualVelocity;
         motionProf.updateParameters(desiredVelocity, actualVelocity, actualAccel);;
         setVelocity = velocityJRADD.update(desiredVelocity /*motionProf.getVelNext()*/, actualVelocity, deltaTime);
+        //TODO: Test the motion profile with a test
     }
 
     private void updateVelocity() {
