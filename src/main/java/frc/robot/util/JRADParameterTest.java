@@ -2,6 +2,9 @@ package frc.robot.util;
 
 import frc.robot.util.JRAD;
 import frc.robot.controllers.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import edu.wpi.first.wpilibj.*;
 
 public class JRADParameterTest {
 
@@ -73,6 +76,12 @@ public class JRADParameterTest {
                 reloadTime = totalFiringTime - ballFireTime;
                 //loadRatio = shooterController.getDesiredVelocity()/ballFireVelocity;
                 loadRatio = shooterController.getDesiredVelocity()/lowestVelocity;
+                if(joy.getRawButton(4)) {
+                    System.out.println("COLLECTING");
+                    LRPoints.add(loadRatio);
+                    DesiredPoints.add(Math.abs(shooterController.flywheelVelocity()/2));
+                }
+                sol = linearRegressionDesiredLoadRatio(DesiredPoints, LRPoints);
                 error = shooterController.getDesiredVelocity() - lowestVelocity;
                 tested = true;
             }
@@ -141,10 +150,71 @@ public class JRADParameterTest {
     }
 
     private void printStatements() {
-        System.out.println("TOTAL TIME: " + totalFiringTime + " RISE TIME: " + riseTime);
+        //System.out.println("TOTAL TIME: " + totalFiringTime + " RISE TIME: " + riseTime);
         //System.out.println("DESIRED: " + shooterController.getDesiredVelocity() + " ACTUAL: " + ballFireVelocity + " ERROR: " + (shooterController.getDesiredVelocity() - ballFireVelocity));
-        System.out.println("LOAD RATIO: " + loadRatio + " ERROR: " + error);
-        System.out.println("STABLE VELOCITY: " + stableVelocity + " LOWEST VELOCITY: " + lowestVelocity);
+        System.out.println("LOAD RATIO: " + loadRatio + " ERROR: " + error + " DESIRED: " + shooterController.getDesiredVelocity());
+        System.out.println("Constant: " + sol[0] + " Ratio: " + sol[1]);
+        //System.out.println("LR: " + Arrays.toString(LRPoints.toArray()));
+        //System.out.println("DesiredPoints: " + Arrays.toString(DesiredPoints.toArray()));
+        //System.out.println("STABLE VELOCITY: " + stableVelocity + " LOWEST VELOCITY: " + lowestVelocity);
+    }
+
+    public ArrayList<Double> LRPoints = new ArrayList<>();
+    public ArrayList<Double> DesiredPoints = new ArrayList<>();
+    public double[] sol = new double[2];
+    public Joystick joy = new Joystick(1);
+
+    public double[] linearRegressionDesiredLoadRatio(ArrayList<Double> inputPoints, ArrayList<Double> outputPoints) {
+
+        double[][] A = new double[2][2];
+        double[] b = new double[2];
+
+        for(int i = 0; i < inputPoints.size(); i++) {
+            A[0][0] += 1;
+            A[1][0] += inputPoints.get(i);
+            A[0][1] += inputPoints.get(i);
+            A[1][1] += inputPoints.get(i) * inputPoints.get(i);
+            b[0] += outputPoints.get(i);
+            b[1] += outputPoints.get(i) * inputPoints.get(i);
+        }
+
+        
+        /*System.out.println("init");
+        System.out.println(A[0][0] + " " + A[0][1] + "|" +b[0]);
+        System.out.println(A[1][0] + " " + A[1][1] + "|" +b[1]);*/
+
+        //First row division
+        A[0][1] = A[0][1]/A[0][0];
+        b[0] = b[0]/A[0][0];
+        A[0][0] = 1;
+        /*System.out.println("div first");
+        System.out.println(A[0][0] + " " + A[0][1] + "|" +b[0]);
+        System.out.println(A[1][0] + " " + A[1][1] + "|" +b[1]);*/
+        //Sub first row from second
+        A[1][1] = A[1][1] - A[1][0] * A[0][1];
+        b[1] = b[1] - A[1][0] * b[0];
+        A[1][0] = 0;
+        /*System.out.println("sub first");
+        System.out.println(A[0][0] + " " + A[0][1] + "|" +b[0]);
+        System.out.println(A[1][0] + " " + A[1][1] + "|" +b[1]);*/
+        //Div. second
+        b[1] = b[1]/A[1][1];
+        A[1][1] = 1;
+        /*System.out.println("div sec");
+        System.out.println(A[0][0] + " " + A[0][1] + "|" +b[0]);
+        System.out.println(A[1][0] + " " + A[1][1] + "|" +b[1]);*/
+        //Sub. second from first
+        b[0] = b[0] - A[0][1]*b[1];
+        A[0][1] = 0;
+        /*System.out.println("sub second");
+        System.out.println(A[0][0] + " " + A[0][1] + "|" +b[0]);
+        System.out.println(A[1][0] + " " + A[1][1] + "|" +b[1]);*/
+        
+
+        double[] solution = new double[] {b[0], b[1]};
+
+        return solution;
+
     }
 
 }

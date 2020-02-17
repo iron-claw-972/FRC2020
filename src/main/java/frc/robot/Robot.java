@@ -29,7 +29,7 @@ public class Robot extends TimedRobot {
     motor2 = new TalonFX(18);
     motor2.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     motor1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-    joy = new Joystick(0);
+    joy = new Joystick(1);
   }
 
   @Override
@@ -55,11 +55,16 @@ public class Robot extends TimedRobot {
   }
 
   int testNeen;
-  double setSpeed = 20.0;
+  double setSpeed = 10.0;
+  boolean xHeld;
+  boolean bHeld;
 
   @Override
   public void teleopPeriodic() {
-    System.out.println(testNeen);
+    if(joy.getRawButton(4)) {
+      System.out.println("COLLECTING");
+    }
+    //System.out.println(testNeen);
     /*System.out.println("dubstepdogneenergoose");
     if(joy.getRawButton(1)) {
       motor1.set(ControlMode.PercentOutput, 0.2);
@@ -68,6 +73,26 @@ public class Robot extends TimedRobot {
       motor1.set(ControlMode.PercentOutput, 0);
       motor2.set(ControlMode.PercentOutput, 0);
     }*/
+
+    if(joy.getRawButton(3)) {
+      if(!xHeld) {
+        setSpeed += 0.5;
+        xHeld = true;
+      }
+    } else {
+      xHeld = false;
+    }
+
+    if(joy.getRawButton(2)) {
+      if(!bHeld) {
+        setSpeed -= 0.5;
+        bHeld = true;
+      }
+    } else {
+      bHeld = false;
+    }
+
+    System.out.println("Set: " + setSpeed);
 
     testCon2.loop(setSpeed);
     testCon1.loop(setSpeed);
@@ -90,13 +115,16 @@ public class Robot extends TimedRobot {
 
     /*
     ArrayList<Double> dog1 = new ArrayList<>();
-    dog1.add(0.0);
-    dog1.add(1.0);
+    dog1.add(10.0);
+    dog1.add(11.0);
     ArrayList<Double> dog2 = new ArrayList<>();
-    dog2.add(1.0);
-    dog2.add(2.0);
-    double[] test = MPT.linearRegressionVelCurrent(dog1, dog2);
-    System.out.println(test[0] + "   " + test[1]);*/
+    dog2.add(1.13);
+    dog2.add(1.16);
+    double[] test = JPT.linearRegressionDesiredLoadRatio(dog1, dog2);
+    double[] test2 = MPT.linearRegressionVelCurrent(dog1, dog2);
+    System.out.println("TEST: " + test[0] + "   " + test[1]);
+    System.out.println("TEST2: " + test2[0] + "   " + test2[1]);
+    */
   }
 
   @Override

@@ -8,10 +8,13 @@ import frc.robot.util.*;
 
 public class ShooterController {
 
-    private final double kP = 0.2;
+    private final double kP = 0; //0.0003125
+    private final double kT = 1;
     private final double kF = 0.00005;
     private final double kI = 0.92;
-    public final double kLoadRatio = 1.16;
+    private final double loadRatioConstant = 1.375562266718773;
+    private final double loadRatioRate = -0.011438971256922784;
+    public final double kLoadRatio = 1;
 
     private JRADD velocityJRADD;
 
@@ -36,7 +39,7 @@ public class ShooterController {
     private final double minCurrent = 0.0560258; //minimum current needed for flywheel motor to overcome friction, etc. (to go into motion)
     private final double speedToCurrentRate = 0.0125859; //the linear conversion rate between a velocity and necessary current
 
-    //private RecursiveMotionProfile motionProf;
+    private RecursiveMotionProfile motionProf;
     
     //Measurements in meters
     private double M_SHOOTING_RADIUS;
@@ -48,17 +51,17 @@ public class ShooterController {
         shooterTalon.setNeutralMode(NeutralMode.Brake);
         this.orientation = orientation;
         shooterTalon.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-        velocityJRADD = new JRADD(kP, kF, kI, kLoadRatio); //need tuning
+        velocityJRADD = new JRADD(kP, kT, kF, kI, kLoadRatio); //need tuning
         M_SHOOTING_RADIUS = Context.M_FLYWHEEL_RADIUS + Context.M_BALL_DIAMETER/2;
         startTime = System.currentTimeMillis();
-        //motionProf = new RecursiveMotionProfile(50, 200, 9);
+        motionProf = new RecursiveMotionProfile(50, 200, 9);
     }
 
     private void updateParameters() {
         //updates all necessary
         if(!shooting) {
             lastTime = Context.getRelativeTime(startTime);
-            velocityJRADD = new JRADD(kP, kF, kI, kLoadRatio);
+            velocityJRADD = new JRADD(kP, kT, kF, kI, kLoadRatio);
             lastVelocity = flywheelVelocity()/2;
             shooting = true;
         } else {
@@ -69,7 +72,7 @@ public class ShooterController {
         actualVelocity = flywheelVelocity()/2; //accounts for fact that ball rolls on inside of hood
         actualAccel = (actualVelocity - lastVelocity)/deltaTime;
         lastVelocity = actualVelocity;
-        //motionProf.updateParameters(desiredVelocity, actualVelocity, actualAccel);;
+        motionProf.updateParameters(desiredVelocity, actualVelocity, actualAccel);;
         setVelocity = velocityJRADD.update(desiredVelocity /*motionProf.getVelNext()*/, actualVelocity, deltaTime);
     }
 

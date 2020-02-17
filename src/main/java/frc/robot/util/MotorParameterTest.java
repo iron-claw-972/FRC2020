@@ -205,38 +205,38 @@ public class MotorParameterTest {
             b[1] += outputPoints.get(i) * inputPoints.get(i);
         }
 
-        /*
-        System.out.println("init");
+        
+        /*System.out.println("init");
         System.out.println(A[0][0] + " " + A[0][1] + "|" +b[0]);
-        System.out.println(A[1][0] + " " + A[1][1] + "|" +b[1]);
+        System.out.println(A[1][0] + " " + A[1][1] + "|" +b[1]);*/
 
         //First row division
         A[0][1] = A[0][1]/A[0][0];
         b[0] = b[0]/A[0][0];
         A[0][0] = 1;
-        System.out.println("div first");
+        /*System.out.println("div first");
         System.out.println(A[0][0] + " " + A[0][1] + "|" +b[0]);
-        System.out.println(A[1][0] + " " + A[1][1] + "|" +b[1]);
+        System.out.println(A[1][0] + " " + A[1][1] + "|" +b[1]);*/
         //Sub first row from second
         A[1][1] = A[1][1] - A[1][0] * A[0][1];
         b[1] = b[1] - A[1][0] * b[0];
         A[1][0] = 0;
-        System.out.println("sub first");
+        /*System.out.println("sub first");
         System.out.println(A[0][0] + " " + A[0][1] + "|" +b[0]);
-        System.out.println(A[1][0] + " " + A[1][1] + "|" +b[1]);
+        System.out.println(A[1][0] + " " + A[1][1] + "|" +b[1]);*/
         //Div. second
         b[1] = b[1]/A[1][1];
         A[1][1] = 1;
-        System.out.println("div sec");
+        /*System.out.println("div sec");
         System.out.println(A[0][0] + " " + A[0][1] + "|" +b[0]);
-        System.out.println(A[1][0] + " " + A[1][1] + "|" +b[1]);
+        System.out.println(A[1][0] + " " + A[1][1] + "|" +b[1]);*/
         //Sub. second from first
         b[0] = b[0] - A[0][1]*b[1];
         A[0][1] = 0;
-        System.out.println("sub second");
+        /*System.out.println("sub second");
         System.out.println(A[0][0] + " " + A[0][1] + "|" +b[0]);
-        System.out.println(A[1][0] + " " + A[1][1] + "|" +b[1]);
-        */
+        System.out.println(A[1][0] + " " + A[1][1] + "|" +b[1]);*/
+        
 
         double[] solution = new double[] {b[0], b[1]};
 
