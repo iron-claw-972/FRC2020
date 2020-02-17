@@ -33,7 +33,8 @@ public class ClimberTest
     // Simple test that calls method that calls in turn the .set function of motors
     @Test
     public void climberTest() {
-        assertEquals(1.0, 1.0, 0.1);
+        assertEquals(1.0, 1, 0.1);
+
     }
     
 }

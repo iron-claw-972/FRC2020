@@ -22,13 +22,8 @@ public class Climber
         pastTime = System.currentTimeMillis();
 
     }
-    //Moves the telescope up
-    public void telescopeUp(double PIDVal) {
-        telescopeMotor.set(PIDVal);
-    }
-
-    //Moves the telescope down
-    public void telescopeDown(double PIDVal) {
+    //Moves the telescope
+    public void telescopeMove(double PIDVal) {
         telescopeMotor.set(PIDVal);
     }
 
@@ -43,7 +38,7 @@ public class Climber
     }
 
     //Loop to react to button press
-    public void loop() {
+    public double loop() {
         //Finds current encoder value of the wheel, the current time and the change in time since the last run
         double currentPosition = telescopeMotor.getEncoder().getPosition();
         long currentTime = System.currentTimeMillis();
@@ -52,15 +47,16 @@ public class Climber
         if (Context.robotController.driverJoystick.getClimbU())
         {
             desiredPosition = 1;
-            telescopeUp(liftPID.update(desiredPosition, currentPosition, deltaTime));
         }
         else if (Context.robotController.driverJoystick.getClimbD())
         {
             desiredPosition = 0;
-            telescopeDown(liftPID.update(desiredPosition, currentPosition, deltaTime));
             coil();
         }
+        double pidVal = liftPID.update(desiredPosition, currentPosition, deltaTime);
+        telescopeMove(pidVal);
         //updates the past time for next loop
         pastTime = currentTime;
+        return pidVal;
     }
 }
