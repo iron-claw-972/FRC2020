@@ -52,7 +52,7 @@ public class JRADParameterTest {
     }
 
     public void JRADStatTest(boolean reset, boolean ballExiting) {
-        currentVelocity = shooterController.flywheelVelocity()/2;
+        currentVelocity = shooterController.flywheelVelocity();
         if(reset) {
             resetTestingVariables();
         } else if(!firingBall && !checkFiring()) {
@@ -79,7 +79,7 @@ public class JRADParameterTest {
                 /*if(joy.getRawButton(4)) {
                     System.out.println("COLLECTING");
                     LRPoints.add(loadRatio);
-                    DesiredPoints.add(Math.abs(shooterController.flywheelVelocity()/2));
+                    DesiredPoints.add(Math.abs(shooterController.flywheelVelocity()));
                 }*/
                 sol = linearRegressionDesiredLoadRatio(DesiredPoints, LRPoints);
                 error = Math.abs(shooterController.getDesiredVelocity()) - Math.abs(lowestVelocity);
@@ -156,7 +156,7 @@ public class JRADParameterTest {
         //System.out.println("Constant: " + sol[0] + " Ratio: " + sol[1]);
         //System.out.println("LR: " + Arrays.toString(LRPoints.toArray()));
         //System.out.println("DesiredPoints: " + Arrays.toString(DesiredPoints.toArray()));
-        System.out.println("STABLE VELOCITY: " + stableVelocity + " LOWEST VELOCITY: " + lowestVelocity);
+        //System.out.println("STABLE VELOCITY: " + stableVelocity + " LOWEST VELOCITY: " + lowestVelocity);
     }
 
     public ArrayList<Double> LRPoints = new ArrayList<>();

@@ -55,15 +55,26 @@ public class Robot extends TimedRobot {
   }
 
   int testNeen;
-  double setSpeed = 10.0;
+  double setSpeed = 6;
+  double speedStep = 0.1;
+  double kPStep = 0.01;
+  double kTStep = 0.01;
+  double kFStep = 0.0001;
+  double kIStep = 0.01;
+  double kLoadRatioStep = 0.01;
   boolean xHeld;
   boolean bHeld;
+  boolean lBumpHeld;
+
+  enum gain {
+    SPEED, P, T, F, I, LOAD
+  }
+
+  gain goose = gain.SPEED;
 
   @Override
   public void teleopPeriodic() {
-    if(joy.getRawButton(4)) {
-      System.out.println("COLLECTING");
-    }
+    
     //System.out.println(testNeen);
     /*System.out.println("dubstepdogneenergoose");
     if(joy.getRawButton(1)) {
@@ -74,32 +85,48 @@ public class Robot extends TimedRobot {
       motor2.set(ControlMode.PercentOutput, 0);
     }*/
 
-    if(joy.getRawButton(3)) {
-      if(!xHeld) {
-        setSpeed += 0.5;
-        xHeld = true;
+    if(joy.getRawButton(5)) {
+      if(!lBumpHeld) {
+        testNeen++;
+        lBumpHeld = true;
       }
     } else {
-      xHeld = false;
+      lBumpHeld = false;
     }
 
-    if(joy.getRawButton(2)) {
-      if(!bHeld) {
-        setSpeed -= 0.5;
-        bHeld = true;
-      }
-    } else {
-      bHeld = false;
+    testNeen = testNeen%6;
+
+    switch(testNeen) {
+      case 0:
+        goose = gain.SPEED;
+        break;
+      case 1:
+        goose = gain.P;
+        break;
+      case 2:
+        goose = gain.T;
+        break;
+      case 3:
+        goose = gain.F;
+        break;
+      case 4:
+        goose = gain.I;
+        break;
+      case 5:
+        goose = gain.LOAD;
+        break;
     }
 
-    System.out.println("Set: " + setSpeed);
+    gainAdjust(goose);
 
     testCon2.loop(setSpeed);
     testCon1.loop(setSpeed);
     JPT.JRADStatTest(joy.getRawButton(1), false);
     double loadRatio2 = testCon2.kLoadRatio * (testCon2.loadRatioConstant + testCon2.loadRatioRate * Math.abs(testCon2.getDesiredVelocity()));
-    System.out.println((loadRatio2*testCon2.getDesiredVelocity() - testCon2.flywheelVelocity()/2));
-    System.out.println(testCon2.flywheelRPM());
+    System.out.println("Set: " + setSpeed);
+    System.out.println("Real set speed: " + loadRatio2 * Math.abs(testCon2.getDesiredVelocity()));
+    System.out.println((loadRatio2*testCon2.getDesiredVelocity() - testCon2.flywheelVelocity()));
+    //System.out.println(testCon2.flywheelRPM());
     //System.out.println("break");
     //System.out.println("2 - DESIRED VEL: " + 2*testCon2.getDesiredVelocity() + " SET VEL: " + testCon2.getSetVelocity() + " TRUE VEL: " + testCon2.flywheelVelocity());
     //System.out.println("1 - DESIRED VEL: " + 2*testCon1.getDesiredVelocity() + " SET VEL: " + testCon1.getSetVelocity() + " TRUE VEL: " + testCon1.flywheelVelocity());
@@ -126,6 +153,142 @@ public class Robot extends TimedRobot {
     System.out.println("TEST: " + test[0] + "   " + test[1]);
     System.out.println("TEST2: " + test2[0] + "   " + test2[1]);
     */
+  }
+
+  public void gainAdjust(gain M) {
+    System.out.println("Adjusting " + M);
+    switch(M) {
+      case SPEED:
+        if(joy.getRawButton(3)) {
+          if(!xHeld) {
+            setSpeed += speedStep;
+            xHeld = true;
+          }
+        } else {
+          xHeld = false;
+        }
+      
+        if(joy.getRawButton(2)) {
+          if(!bHeld) {
+            setSpeed -= speedStep;
+            bHeld = true;
+          }
+        } else {
+          bHeld = false;
+        }
+        System.out.println(M + ": " + setSpeed);
+        break;
+      case P:
+        if(joy.getRawButton(3)) {
+          if(!xHeld) {
+            testCon2.velocityJRADD.setP(kPStep);
+            testCon1.velocityJRADD.setP(kPStep);
+            xHeld = true;
+          }
+        } else {
+          xHeld = false;
+        }
+      
+        if(joy.getRawButton(2)) {
+          if(!bHeld) {
+            testCon2.velocityJRADD.setP(-kPStep);
+            testCon1.velocityJRADD.setP(-kPStep);
+            bHeld = true;
+          }
+        } else {
+          bHeld = false;
+        }
+        System.out.println(M + ": " + testCon2.velocityJRADD.kP);
+        break;
+      case T:
+        if(joy.getRawButton(3)) {
+          if(!xHeld) {
+            testCon2.velocityJRADD.setT(kTStep);
+            testCon1.velocityJRADD.setT(kTStep);
+            xHeld = true;
+          }
+        } else {
+          xHeld = false;
+        }
+      
+        if(joy.getRawButton(2)) {
+          if(!bHeld) {
+            testCon2.velocityJRADD.setT(-kTStep);
+            testCon1.velocityJRADD.setT(-kTStep);
+            bHeld = true;
+          }
+        } else {
+          bHeld = false;
+        }
+        System.out.println(M + ": " + testCon2.velocityJRADD.kT);
+        break;
+      case F:
+        if(joy.getRawButton(3)) {
+          if(!xHeld) {
+            testCon2.velocityJRADD.setF(kFStep);
+            testCon1.velocityJRADD.setF(kFStep);
+            xHeld = true;
+          }
+        } else {
+          xHeld = false;
+        }
+      
+        if(joy.getRawButton(2)) {
+          if(!bHeld) {
+            testCon2.velocityJRADD.setF(-kFStep);
+            testCon1.velocityJRADD.setF(-kFStep);
+            bHeld = true;
+          }
+        } else {
+          bHeld = false;
+        }
+        System.out.println(M + ": " + testCon2.velocityJRADD.kF);
+        break;
+      case I:
+        if(joy.getRawButton(3)) {
+          if(!xHeld) {
+            testCon2.velocityJRADD.setI(kIStep);
+            testCon1.velocityJRADD.setI(kIStep);
+            xHeld = true;
+          }
+        } else {
+          xHeld = false;
+        }
+      
+        if(joy.getRawButton(2)) {
+          if(!bHeld) {
+            testCon2.velocityJRADD.setI(-kIStep);
+            testCon1.velocityJRADD.setI(-kIStep);
+            bHeld = true;
+          }
+        } else {
+          bHeld = false;
+        }
+        System.out.println(M + ": " + testCon2.velocityJRADD.kI);
+        break;
+      case LOAD:
+        if(joy.getRawButton(3)) {
+          if(!xHeld) {
+            testCon2.velocityJRADD.setLoadRatio(kLoadRatioStep);
+            testCon1.velocityJRADD.setLoadRatio(kLoadRatioStep);
+            xHeld = true;
+          }
+        } else {
+          xHeld = false;
+        }
+      
+        if(joy.getRawButton(2)) {
+          if(!bHeld) {
+            testCon2.velocityJRADD.setLoadRatio(-kLoadRatioStep);
+            testCon1.velocityJRADD.setLoadRatio(-kLoadRatioStep);
+            bHeld = true;
+          }
+        } else {
+          bHeld = false;
+        }
+        System.out.println(M + ": " + testCon2.velocityJRADD.kLoadRatio);
+        break;
+    }
   }
 
   @Override

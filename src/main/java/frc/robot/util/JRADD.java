@@ -3,7 +3,7 @@ package frc.robot.util;
 public class JRADD {
     /*
     Intersection of 254's JRAD with a P gain (so as to offset late-stage kF accumulation).
-    ///////////////////OUT OF DATE///////////////////////////
+    ///////////////////OUT OF DATE EXPLANATION///////////////////////////
     v'[t + dt] = kF * setpoint + v'[t] + kI * dt * (kLoadRatio * setpoint – actual)
     v[t + dt] = v'[t + dt] + kP * (kT * setpoint - actual)
         removes kF control at peak and slows the shooter
@@ -12,29 +12,29 @@ public class JRADD {
     //TODO: Add linear kLoadRatio function to account for constant friction energy loss
 
     /////Variable Declarations///
-    private double kP;
+    public double kP;
     //Proportonal gain
-    private double kT;
+    public double kT;
     //Point at which proportional gain resists increase
-    private double kF; 
+    public double kF; 
     //Feed-forward gain
-    private double kI; 
+    public double kI; 
     //Integral gain
-    private double kLoadRatio;
+    public double kLoadRatio;
     //Offset ratio modifier to account for flywheel loss of energy
     //when firing ball
-    private double loadRatioConstant;
+    public double loadRatioConstant;
     //Y-intercept in loadRatio linear regression
-    private double loadRatioRate;
+    public double loadRatioRate;
     //Slope in loadRatio linear regression
     
-    private double updateValue;
+    public double updateValue;
     //Returned double from the update method
-    private double loadRatio;
+    public double loadRatio;
     //Offset on desired to account for energy loss, calculated via testing
-    private double proportional;
+    public double proportional;
     //Braking term using to counteract kF accumulation at target point/overshoot
-    private double output;
+    public double output;
     //Final value returned
 
     //@param double kF (feed forward coeff), kI (integral coeff), double kLoadRatio (offset for setpoint coeff)
@@ -59,5 +59,25 @@ public class JRADD {
         output = updateValue + kP * proportional * (kT * kLoadRatio * loadRatio * setpoint - actual);
         //System.out.println("proportional: " + proportional + " output: " + output + " updateValue: " + updateValue + " loadRatio: " + loadRatio + " setpoint: " + (kLoadRatio * loadRatio * setpoint));
         return output;
+    }
+
+    public void setP(double m) {
+        kP += m;
+    }
+
+    public void setT(double m) {
+        kT += m;
+    }
+
+    public void setF(double m) {
+        kF += m;
+    }
+
+    public void setI(double m) {
+        kI += m;
+    }
+    
+    public void setLoadRatio(double m) {
+        kLoadRatio += m;
     }
 }
