@@ -2,10 +2,12 @@ package frc.robot.util;
 
 import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
 
+import java.util.*;
+
 import frc.robot.controllers.RobotController;
 
 public class Context {
-    //----- Robotcontroller Static Reference -----
+    //----- Static References -----
     public static RobotController robotController;
 
     //----- Drivetrain Values -----
@@ -54,6 +56,13 @@ public class Context {
     public static final double ckStatic = 0.15;
     public static final double maxTurnPower = 2.0; // SAFETY
 
+    //----- Intake System -----
+    public static final int intakeFlipChannelA = -1;
+    public static final int intakeFlipChannelB = -1;
+    public static final int intakeMotorId = -1;
+    public static final int intakeEncoderChannelA = -1;
+    public static final int intakeEncoderChannelB = -1;
+  
     //----- Climbing System -----
     public static final int climberMotorID = 10;
     public static final double coilSpeed = 0.5;
@@ -84,5 +93,32 @@ public class Context {
     //----- Time Function -----
     public static double getRelativeTimeSeconds(double relativePoint) {
         return System.currentTimeMillis()/1000 - relativePoint;
+    }
+
+    //----- Camera Constants -----
+    public static final int cameraWidth = 1; //To be changed
+    public static final int cameraHeight = 1;
+    public static final int cameraFPS = 1;
+
+    //----- WOF Colors -----
+    public static char WOFTargetColor = 'N'; //N for none. B,G,R,Y for other colors.
+    public static final Map<Character, String> WOFColors = Map.of( //Map of Driver Station Colors
+        'B', "#0000FF",
+        'G', "#00FF00",
+        'R', "#FF0000",
+        'Y', "#FFFF00",
+        'N', "#DDDDDD");
+    public static void setWOFTargetColor() { //Sets WOFTargetColor based on Driver Station
+        if(robotController.driverStation.getGameSpecificMessage().length() > 0) {
+            System.out.println(robotController.driverStation.getGameSpecificMessage().charAt(0));
+            char color = robotController.driverStation.getGameSpecificMessage().charAt(0);
+            if (WOFColors.containsKey(color)) {
+                WOFTargetColor = color;
+            } else { //Corrupted
+                WOFTargetColor = 'N';
+            }
+        } else {
+            WOFTargetColor = 'N';
+        }
     }
 }

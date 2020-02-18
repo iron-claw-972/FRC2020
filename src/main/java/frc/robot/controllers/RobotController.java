@@ -7,6 +7,10 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.cscore.UsbCamera;
+
 import frc.robot.util.Context;
 import frc.robot.controllers.drive.*;
 
@@ -31,6 +35,9 @@ public class RobotController {
     public TalonSRX beltIntake;
     public TalonSRX leftDriveEncoderInterface;
     public TalonSRX rightDriveEncoderInterface;
+    public DriverStation driverStation;
+    public PowerDistributionPanel pdp;
+    public UsbCamera camera;
 
     public RobotController () {
         //----- Motors -----
@@ -55,9 +62,11 @@ public class RobotController {
         ntInterface = new NetworktablesInterface();
         driverJoystick = new DriverJoystick();
         visionAllignment = new VisionAllignment();
-        intake = new Intake(rollingIntake, beltIntake);
+        intake = new Intake();
         opticalLocalization = new OpticalLocalization();
         ballPositions = new NMFColorSensorController();
+
+        driverStation = DriverStation.getInstance();
 
         Context.robotController = this;
     }
@@ -70,5 +79,6 @@ public class RobotController {
         opticalLocalization.Update();
         visionAllignment.loop();
         ballPositions.loop();
+        intake.loop();
     }
 }
