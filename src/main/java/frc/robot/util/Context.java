@@ -86,7 +86,6 @@ public class Context {
     public static final int indexerEncoderChannelB = -1;
     public static final int indexerTalonID = -1;
     public static final int omniSparkID = -1;
-    public static final int omniEncoder = -1;
 
     //----- Climbing System -----
     public static final int climberMotorID = 10;
