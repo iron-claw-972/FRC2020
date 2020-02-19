@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.cscore.UsbCamera;
 
 import frc.robot.util.Context;
+import frc.robot.controllers.drive.*;
 
 public class RobotController {
     public TalonFXDrivetrain drivetrain;
@@ -32,7 +33,8 @@ public class RobotController {
     public TalonFX rightDriveMotor2;
     public TalonSRX rollingIntake;
     public TalonSRX beltIntake;
-    
+    public TalonSRX leftDriveEncoderInterface;
+    public TalonSRX rightDriveEncoderInterface;
     public DriverStation driverStation;
     public PowerDistributionPanel pdp;
     public UsbCamera camera;
@@ -45,6 +47,8 @@ public class RobotController {
         rightDriveMotor2 = new TalonFX(Context.rightMotor2ID);
         rollingIntake = new TalonSRX(-1);
         beltIntake = new TalonSRX(-1);
+        leftDriveEncoderInterface = new TalonSRX(Context.leftEncoderInterfaceID);
+        rightDriveEncoderInterface = new TalonSRX(Context.rightEncoderInterfaceID);
 
         //----- Pneumatics -----
         compressor = new Compressor();
@@ -52,7 +56,7 @@ public class RobotController {
 
         //----- Controllers -----
         /* Change this line when using a different drive train. Don't forget to change the motor ids in context */
-        drivetrain = new TalonFXDrivetrain(leftDriveMotor1, leftDriveMotor2, rightDriveMotor1, rightDriveMotor2);
+        drivetrain = new TalonFXDrivetrain(leftDriveMotor1, leftDriveMotor2, rightDriveMotor1, rightDriveMotor2, leftDriveEncoderInterface, rightDriveEncoderInterface);
         autoDrive = new AutoDrive();
         navX = new NavX(new AHRS(SPI.Port.kMXP));
         ntInterface = new NetworktablesInterface();
