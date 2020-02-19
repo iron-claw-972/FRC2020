@@ -51,31 +51,31 @@ public class NMFController {
     }
 
     public void spinNMFIntaking(){
-        NMFsetSpeed = NMFintakeSpeed;
+        NMFtargetSpeed = NMFintakeSpeed;
     }
 
     public void spinNMFIdle(){
-        NMFsetSpeed = NMFidleSpeed;
+        NMFtargetSpeed = NMFidleSpeed;
     }
 
     public void spinNMFShooting(){
-        NMFsetSpeed = NMFshootingSpeed;
+        NMFtargetSpeed = NMFshootingSpeed;
     }
 
     public void spinNMFReverse(){
-        NMFsetSpeed = NMFreverseSpeed;
+        NMFtargetSpeed = NMFreverseSpeed;
     }
 
     public void stopNMF(){
-        NMFsetSpeed = 0;
+        NMFtargetSpeed = 0;
     }
 
     public void spinOmni(){
-        omniSetSpeed = omniForwardsSpeed;
+        omniTargetSpeed = omniForwardsSpeed;
     }
 
     public void spinOmniReverse(){
-        omniSetSpeed = omniReverseSpeed;
+        omniTargetSpeed = omniReverseSpeed;
     }
 
     public void stopOmni(){
