@@ -53,6 +53,10 @@ public class Intake {
     }
 
     public void loop() {
+        lastTime = currentTime;
+        currentTime = Context.getRelativeTimeSeconds(startTime);
+        deltaTime = currentTime - lastTime;
+
         if (joystick.getRawButtonPressed(-1)) {
             flipOut();
             if(automaticallyIntake) {beginIntaking();}
@@ -66,10 +70,6 @@ public class Intake {
         } else if (joystick.getRawButtonPressed(-1)) {
             stopIntaking();
         }
-
-        lastTime = currentTime;
-        currentTime = Context.getRelativeTime(startTime);
-        deltaTime = currentTime - lastTime;
 
         currentSpeed = intakeEncoder.getRate();
         setSpeed = intakePID.update(targetSpeed, currentSpeed, deltaTime);
