@@ -1,11 +1,10 @@
-package frc.robot.controllers;
+package frc.robot.actions;
 
-import frc.robot.util.AdditionalMath;
-import frc.robot.util.Context;
-import frc.robot.util.PID;
+import frc.robot.util.*;
 
-public class VisionAllignment
-{
+public class VisionAlign extends Action {
+    public long duration;
+
     // Heading PID parameters, declaration and initialization
     private final double headingP = 0.1;
     private final double headingI = 0.0;
@@ -33,10 +32,32 @@ public class VisionAllignment
     public double rotationLocalized = 0.0;
     public double navXYawOffset = 0.0;
 
-    
+    public void init()
+    {
+        alignmentStatus = StatusEnum.IN_PROGRESS;
+
+        timeoutCounter = 0.0;
+
+        headingPID = new PID(headingP, headingI, headingD);
+        
+        this.startTime = System.currentTimeMillis();
+    }
 
     public void loop()
     {
+        //TODO: Combine track cancelling into action
+        // if (Context.robotController.driverJoystick.getToggleTrack()) {
+        //   if (Context.robotController.visionAllignment.isActive()) {
+        //     Context.robotController.visionAllignment.stopTrack();
+        //   } else {
+        //     Context.robotController.visionAllignment.startTrack();
+        //   }
+        // }
+
+        // if (Context.robotController.driverJoystick.isInUse() || !Context.robotController.visionAllignment.isActive()) {
+        //   Context.robotController.visionAllignment.stopTrack();
+        // }
+
         currentTime = System.currentTimeMillis();
 
         grabLimelightData();
@@ -83,16 +104,19 @@ public class VisionAllignment
             case ALIGNED:
             {
                 // If the robot turns out of the acceptable range, the allignment will be unpaused
-                if(Math.abs(tx) >= Context.alignmentThreshold)
-                {
-                    alignmentStatus = StatusEnum.IN_PROGRESS;
-                }
+                // if(Math.abs(tx) >= Context.alignmentThreshold)
+                // {
+                //     alignmentStatus = StatusEnum.IN_PROGRESS;
+                // }
+                markComplete();
 
                 break;
             }
             case FAILED:
             {
                 // Nothing happens in FAILED state
+                markComplete();
+
                 break;
             }
         }
@@ -143,38 +167,39 @@ public class VisionAllignment
             rotationLocalized += 360;
         }
     }
+        
 
-    public boolean isAligned()
-    {
-        return alignmentStatus == StatusEnum.ALIGNED;
-    }
+    // public boolean isAligned()
+    // {
+    //     return alignmentStatus == StatusEnum.ALIGNED;
+    // }
 
-    public boolean isInProgress()
-    {
-        return alignmentStatus == StatusEnum.IN_PROGRESS;
-    }
+    // public boolean isInProgress()
+    // {
+    //     return alignmentStatus == StatusEnum.IN_PROGRESS;
+    // }
 
-    public boolean isActive()
-    {
-        return alignmentStatus == StatusEnum.IN_PROGRESS || alignmentStatus == StatusEnum.ALIGNED;
-    }
+    // public boolean isActive()
+    // {
+    //     return alignmentStatus == StatusEnum.IN_PROGRESS || alignmentStatus == StatusEnum.ALIGNED;
+    // }
 
-    public StatusEnum getAlignmentStatus()
-    {
-        return alignmentStatus;
-    }
+    // public StatusEnum getAlignmentStatus()
+    // {
+    //     return alignmentStatus;
+    // }
 
-    public void startTrack()
-    {
-        alignmentStatus = StatusEnum.IN_PROGRESS;
+    // public void startTrack()
+    // {
+    //     alignmentStatus = StatusEnum.IN_PROGRESS;
 
-        timeoutCounter = 0.0;
+    //     timeoutCounter = 0.0;
 
-        headingPID = new PID(headingP, headingI, headingD);        
-    }
+    //     headingPID = new PID(headingP, headingI, headingD);        
+    // }
 
-    public void stopTrack()
-    {
-        alignmentStatus = StatusEnum.IDLE;
-    }
+    // public void stopTrack()
+    // {
+    //     alignmentStatus = StatusEnum.IDLE;
+    // }
 }
