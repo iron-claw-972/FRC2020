@@ -16,6 +16,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.*;
 
 import frc.robot.util.Context;
+import frc.robot.controllers.drive.*;
 
 public class RobotController {
     public TalonFXDrivetrain drivetrain;
@@ -53,6 +54,7 @@ public class RobotController {
         leftDriveMotor2 = new TalonFX(Context.leftMotor2ID);
         rightDriveMotor1 = new TalonFX(Context.rightMotor1ID);
         rightDriveMotor2 = new TalonFX(Context.rightMotor2ID);
+
         omniNeo = new CANSparkMax(Context.omniSparkID, MotorType.kBrushless);
         NMFTalon = new TalonSRX(Context.indexerTalonID);
         intakeTalon = new TalonSRX(Context.intakeMotorId);
@@ -68,7 +70,7 @@ public class RobotController {
 
         //----- Controllers -----
         /* Change this line when using a different drive train. Don't forget to change the motor ids in context */
-        drivetrain = new TalonFXDrivetrain(leftDriveMotor1, leftDriveMotor2, rightDriveMotor1, rightDriveMotor2);
+        drivetrain = new TalonFXDrivetrain(leftDriveMotor1, leftDriveMotor2, rightDriveMotor1, rightDriveMotor2, leftDriveEncoderInterface, rightDriveEncoderInterface);
         autoDrive = new AutoDrive();
         navX = new NavX(new AHRS(SPI.Port.kMXP));
         ntInterface = new NetworktablesInterface();
