@@ -7,8 +7,8 @@ import frc.robot.util.*;
 
 public class NeoDrivetrain extends Drivetrain {
     public CANSparkMax leftMotor1, leftMotor2, rightMotor1, rightMotor2;
-    private static PIDF leftDrivePIDF = new PIDF(0.09, 0, 0, 0);
-    private static PIDF rightDrivePIDF = new PIDF(0.09, 0, 0, 0);
+    private static PIDF leftDrivePIDF = new PIDF(0.1, 0, 0, 0.18);
+    private static PIDF rightDrivePIDF = new PIDF(0.1, 0, 0, 0.18);
     
     public NeoDrivetrain() {
         super(leftDrivePIDF, rightDrivePIDF);
@@ -22,8 +22,8 @@ public class NeoDrivetrain extends Drivetrain {
     public void tankDrive(double leftPower, double rightPower) {
         leftMotor1.set(leftPower);
         leftMotor2.set(leftPower);
-        rightMotor1.set(rightPower);
-        rightMotor2.set(rightPower);
+        rightMotor1.set(-rightPower);
+        rightMotor2.set(-rightPower);
     }
 
     protected double getLeftTicks() {
@@ -31,7 +31,7 @@ public class NeoDrivetrain extends Drivetrain {
     }
 
     protected double getRightTicks() {
-        return rightMotor1.getEncoder().getPosition();
+        return -rightMotor1.getEncoder().getPosition();
     }
 
     public double getLeftDist() {
@@ -45,10 +45,12 @@ public class NeoDrivetrain extends Drivetrain {
     }
 
     public double getLeftVel() {
-        return rightMotor1.getEncoder().getVelocity() / Context.neoDriveTicksPerMeter;
+        // Because it gives speed in RPM we need to convert minutes to seconds
+        return leftMotor1.getEncoder().getVelocity()/60.0 / Context.neoDriveTicksPerMeter;
     }
 
     public double getRightVel() {
-        return leftMotor1.getEncoder().getVelocity() / Context.neoDriveTicksPerMeter;
+        // Because it gives speed in RPM we need to convert minutes to seconds
+        return -rightMotor1.getEncoder().getVelocity()/60.0 / Context.neoDriveTicksPerMeter;
     }
 }

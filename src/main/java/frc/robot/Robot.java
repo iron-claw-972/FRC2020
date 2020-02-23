@@ -1,18 +1,22 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import frc.robot.controllers.DriverJoystick;
 import frc.robot.controllers.RobotController;
 import frc.robot.util.*;
 
 public class Robot extends TimedRobot {
   public double origTime;
   public double robotStartTime;
+  public Joystick joy;
 
   @Override
   public void robotInit() {
     Context.robotController = new RobotController();
     robotStartTime = System.currentTimeMillis()/1000.0;
-    Context.robotController.compressor.start();
+    // Context.robotController.compressor.start();
+    joy = Context.robotController.driverJoystick.getJoystick();
   }
 
   @Override
@@ -29,8 +33,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Context.robotController.autoDrive.loop((System.currentTimeMillis() - origTime)/1000.0);
-    // System.out.println(Context.robotController.autoDrive.localizer.getPoseEstimate());
-    Context.robotController.drivetrain.printWheelVelocities();
+    System.out.println(Context.robotController.autoDrive.localizer.getPoseEstimate());
+    // Context.robotController.drivetrain.printWheelVelocities();
   }
 
   @Override
@@ -40,21 +44,22 @@ public class Robot extends TimedRobot {
     Context.robotController.initAll();
   }
 
-  double maxSpeed = 1; // m/s
+  double maxSpeed = 2; // m/s
+  double maxTurnSpeed = maxSpeed/2;
   
   @Override
   public void teleopPeriodic() {
     // Context.robotController.loopAll();
 
     double driverThrottle = Context.robotController.driverJoystick.getThrottle()*maxSpeed;
-    double driverYaw = -Context.robotController.driverJoystick.getYaw()*maxSpeed;
+    double driverYaw = Context.robotController.driverJoystick.getYaw()*maxTurnSpeed;
 
     // Context.robotController.autoDrive.updatePoseEstimate();
     // System.out.println(Context.robotController.autoDrive.getPoseEstimate());
 
-    if (Context.robotController.driverJoystick.shiftGears()) {
-      Context.robotController.drivetrain.shiftGears();
-    }
+    // if (Context.robotController.driverJoystick.shiftGears()) {
+    //   Context.robotController.drivetrain.shiftGears();
+    // }
 
     // Context.robotController.drivetrain.printWheelVelocities();
     
@@ -68,7 +73,7 @@ public class Robot extends TimedRobot {
 
     // if (Context.robotController.driverJoystick.isInUse() || !Context.robotController.visionAllignment.isActive()) {
     //   Context.robotController.visionAllignment.stopTrack();
-      Context.robotController.drivetrain.arcadeDrive(driverThrottle, driverYaw);
+    Context.robotController.drivetrain.arcadeDrive(driverThrottle, driverYaw);
     // }
     
     // if((Context.robotController.opticalLocalization.LeftMovementX != 0) || (Context.robotController.opticalLocalization.LeftMovementY !=0))
@@ -85,9 +90,10 @@ public class Robot extends TimedRobot {
   }
 
   public void testPeriodic() {
-    Context.robotController.drivetrain.tankDrivePID(1.0, 1.0);
-
-    // Context.robotController.drivetrain.printWheelVelocities();
+    // Context.robotController.drivetrain.tankDrivePID(1.0, 1.0);
+    Context.robotController.drivetrain.tankDrivePID(0.5, 0.5);
+    Context.robotController.drivetrain.printWheelVelocities();
+    // Context.robotController.drivetrain.printWheelDistances();
   }
 
 }

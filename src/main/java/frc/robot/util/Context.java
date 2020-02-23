@@ -6,10 +6,10 @@ import frc.robot.controllers.RobotController;
 
 public class Context {
     //----- Drivetrain Values -----
-    public static final int leftMotor1ID = 2;
-    public static final int leftMotor2ID = 3;
-    public static final int rightMotor1ID = 0;
-    public static final int rightMotor2ID = 1;
+    public static final int leftMotor1ID = 1;
+    public static final int leftMotor2ID = 2;
+    public static final int rightMotor1ID = 3;
+    public static final int rightMotor2ID = 4;
 
     /* TalonSRX and Encoder Drivetrain Values */
     public static final int leftEncoderChannelA = 0;
@@ -37,7 +37,7 @@ public class Context {
     public static final int joystickID = 0;
     public static final int throttleAxisID = 1;
     public static final int shiftGearsButtonID = 6;
-    public static final int yawAxisID = 2;
+    public static final int yawAxisID = 4;
     public static final double joystickMaxDeadband = 0.05;
     public static final int inUseLengthMillis = 1000;
     public static final int climbButtonUp = 2;
@@ -71,8 +71,8 @@ public class Context {
     // maxVel, maxAccel, maxJerk, maxAngVel, maxAngAccel, maxAngJerk
     public static final double maxDrivingSpeed = 2.0; // m/s
     public static final double maxDrivingAcceleration = 2.0; // m/s/s
-    public static final double maxDrivingJerk = 2.0; // m/s/s/s
-    public static final double maxTurningSpeed = 0.8; // radians/s
+    public static final double maxDrivingJerk = 3.0; // m/s/s/s
+    public static final double maxTurningSpeed = 1.5; // radians/s
     /* Not used in trajectories */
     public static final double maxTurningAcceleration = 0;
     public static final double maxTurningJerk = 0;

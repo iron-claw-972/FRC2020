@@ -25,7 +25,7 @@ public class AutoDrive {
 
     public Trajectory generateTrajectory() {
         Path path = new PathBuilder(new Pose2d(0, 0, 0))
-                .splineTo(new Pose2d(2, 0, 0))
+                .splineTo(new Pose2d(2, -2, 0))
                 .build();
 
         return TrajectoryGenerator.INSTANCE.generateTrajectory(path, Context.BASE_CONSTRAINTS);
@@ -49,6 +49,7 @@ public class AutoDrive {
         // System.out.println("goal: " + trajectory.get(time));
         List<Double> wheelVelocities = getWheelVelocities(time);
 
+        // Context.robotController.drivetrain.printWheelVelocities();
         // System.out.println("LeftDes: " + wheelVelocities.get(0) + "| RightDes: " + wheelVelocities.get(1));
         Context.robotController.drivetrain.tankDrivePID(wheelVelocities.get(1), wheelVelocities.get(0));
     }
