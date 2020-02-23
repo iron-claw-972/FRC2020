@@ -14,16 +14,14 @@ import frc.robot.util.Trigger;
 public class DriverJoystickTest {
     public DriverJoystick driverJoystick;
 
-    public class Complete extends Action{
-        public void loop()
-        {
+    public class Complete extends Action {
+        public void loop() {
             markComplete();
         }
     }
 
-    public class Complete0 extends Action{
-        public void loop()
-        {
+    public class Complete0 extends Action {
+        public void loop() {
             markComplete();
         }
     }

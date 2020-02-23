@@ -32,8 +32,7 @@ public class VisionAlign extends Action {
     public double rotationLocalized = 0.0;
     public double navXYawOffset = 0.0;
 
-    public void init()
-    {
+    public void init() {
         alignmentStatus = StatusEnum.IN_PROGRESS;
 
         timeoutCounter = 0.0;
@@ -43,8 +42,7 @@ public class VisionAlign extends Action {
         this.startTime = System.currentTimeMillis();
     }
 
-    public void loop()
-    {
+    public void loop() {
         //TODO: Combine track cancelling into action
         // if (Context.robotController.driverJoystick.getToggleTrack()) {
         //   if (Context.robotController.visionAllignment.isActive()) {
@@ -63,15 +61,12 @@ public class VisionAlign extends Action {
         grabLimelightData();
         localizeRotation();
         
-        switch(alignmentStatus)
-        {
-            case IDLE:
-            {
+        switch(alignmentStatus) {
+            case IDLE: {
                 // System awaits command to start tracking target
                 break;
             }
-            case IN_PROGRESS:
-            {
+            case IN_PROGRESS: {
                 if(targetFound) {
                     // While the target is in the view of the Limelight, the PID will follow the Limelight data
                     Context.robotController.drivetrain.arcadeDrive(0, loopHeadingPID(tx));
@@ -101,8 +96,7 @@ public class VisionAlign extends Action {
 
                 break;
             }
-            case ALIGNED:
-            {
+            case ALIGNED: {
                 // If the robot turns out of the acceptable range, the allignment will be unpaused
                 // if(Math.abs(tx) >= Context.alignmentThreshold)
                 // {
@@ -112,8 +106,7 @@ public class VisionAlign extends Action {
 
                 break;
             }
-            case FAILED:
-            {
+            case FAILED: {
                 // Nothing happens in FAILED state
                 markComplete();
 
@@ -127,8 +120,7 @@ public class VisionAlign extends Action {
         pastTime = currentTime;        
     }
 
-    private void grabLimelightData()
-    {
+    private void grabLimelightData() {
         // Grabs the Limelight data from the NetworkTables interface
         tx = Context.robotController.ntInterface.tx;
         ty = Context.robotController.ntInterface.ty;
@@ -139,8 +131,7 @@ public class VisionAlign extends Action {
         newTx = tx;
     }
     
-    private double loopHeadingPID(double actualAngle)
-    {
+    private double loopHeadingPID(double actualAngle) {
         // Wrapper class for the heading PID, simplifies process of using it elsewhere, also includes logging
         double rawPIDOutput = AdditionalMath.OvercomeFriction(headingPID.update(0.0, rotationLocalized, currentTime-pastTime), Context.ckStatic);
         double drivePower = AdditionalMath.Clamp(rawPIDOutput, -Context.maxTurnPower, Context.maxTurnPower);
@@ -149,11 +140,9 @@ public class VisionAlign extends Action {
         return drivePower;
     }
 
-    private void localizeRotation()
-    {
+    private void localizeRotation() {
         // When the robot is facing the target, the angle is recorded for later NavX based tracking
-        if(Math.abs(tx) <= Context.alignmentThreshold && targetFound)
-        {
+        if(Math.abs(tx) <= Context.alignmentThreshold && targetFound) {
             navXYawOffset = Context.robotController.navX.getRawHeading();
         }
 
@@ -167,39 +156,4 @@ public class VisionAlign extends Action {
             rotationLocalized += 360;
         }
     }
-        
-
-    // public boolean isAligned()
-    // {
-    //     return alignmentStatus == StatusEnum.ALIGNED;
-    // }
-
-    // public boolean isInProgress()
-    // {
-    //     return alignmentStatus == StatusEnum.IN_PROGRESS;
-    // }
-
-    // public boolean isActive()
-    // {
-    //     return alignmentStatus == StatusEnum.IN_PROGRESS || alignmentStatus == StatusEnum.ALIGNED;
-    // }
-
-    // public StatusEnum getAlignmentStatus()
-    // {
-    //     return alignmentStatus;
-    // }
-
-    // public void startTrack()
-    // {
-    //     alignmentStatus = StatusEnum.IN_PROGRESS;
-
-    //     timeoutCounter = 0.0;
-
-    //     headingPID = new PID(headingP, headingI, headingD);        
-    // }
-
-    // public void stopTrack()
-    // {
-    //     alignmentStatus = StatusEnum.IDLE;
-    // }
 }
