@@ -44,17 +44,6 @@ public class VisionAlign extends Action {
 
     public void loop() {
         //TODO: Combine track cancelling into action
-        // if (Context.robotController.driverJoystick.getToggleTrack()) {
-        //   if (Context.robotController.visionAllignment.isActive()) {
-        //     Context.robotController.visionAllignment.stopTrack();
-        //   } else {
-        //     Context.robotController.visionAllignment.startTrack();
-        //   }
-        // }
-
-        // if (Context.robotController.driverJoystick.isInUse() || !Context.robotController.visionAllignment.isActive()) {
-        //   Context.robotController.visionAllignment.stopTrack();
-        // }
 
         currentTime = System.currentTimeMillis();
 
@@ -97,11 +86,7 @@ public class VisionAlign extends Action {
                 break;
             }
             case ALIGNED: {
-                // If the robot turns out of the acceptable range, the allignment will be unpaused
-                // if(Math.abs(tx) >= Context.alignmentThreshold)
-                // {
-                //     alignmentStatus = StatusEnum.IN_PROGRESS;
-                // }
+                // Once the robot has alligned, it will exit the action, not attempting to hold its heading
                 markComplete();
 
                 break;
