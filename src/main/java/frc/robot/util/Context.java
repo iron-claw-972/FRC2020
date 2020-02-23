@@ -62,9 +62,7 @@ public class Context {
     public static final int intakeMotorId = -1;
 
     // NMF Values
-    public static final int indexerEncoderChannelA = -1;
-    public static final int indexerEncoderChannelB = -1;
-    public static final int indexerTalonID = -1;
+    public static final int nmfSparkID = -1;
     public static final int omniSparkID = -1;
 
     //----- Climbing System -----

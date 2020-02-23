@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj.util.Color;
 import com.revrobotics.*;
 
 public class NMFController {
-    TalonSRX NMFTalon;
-    Encoder NMFEncoder;
+    CANSparkMax NMFspark;
+    CANEncoder NMFencoder;
     CANSparkMax omniSpark;
     CANEncoder omniEncoder;
 
@@ -43,9 +43,9 @@ public class NMFController {
     private double deltaTime;
     
 
-    public NMFController(TalonSRX nmfTalon, Encoder nmfEncoder, CANSparkMax OmniSpark){
-        NMFTalon = nmfTalon;
-        NMFEncoder = nmfEncoder;
+    public NMFController(CANSparkMax nmfSpark, CANSparkMax OmniSpark){
+        NMFspark = nmfSpark;
+        NMFencoder = NMFspark.getEncoder();
         omniSpark = OmniSpark;
         omniEncoder = omniSpark.getEncoder();
     }
@@ -82,17 +82,14 @@ public class NMFController {
         omniSetSpeed = 0;
     }
     
-    
-    
     public void loop(){
         lastTime = currentTime;
         currentTime = Context.getRelativeTimeSeconds(startTime/1000)*1000;
         deltaTime = currentTime - lastTime;
 
-        NMFcurrentSpeed = NMFEncoder.getRate();
+        NMFcurrentSpeed = NMFencoder.getVelocity();
         NMFsetSpeed = NMFPID.update(NMFtargetSpeed, NMFcurrentSpeed, deltaTime);
-        NMFTalon.set(ControlMode.PercentOutput, NMFsetSpeed);
-
+        NMFspark.set(NMFsetSpeed);
 
         omniCurrentSpeed = omniEncoder.getVelocity();
         omniSetSpeed = omniPID.update(omniTargetSpeed, omniCurrentSpeed, deltaTime);

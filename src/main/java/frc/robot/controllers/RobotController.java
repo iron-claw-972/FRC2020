@@ -36,9 +36,11 @@ public class RobotController {
     public TalonFX leftDriveMotor2;
     public TalonFX rightDriveMotor1;
     public TalonFX rightDriveMotor2;
+
+    public TalonSRX leftDriveEncoderInterface;
+    public TalonSRX rightDriveEncoderInterface;
     
-    public TalonSRX NMFTalon;
-    public Encoder NMFEncoder;
+    public CANSparkMax nmfNeo;
     public CANSparkMax omniNeo;
 
     public DoubleSolenoid intakeFlipSolenoid;
@@ -54,13 +56,12 @@ public class RobotController {
         leftDriveMotor2 = new TalonFX(Context.leftMotor2ID);
         rightDriveMotor1 = new TalonFX(Context.rightMotor1ID);
         rightDriveMotor2 = new TalonFX(Context.rightMotor2ID);
+        leftDriveEncoderInterface = new TalonSRX(Context.leftEncoderInterfaceID);
+        rightDriveEncoderInterface = new TalonSRX(Context.rightEncoderInterfaceID);
 
         omniNeo = new CANSparkMax(Context.omniSparkID, MotorType.kBrushless);
-        NMFTalon = new TalonSRX(Context.indexerTalonID);
+        nmfNeo = new CANSparkMax(Context.nmfSparkID, MotorType.kBrushless);
         intakeTalon = new TalonSRX(Context.intakeMotorId);
-    
-        //Encoders
-        NMFEncoder = new Encoder(Context.indexerEncoderChannelA, Context.indexerEncoderChannelB);
 
         //----- Pneumatics -----
         intakeFlipSolenoid = new DoubleSolenoid(Context.intakeFlipChannelA, Context.intakeFlipChannelB);
@@ -77,7 +78,7 @@ public class RobotController {
         driverJoystick = new DriverJoystick();
         visionAllignment = new VisionAllignment();
         intake = new Intake(intakeTalon, intakeFlipSolenoid);
-        nmfController = new NMFController(NMFTalon, NMFEncoder, omniNeo);
+        nmfController = new NMFController(nmfNeo, omniNeo);
         opticalLocalization = new OpticalLocalization();
         ballPositions = new NMFColorSensorController();
 
