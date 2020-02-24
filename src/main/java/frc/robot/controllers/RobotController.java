@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj.*;
 
 import frc.robot.util.Context;
 import frc.robot.controllers.drive.*;
+import frc.robot.execution.ParallelScheduler;
+import frc.robot.execution.SequentialScheduler;;
 
 public class RobotController {
     public TalonFXDrivetrain drivetrain;
@@ -24,12 +26,13 @@ public class RobotController {
     public NavX navX;
     public NetworktablesInterface ntInterface;
     public DriverJoystick driverJoystick;
-    public VisionAllignment visionAllignment;
+    // public VisionAllignment visionAllignment;
     public Compressor compressor;
     public ShooterController shooterController;
     public Intake intake;
     public OpticalLocalization opticalLocalization;
-    public NMFColorSensorController ballPositions;
+    public SequentialScheduler sequentialScheduler;
+    public ParallelScheduler parallelScheduler;
     public NMFController nmfController;
 
     public TalonFX leftDriveMotor1;
@@ -80,7 +83,7 @@ public class RobotController {
         intake = new Intake(intakeTalon, intakeFlipSolenoid);
         nmfController = new NMFController(nmfNeo, omniNeo);
         opticalLocalization = new OpticalLocalization();
-        ballPositions = new NMFColorSensorController();
+        sequentialScheduler = new SequentialScheduler();
 
         driverStation = DriverStation.getInstance();
 
@@ -93,7 +96,7 @@ public class RobotController {
     public void loopAll() {
         ntInterface.loop();
         opticalLocalization.Update();
-        visionAllignment.loop();
+        // visionAllignment.loop();
         ballPositions.loop();
         intake.loop();
         nmfController.loop();

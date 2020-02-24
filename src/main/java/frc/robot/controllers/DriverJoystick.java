@@ -1,5 +1,7 @@
 package frc.robot.controllers;
 
+import java.util.ArrayList;
+
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.util.*;
 
@@ -7,8 +9,9 @@ import frc.robot.util.*;
  * This class is wrapper class to allow the abstraction of buttons and joysticks (removes the need to specify ports every time you get a button)
  */
 public class DriverJoystick {
-    private Joystick joystick;
+    public Joystick joystick;
     private long inUseStartTime = 0;
+    public ArrayList<Trigger> triggers = new ArrayList<Trigger>();
 
     public DriverJoystick() {
         joystick = new Joystick(Context.joystickID);
@@ -22,42 +25,15 @@ public class DriverJoystick {
         return getAxisDeadBandManaged(Context.yawAxisID);
     }
 
-    public boolean shiftGears() {
-        return joystick.getRawButtonPressed(Context.shiftGearsButtonID);
+    public boolean getButtonPressed(int buttonID) {
+        return joystick.getRawButtonPressed(buttonID);
     }
 
-    public boolean getClimbU() {
-        return joystick.getRawButton(Context.climbButtonUp);
-    }
-
-    public boolean getClimbD() {
-        return joystick.getRawButton(Context.climbButtonDown);
-    }
-
-    public boolean getShoot() {
-        return joystick.getRawButton(Context.shoot);
-    }
-
-    public boolean getToggleTrack() {
-        return joystick.getRawButton(Context.toggleTrack);
-    }
-
-    public boolean getLoop() {
-        return joystick.getRawButton(Context.loopyLoopBreak);
-    }
-
-    public boolean isInUse()
-    {
+    public boolean isInUse() {
         return inUseStartTime + Context.inUseLengthMillis > System.currentTimeMillis();
     }
 
-    public Joystick getJoystick()
-    {
-        return joystick;
-    }
-
-    private double getAxisDeadBandManaged(int axis)
-    {
+    public double getAxisDeadBandManaged(int axis) {
         double axisValue = joystick.getRawAxis(axis);
 
         if(AdditionalMath.isInRange(axisValue, -Context.joystickMaxDeadband, Context.joystickMaxDeadband, true)) {
@@ -67,5 +43,21 @@ public class DriverJoystick {
         inUseStartTime = System.currentTimeMillis();
         
         return axisValue;
+    }
+
+    public void loop() {
+        for (Trigger trigger : triggers) {
+            trigger.loop();
+        }
+    }
+
+    public void addTrigger(Trigger triggerToAdd) {
+        triggers.add(triggerToAdd);
+    }
+
+    public void addTriggers(Trigger[] triggersToAdd) {
+        for (Trigger trigger : triggersToAdd) {
+            triggers.add(trigger);
+        }
     }
 }

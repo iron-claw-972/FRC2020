@@ -3,17 +3,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.*;
 import frc.robot.controllers.RobotController;
 import frc.robot.util.*;
-import frc.robot.controllers.*;
 import frc.robot.shuffleboard.*;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoMode.PixelFormat;
-import edu.wpi.first.cameraserver.*;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.revrobotics.*;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import frc.robot.actions.*;
 
 public class Robot extends TimedRobot {
   public RobotController robotController;
@@ -32,6 +25,11 @@ public class Robot extends TimedRobot {
     camera = edu.wpi.first.cameraserver.CameraServer.getInstance().startAutomaticCapture();
     camera.setVideoMode(PixelFormat.kMJPEG, Context.cameraWidth, Context.cameraHeight, Context.cameraFPS);
     Dashboard.init(camera);
+
+    Context.robotController.driverJoystick.addTriggers(new Trigger[]{
+      new Trigger(Context.toggleTrack, new VisionAlign()),
+      new Trigger(Context.shiftGearsButtonID, new ShiftGears())
+    });
   }
 
   @Override
@@ -66,23 +64,9 @@ public class Robot extends TimedRobot {
 
     double driverThrottle = Context.robotController.driverJoystick.getThrottle();
     double driverYaw = Context.robotController.driverJoystick.getYaw();
-
-    if (Context.robotController.driverJoystick.shiftGears()) {
-      Context.robotController.drivetrain.shiftGears();
-    }
     
-    if (Context.robotController.driverJoystick.getToggleTrack()) {
-      if (Context.robotController.visionAllignment.isActive()) {
-        Context.robotController.visionAllignment.stopTrack();
-      } else {
-        Context.robotController.visionAllignment.startTrack();
-      }
-    }
+    Context.robotController.drivetrain.arcadeDrive(driverYaw, driverThrottle);
 
-    if (Context.robotController.driverJoystick.isInUse() || !Context.robotController.visionAllignment.isActive()) {
-      Context.robotController.visionAllignment.stopTrack();
-      Context.robotController.drivetrain.arcadeDrive(driverYaw, driverThrottle);
-    }
     
     if((Context.robotController.opticalLocalization.LeftMovementX != 0) || (Context.robotController.opticalLocalization.LeftMovementY !=0))
     {
