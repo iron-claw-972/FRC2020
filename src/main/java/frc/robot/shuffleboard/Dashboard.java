@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.shuffleboard.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.cscore.UsbCamera;
 import frc.robot.controllers.AutoOptions;
-import frc.robot.controllers.TalonFXDrivetrain.Gear;
+import frc.robot.controllers.drive.TalonFXDrivetrain.Gear;
 import frc.robot.util.Context;
 
 import java.util.Map;

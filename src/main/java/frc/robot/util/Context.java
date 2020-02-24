@@ -60,9 +60,11 @@ public class Context {
     public static final int intakeFlipChannelA = -1;
     public static final int intakeFlipChannelB = -1;
     public static final int intakeMotorId = -1;
-    public static final int intakeEncoderChannelA = -1;
-    public static final int intakeEncoderChannelB = -1;
-  
+
+    // NMF Values
+    public static final int nmfSparkID = -1;
+    public static final int omniSparkID = -1;
+
     //----- Climbing System -----
     public static final int climberMotorID = 10;
     public static final double coilSpeed = 0.5;
@@ -102,6 +104,8 @@ public class Context {
 
     //----- WOF Colors -----
     public static char WOFTargetColor = 'N'; //N for none. B,G,R,Y for other colors.
+
+	
     public static final Map<Character, String> WOFColors = Map.of( //Map of Driver Station Colors
         'B', "#0000FF",
         'G', "#00FF00",
