@@ -11,6 +11,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.cscore.UsbCamera;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import edu.wpi.first.wpilibj.*;
+
 import frc.robot.util.Context;
 import frc.robot.controllers.drive.*;
 import frc.robot.execution.ParallelScheduler;
@@ -27,18 +31,24 @@ public class RobotController {
     public ShooterController shooterController;
     public Intake intake;
     public OpticalLocalization opticalLocalization;
-    public NMFColorSensorController ballPositions;
     public SequentialScheduler sequentialScheduler;
     public ParallelScheduler parallelScheduler;
+    public NMFController nmfController;
 
     public TalonFX leftDriveMotor1;
     public TalonFX leftDriveMotor2;
     public TalonFX rightDriveMotor1;
     public TalonFX rightDriveMotor2;
-    public TalonSRX rollingIntake;
-    public TalonSRX beltIntake;
+
     public TalonSRX leftDriveEncoderInterface;
     public TalonSRX rightDriveEncoderInterface;
+    
+    public CANSparkMax nmfNeo;
+    public CANSparkMax omniNeo;
+
+    public DoubleSolenoid intakeFlipSolenoid;
+    public TalonSRX intakeTalon;
+
     public DriverStation driverStation;
     public PowerDistributionPanel pdp;
     public UsbCamera camera;
@@ -49,12 +59,16 @@ public class RobotController {
         leftDriveMotor2 = new TalonFX(Context.leftMotor2ID);
         rightDriveMotor1 = new TalonFX(Context.rightMotor1ID);
         rightDriveMotor2 = new TalonFX(Context.rightMotor2ID);
-        rollingIntake = new TalonSRX(-1);
-        beltIntake = new TalonSRX(-1);
         leftDriveEncoderInterface = new TalonSRX(Context.leftEncoderInterfaceID);
         rightDriveEncoderInterface = new TalonSRX(Context.rightEncoderInterfaceID);
 
+        omniNeo = new CANSparkMax(Context.omniSparkID, MotorType.kBrushless);
+        nmfNeo = new CANSparkMax(Context.nmfSparkID, MotorType.kBrushless);
+        intakeTalon = new TalonSRX(Context.intakeMotorId);
+
         //----- Pneumatics -----
+        intakeFlipSolenoid = new DoubleSolenoid(Context.intakeFlipChannelA, Context.intakeFlipChannelB);
+        
         compressor = new Compressor();
         compressor.setClosedLoopControl(true);
 
@@ -65,10 +79,10 @@ public class RobotController {
         navX = new NavX(new AHRS(SPI.Port.kMXP));
         ntInterface = new NetworktablesInterface();
         driverJoystick = new DriverJoystick();
-        // visionAllignment = new VisionAllignment();
-        intake = new Intake();
+        visionAllignment = new VisionAllignment();
+        intake = new Intake(intakeTalon, intakeFlipSolenoid);
+        nmfController = new NMFController(nmfNeo, omniNeo);
         opticalLocalization = new OpticalLocalization();
-        ballPositions = new NMFColorSensorController();
         sequentialScheduler = new SequentialScheduler();
 
         driverStation = DriverStation.getInstance();
@@ -85,5 +99,6 @@ public class RobotController {
         // visionAllignment.loop();
         ballPositions.loop();
         intake.loop();
+        nmfController.loop();
     }
 }
