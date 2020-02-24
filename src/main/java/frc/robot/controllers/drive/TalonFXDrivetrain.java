@@ -37,22 +37,18 @@ public class TalonFXDrivetrain extends Drivetrain {
 
         leftMotor1 = leftMotor1_;
         leftMotor1.configFactoryDefault();
-        // leftMotor1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
         leftMotor1.setNeutralMode(NeutralMode.Coast);
 
         leftMotor2 = leftMotor2_;
         leftMotor2.configFactoryDefault();
-        // leftMotor2.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
         leftMotor2.setNeutralMode(NeutralMode.Coast);
 
         rightMotor1 = rightMotor1_;
         rightMotor1.configFactoryDefault();
-        // rightMotor1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
         rightMotor1.setNeutralMode(NeutralMode.Coast);
 
         rightMotor2 = rightMotor2_;
         rightMotor2.configFactoryDefault();
-        // rightMotor2.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
         rightMotor2.setNeutralMode(NeutralMode.Coast);
 
         leftEncoderInterface = leftEncoderInterface_;
