@@ -2,6 +2,8 @@ package frc.robot.util;
 
 import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
 
+import edu.wpi.first.wpilibj.DriverStation;
+
 import java.util.*;
 
 import frc.robot.controllers.RobotController;
@@ -108,10 +110,10 @@ public class Context {
         'R', "#FF0000",
         'Y', "#FFFF00",
         'N', "#DDDDDD");
-    public static void setWOFTargetColor() { //Sets WOFTargetColor based on Driver Station
-        if(robotController.driverStation.getGameSpecificMessage().length() > 0) {
-            System.out.println(robotController.driverStation.getGameSpecificMessage().charAt(0));
-            char color = robotController.driverStation.getGameSpecificMessage().charAt(0);
+    public static void setWOFTargetColor() {
+        DriverStation ds = DriverStation.getInstance();
+        if(ds.getGameSpecificMessage().length() > 0) {
+            char color = ds.getGameSpecificMessage().charAt(0);
             if (WOFColors.containsKey(color)) {
                 WOFTargetColor = color;
             } else { //Corrupted

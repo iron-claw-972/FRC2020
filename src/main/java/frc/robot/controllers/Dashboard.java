@@ -1,4 +1,4 @@
-package frc.robot.shuffleboard;
+package frc.robot.controllers;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Timer;
@@ -133,7 +133,7 @@ public class Dashboard {
         // NMFEntry4.setBoolean(NMFArray[3]);
         // NMFEntry5.setBoolean(NMFArray[4]);
 
-        timeEntry.setString(Timer.getMatchTime() + " s");
+        timeEntry.setString(Math.max(0, (int) Math.ceil(Timer.getMatchTime())) + " s");
     }
 
     private static void configInit() {

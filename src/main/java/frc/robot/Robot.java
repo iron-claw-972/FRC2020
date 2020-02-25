@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.*;
 import frc.robot.controllers.AutoConfigs;
 import frc.robot.controllers.RobotController;
 import frc.robot.util.*;
-import frc.robot.shuffleboard.*;
+import frc.robot.controllers.*;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoMode.PixelFormat;
 import frc.robot.actions.*;
@@ -19,7 +19,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    Context.robotController = new RobotController();
+    //Context.robotController = new RobotController();
     robotStartTime = System.currentTimeMillis()/1000.0;
     //Context.robotController.compressor.start();
 
@@ -40,7 +40,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    Context.robotController.drivetrain.resetEncoders();
+    //Context.robotController.drivetrain.resetEncoders();
     origTime = System.currentTimeMillis();
 
     Context.robotController.sequentialScheduler.add(autoConfig.actionArray); 
@@ -56,14 +56,14 @@ public class Robot extends TimedRobot {
   public void teleopInit()
   {
     //Context.robotController.drivetrain.resetEncoders();
-    Context.robotController.initAll();
+    //Context.robotController.initAll();
   }
   
   @Override
 
   public void teleopPeriodic()
   {
-    Context.robotController.loopAll();
+    //Context.robotController.loopAll();
 
     double driverThrottle = Context.robotController.driverJoystick.getThrottle();
     double driverYaw = Context.robotController.driverJoystick.getYaw();
