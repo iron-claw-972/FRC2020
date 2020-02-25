@@ -13,7 +13,7 @@ public class JRADParameterTest {
     private double startTime;
 
     private final double FIRING_THRESHOLD = 0.2;
-    private final double RESET_VEL_THRESHOLD = 1;
+    private final double RESET_VEL_THRESHOLD = 0.1;
     private final int RESET_SAMPLES_THRESHOLD = 25;
     private final int MAX_STABLE_SAMPLES = 50;
 
@@ -119,17 +119,36 @@ public class JRADParameterTest {
         }
     }
 
+    boolean collecting;
+    double stableTime;
+
+    boolean clip;
+    double clipTime;
+    double stabilizeTime;
+
     private boolean checkReset() {
         if (Math.abs(currentVelocity - stableVelocity) <= RESET_VEL_THRESHOLD) {
+            if(!collecting) {
+                collecting = true;
+                stableTime = Context.getRelativeTime(startFiringTime);
+                if(!clip) {
+                    clipTime = Context.getRelativeTime(startFiringTime);
+                    clip = true;
+                }
+            }
             resetSamples++;
             if(resetSamples >= RESET_SAMPLES_THRESHOLD) {
                 firingBall = false;
-                riseTime = Context.getRelativeTime(startFiringTime) - dropTime;
+                collecting = false;
+                clip = false;
+                riseTime = stableTime - dropTime;
+                stabilizeTime = clipTime - stableTime;
                 return true;
             }
             return false;
         } else {
             resetSamples = 0;
+            collecting = false;
             return false;
         }
     }
@@ -150,13 +169,13 @@ public class JRADParameterTest {
     }
 
     private void printStatements() {
-        System.out.println("TOTAL TIME: " + totalFiringTime + " RISE TIME: " + riseTime);
+        System.out.println("TOTAL TIME: " + totalFiringTime + " RISE TIME: " + riseTime + " STABILIZE TIME: " + stabilizeTime);
         //System.out.println("DESIRED: " + shooterController.getDesiredVelocity() + " ACTUAL: " + ballFireVelocity + " ERROR: " + (shooterController.getDesiredVelocity() - ballFireVelocity));
         System.out.println(/*"LOAD RATIO: " + loadRatio + */" ERROR: " + error + " DESIRED: " + Math.abs(shooterController.getDesiredVelocity()));
         //System.out.println("Constant: " + sol[0] + " Ratio: " + sol[1]);
         //System.out.println("LR: " + Arrays.toString(LRPoints.toArray()));
         //System.out.println("DesiredPoints: " + Arrays.toString(DesiredPoints.toArray()));
-        //System.out.println("STABLE VELOCITY: " + stableVelocity + " LOWEST VELOCITY: " + lowestVelocity);
+        System.out.println("STABLE VELOCITY: " + stableVelocity + " LOWEST VELOCITY: " + lowestVelocity);
     }
 
     public ArrayList<Double> LRPoints = new ArrayList<>();

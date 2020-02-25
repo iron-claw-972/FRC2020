@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.*;
 import frc.robot.controllers.ShooterController;
 import frc.robot.util.JRADParameterTest;
 import frc.robot.util.MotorParameterTest;
+import frc.robot.util.Context;
 
 
 public class Robot extends TimedRobot {
@@ -49,13 +50,19 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    testNeen++;
     testCon1.startShooting();
     testCon2.startShooting();
+    revUp = false;
+    startTime = System.currentTimeMillis();
   }
 
+  boolean revUp;
+  double THR = 0.05;
+  long startTime;
+  double revTime;
+
   int testNeen;
-  double setSpeed = 6;
+  double setSpeed = 10.5;
   double speedStep = 0.1;
   double kPStep = 0.01;
   double kTStep = 0.01;
@@ -125,7 +132,14 @@ public class Robot extends TimedRobot {
     double loadRatio2 = testCon2.kLoadRatio * (testCon2.loadRatioConstant + testCon2.loadRatioRate * Math.abs(testCon2.getDesiredVelocity()));
     System.out.println("Set: " + setSpeed);
     System.out.println("Real set speed: " + loadRatio2 * Math.abs(testCon2.getDesiredVelocity()));
-    System.out.println((loadRatio2*testCon2.getDesiredVelocity() - testCon2.flywheelVelocity()));
+    double error = loadRatio2*testCon2.getDesiredVelocity() - testCon2.flywheelVelocity();
+    System.out.println(error);
+    if(Math.abs(error) < THR && !revUp) {
+      revTime = Context.getRelativeTime(startTime);
+      revUp = true;
+    } else if(revUp) {
+      System.out.println("REV TIME: " + revTime);
+    }
     //System.out.println(testCon2.flywheelRPM());
     //System.out.println("break");
     //System.out.println("2 - DESIRED VEL: " + 2*testCon2.getDesiredVelocity() + " SET VEL: " + testCon2.getSetVelocity() + " TRUE VEL: " + testCon2.flywheelVelocity());

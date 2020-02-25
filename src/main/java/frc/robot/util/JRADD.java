@@ -55,7 +55,11 @@ public class JRADD {
         //JRAD Math
         loadRatio = loadRatioConstant + loadRatioRate * Math.abs(setpoint);
         updateValue = kF * setpoint + updateValue + kI * dt * (kLoadRatio * loadRatio * setpoint - actual);
-        proportional = kF/((1 - kT) * kLoadRatio * loadRatio);
+        if(kT < 1) {
+            proportional = kF/((1 - kT) * kLoadRatio * loadRatio);
+        } else {
+            proportional = 1;
+        }
         output = updateValue + kP * proportional * (kT * kLoadRatio * loadRatio * setpoint - actual);
         //System.out.println("proportional: " + proportional + " output: " + output + " updateValue: " + updateValue + " loadRatio: " + loadRatio + " setpoint: " + (kLoadRatio * loadRatio * setpoint));
         return output;
