@@ -28,13 +28,6 @@ public abstract class Drivetrain {
   }
 
   public void arcadeDrive(double power, double turn) {
-    // Edge case protection
-    if (power == -0.0) {
-      power = 0.0;
-    }
-    if (turn == -0.0) {
-      turn = 0.0;
-    }
     power = MathUtil.clamp(power, -1.0, 1.0);
     turn = MathUtil.clamp(turn, -1.0, 1.0);
 
@@ -67,13 +60,6 @@ public abstract class Drivetrain {
   }
 
   public void curvatureDrive(double power, double turn, boolean isQuickTurn) {
-    // Edge case protection
-    if (power == -0.0) {
-      power = 0.0;
-    }
-    if (turn == -0.0) {
-      turn = 0.0;
-    }
     power = MathUtil.clamp(power, -1.0, 1.0);
     turn = MathUtil.clamp(turn, -1.0, 1.0);
 
