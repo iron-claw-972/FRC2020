@@ -105,7 +105,7 @@ public class VisionAlign extends Action {
         pastTime = currentTime;        
     }
 
-    public void grabLimelightData() {
+    private void grabLimelightData() {
         // Grabs the Limelight data from the NetworkTables interface
         tx = Context.robotController.ntInterface.tx;
         ty = Context.robotController.ntInterface.ty;
@@ -125,7 +125,7 @@ public class VisionAlign extends Action {
         return drivePower;
     }
 
-    private void localizeRotation() {
+    public void localizeRotation() {
         // When the robot is facing the target, the angle is recorded for later NavX based tracking
         if(Math.abs(tx) <= Context.alignmentThreshold && targetFound) {
             navXYawOffset = Context.robotController.navX.getRawHeading();

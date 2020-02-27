@@ -12,19 +12,20 @@ public class AlignTest
     @Before
     public void setup()
     {
+        VisionAlign testVision = new VisionAlign();
         Context.robotController = mock(RobotController.class);
         when(Context.alignmentThreshold).thenReturn(0.0);
-        VisionAlign testVision = new VisionAlign();
+        when(Context.robotController.navX.getRawHeading()).thenReturn(0.0);
         when(Context.robotController.ntInterface.tx).thenReturn(0.0);
         when(Context.robotController.ntInterface.ty).thenReturn(0.0);
-        testVision.grabLimelightData();
+        when(Context.robotController.ntInterface.targetAcquired).thenReturn(true);
         
     }
 
     @Test
     public void localizationTest()
     {
-
+        
 
     }
 
