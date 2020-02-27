@@ -19,29 +19,33 @@ public class NMFControllerTest {
 
     public NMFController NMFController;
 
-    public double leftSpeed;
-    public double rightSpeed;
+    public double NMFSpeed;
+    public double omniSpeed;
     public final double NMFCurrentToSpeedRatio = 8;
     public final double NMFMaxAccel = 2;
     public final double omniCurrentToSpeedRatio = 8;
     public final double omniMaxAccel = 2;
 
-    public PIDF leftTestPIDF;
-    public PIDF rightTestPIDF;
+    public PIDF NMFTestPIDF;
+    public PIDF omniTestPIDF;
 
     public final double totalTime = 100;
     public final double deltaTime = 0.02;
 
     public void setup() {
-        leftTestPIDF = NeoDrivetrain.leftDrivePIDF;
-        rightTestPIDF = NeoDrivetrain.rightDrivePIDF;
+        NMFTestPIDF = NeoDrivetrain.leftDrivePIDF;
+        omniTestPIDF = NeoDrivetrain.rightDrivePIDF;
 
         doAnswer(invocation -> {
-            return leftSpeed;
+            return NMFSpeed;
         }).when(NMFEncoder).getVelocity();
 
         doAnswer(invocation -> {
-            return rightSpeed;
+            return omniSpeed;
+        }).when(omniEncoder).getVelocity();
+
+        doAnswer(invocation -> {
+            return NMFEncoder;
         }).when(NMFSpark).getEncoder();
 
         doAnswer(invocation -> {
@@ -51,14 +55,14 @@ public class NMFControllerTest {
         doAnswer(invocation -> {
             Double input = invocation.getArgument(0, Double.class);
             double setpoint = NMFCurrentToSpeedRatio*input;
-            leftSpeed += (AdditionalMath.isInRange(leftSpeed, setpoint - 0.1, setpoint + 0.1, false)) ? Math.signum(setpoint - leftSpeed)*NMFMaxAccel*input : 0;
+            NMFSpeed += (AdditionalMath.isInRange(NMFSpeed, setpoint - 0.1, setpoint + 0.1, false)) ? Math.signum(setpoint - NMFSpeed)*NMFMaxAccel*input : 0;
             return null;
         }).when(omniSpark).set(any(Double.class));
 
         doAnswer(invocation -> {
             Double input = invocation.getArgument(0, Double.class);
             double setpoint = -omniCurrentToSpeedRatio*input;
-            leftSpeed += (AdditionalMath.isInRange(rightSpeed, setpoint - 0.1, setpoint + 0.1, false)) ? Math.signum(setpoint - rightSpeed)*NMFMaxAccel*input : 0;
+            omniSpeed += (AdditionalMath.isInRange(omniSpeed, setpoint - 0.1, setpoint + 0.1, false)) ? Math.signum(setpoint - omniSpeed)*NMFMaxAccel*input : 0;
             return null;
         }).when(omniSpark).set(any(Double.class));
 
@@ -66,7 +70,7 @@ public class NMFControllerTest {
     }
 
     public void testSetSpeed1() {
-
+        for
     }
 
     
