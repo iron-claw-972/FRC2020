@@ -2,6 +2,9 @@ package frc.robot.controllers;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
@@ -21,6 +24,8 @@ import frc.robot.execution.ParallelScheduler;
 import frc.robot.execution.SequentialScheduler;;
 
 public class RobotController {
+    public CANSparkMax telescopeMotor;
+    public TalonSRX coilMotor;
     public TalonFXDrivetrain drivetrain;
     public AutoDrive autoDrive;
     public NavX navX;
@@ -31,6 +36,8 @@ public class RobotController {
     public ShooterController shooterController;
     public Intake intake;
     public OpticalLocalization opticalLocalization;
+    public Climber climber;
+  
     public SequentialScheduler sequentialScheduler;
     public ParallelScheduler parallelScheduler;
     public NMFController nmfController;
@@ -74,6 +81,8 @@ public class RobotController {
 
         //----- Controllers -----
         /* Change this line when using a different drive train. Don't forget to change the motor ids in context */
+        telescopeMotor = new CANSparkMax(Context.climberMotorID, MotorType.kBrushless);
+        coilMotor = new TalonSRX (Context.climberMotorID);
         drivetrain = new TalonFXDrivetrain(leftDriveMotor1, leftDriveMotor2, rightDriveMotor1, rightDriveMotor2, leftDriveEncoderInterface, rightDriveEncoderInterface);
         autoDrive = new AutoDrive();
         navX = new NavX(new AHRS(SPI.Port.kMXP));
@@ -83,6 +92,7 @@ public class RobotController {
         intake = new Intake(intakeTalon, intakeFlipSolenoid);
         nmfController = new NMFController(nmfNeo, omniNeo);
         opticalLocalization = new OpticalLocalization();
+        climber = new Climber(coilMotor, telescopeMotor);
         sequentialScheduler = new SequentialScheduler();
 
         driverStation = DriverStation.getInstance();
