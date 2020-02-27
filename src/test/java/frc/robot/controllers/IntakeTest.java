@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.motorcontrol.*;
 import edu.wpi.first.wpilibj.*;
+import frc.robot.util.Context;
 
 public class IntakeTest
 {
@@ -26,7 +27,6 @@ public class IntakeTest
     // @Before allows for the setup() method to be called before any other methods
     @Before
     public void setup() {
-        // Basically replaces the .set() method for mock Spark with 
         // method that puts input into variable for testing
         doAnswer(invocation -> {
             Double power = invocation.getArgument(1, Double.class);
@@ -44,24 +44,26 @@ public class IntakeTest
     // Test that ensures that coil method increases coil motor power to 0.5
     @Test
     public void flipOutTest() {
-        
+        assert(true);
     }
 
     // Test that ensures that coil method increases coil motor power to 0.5
     @Test
     public void flipInTest() {
-        
+        assert(true);
     }
 
     // Test that ensures that coil method increases coil motor power to 0.5
     @Test
     public void beginIntakingTest() {
-        
+        intake.beginIntaking();
+        assertEquals(intake.setSpeed, intake.intakingSpeed, .1);
     }
 
     // Test that ensures that coil method increases coil motor power to 0.5
     @Test
     public void stopIntakingTest() {
-        
+        intake.stopIntaking();
+        assertEquals(intake.setSpeed, 0, .1);
     }
 }

@@ -60,4 +60,12 @@ public class DriverJoystick {
             triggers.add(trigger);
         }
     }
+
+    public boolean getClimbU() {
+        return joystick.getRawButton(Context.climbButtonUp);
+    }
+
+    public boolean getClimbD() {
+        return joystick.getRawButton(Context.climbButtonDown);
+    }
 }
