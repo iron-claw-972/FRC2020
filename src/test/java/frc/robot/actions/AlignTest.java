@@ -12,20 +12,19 @@ public class AlignTest
     @Before
     public void setup()
     {
-        VisionAlign testVision = new VisionAlign();
         Context.robotController = mock(RobotController.class);
-        when(Context.alignmentThreshold).thenReturn(0.0);
         when(Context.robotController.navX.getRawHeading()).thenReturn(0.0);
-        when(Context.robotController.ntInterface.tx).thenReturn(0.0);
-        when(Context.robotController.ntInterface.ty).thenReturn(0.0);
-        when(Context.robotController.ntInterface.targetAcquired).thenReturn(true);
+        Context.robotController.ntInterface.tx = 0.0;
+        Context.robotController.ntInterface.ty = 0.0;
+        Context.robotController.ntInterface.targetAcquired = true;
         
     }
 
     @Test
     public void localizationTest()
     {
-        
+        VisionAlign testVision = new VisionAlign();
+        assertEquals((int)testVision.rotationLocalized, 0, 0.1);
 
     }
 
