@@ -5,10 +5,15 @@ import frc.robot.util.Context;
 import frc.robot.util.PID;
 import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.motorcontrol.*;
+import frc.robot.util.*;
 
 public class ShooterController {
 
-    private PID velocityPID;
+    private final double kF = 0;
+    private final double kI = 0;
+    private final double kLoadRatio = 0;
+
+    private JRAD velocityJRAD;
 
     private double time; //time that has passed since start
     private double lastTime; //time of last update
@@ -20,34 +25,36 @@ public class ShooterController {
     private double setVelocity; //the velocity to which the flywheel is being set
     private double setCurrent; //current that will be passed to motor controller (PercentOutput)
 
-    private TalonSRX shooterTalon;
+    private TalonFX shooterTalon;
 
     private final double minCurrent = 0; //minimum current needed for flywheel motor to overcome friction, etc. (to go into motion)
     private final double speedToCurrentRate = 0; //the linear conversion rate between a velocity and necessary current
     
-    private final double RADIUS = 0;
+    //Measurements in meters
+    private double M_SHOOTING_RADIUS;
 
     public ShooterController() {
         //initialize parameters
-        shooterTalon = new TalonSRX(1);
-        shooterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
-        velocityPID = new PID(0, 0, 0); //need tuning
-        startTime = System.currentTimeMillis();
+        shooterTalon = new TalonFX(Context.shooterMotorID);
+        shooterTalon.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        velocityJRAD = new JRAD(kF, kI, kLoadRatio); //need tuning
+        M_SHOOTING_RADIUS = Context.M_FLYWHEEL_RADIUS + Context.M_BALL_DIAMETER/2;
+        startTime = System.currentTimeMillis()/1000;
     }
 
     private void updateParameters() {
         //updates all necessary
-        actualVelocity = flywheelVelocity();
+        actualVelocity = flywheelVelocity()/2; //accounts for fact that ball rolls on inside of hood
         lastTime = time;
-        time = Context.getRelativeTime(startTime);
+        time = Context.getRelativeTimeSeconds(startTime);
         deltaTime = time - lastTime;
-        setVelocity = velocityPID.update(desiredVelocity, actualVelocity, deltaTime);
+        setVelocity = velocityJRAD.update(desiredVelocity, actualVelocity, deltaTime);
     }
 
     private void updateVelocity() {
         //passes input to motor controller
-        setCurrent = speedConverter(setVelocity);
-        shooterTalon.set(ControlMode.PercentOutput, setCurrent);
+        setCurrent = AdditionalMath.Clamp(speedConverter(setVelocity), -0.8, 0.8);
+        shooterTalon.set(ControlMode.PercentOutput, -setCurrent); //Sign depends on motor orientation
     }
 
     public void loop() {
@@ -68,10 +75,19 @@ public class ShooterController {
         //speedToCurrentRate, minCurrent calculated via linear regression (best fit)
     }
 
-    private double flywheelVelocity() {
+    public double flywheelVelocity() {
         //get the linear speed of the flywheel
-        return RADIUS * shooterTalon.getSensorCollection().getQuadratureVelocity();
+        //Sensor output is clicks/0.1s
+        return M_SHOOTING_RADIUS * 2 * Math.PI * 10 * shooterTalon.getSelectedSensorVelocity()/Context.FALCON_ENCODER_CPR;
     }
 
+    public double flywheelRPM() {
+        //get the RPM of the flywheel
+        return 600 * shooterTalon.getSelectedSensorVelocity()/2048;
+    }
+    
+    public double getDesiredVelocity() {
+        return desiredVelocity;
+    }
 
 }

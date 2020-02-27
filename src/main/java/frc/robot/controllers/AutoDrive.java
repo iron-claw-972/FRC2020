@@ -1,5 +1,6 @@
 package frc.robot.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.acmerobotics.roadrunner.control.PIDCoefficients;
@@ -46,7 +47,10 @@ public class AutoDrive {
         
             @Override
             public List<Double> getWheelPositions() {
-                return null;
+                List<Double> output = new ArrayList<Double>();
+                output.add(Context.robotController.drivetrain.getLeftDist());
+                output.add(Context.robotController.drivetrain.getRightDist());
+                return output;
             }
         };
 
