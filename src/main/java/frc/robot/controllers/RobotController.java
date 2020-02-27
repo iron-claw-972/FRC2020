@@ -79,7 +79,7 @@ public class RobotController {
         navX = new NavX(new AHRS(SPI.Port.kMXP));
         ntInterface = new NetworktablesInterface();
         driverJoystick = new DriverJoystick();
-        visionAllignment = new VisionAllignment();
+        //visionAllignment = new VisionAllignment();
         intake = new Intake(intakeTalon, intakeFlipSolenoid);
         nmfController = new NMFController(nmfNeo, omniNeo);
         opticalLocalization = new OpticalLocalization();
