@@ -6,8 +6,8 @@ import frc.robot.util.*;
 
 public class NeoDrivetrain extends Drivetrain {
     private CANSparkMax leftMotor1, leftMotor2, rightMotor1, rightMotor2;
-    private static PIDF leftDrivePIDF = new PIDF(0.2, 0, 0, 0.4);
-    private static PIDF rightDrivePIDF = new PIDF(0.2, 0, 0, 0.4);
+    public static PIDF leftDrivePIDF = new PIDF(0.2, 0, 0, 0.4);
+    public static PIDF rightDrivePIDF = new PIDF(0.2, 0, 0, 0.4);
 
     // Gearbox Calculations
     private final double neoDriveWheelDiameter = 0.1; // meters
