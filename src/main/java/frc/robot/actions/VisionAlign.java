@@ -105,7 +105,7 @@ public class VisionAlign extends Action {
         pastTime = currentTime;        
     }
 
-    private void grabLimelightData() {
+    public void grabLimelightData() {
         // Grabs the Limelight data from the NetworkTables interface
         tx = Context.robotController.ntInterface.tx;
         ty = Context.robotController.ntInterface.ty;
