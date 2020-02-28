@@ -3,13 +3,7 @@ package frc.robot.controllers;
 // import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.util.Context;
 import frc.robot.util.PID;
-import com.ctre.phoenix.motorcontrol.can.*;
-import com.ctre.phoenix.motorcontrol.*;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color;
  
 import com.revrobotics.*;
 

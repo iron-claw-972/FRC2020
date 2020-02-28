@@ -1,12 +1,6 @@
 package frc.robot.controllers;
 
-// import edu.wpi.first.wpilibj.Encoder;
-import frc.robot.util.Context;
-import frc.robot.util.PID;
-import com.ctre.phoenix.motorcontrol.can.*;
-import com.ctre.phoenix.motorcontrol.*;
 import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
  
 import com.revrobotics.*;
