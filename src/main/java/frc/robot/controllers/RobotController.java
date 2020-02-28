@@ -72,9 +72,6 @@ public class RobotController {
         omniNeo = new CANSparkMax(Context.omniSparkID, MotorType.kBrushless);
         nmfNeo = new CANSparkMax(Context.nmfSparkID, MotorType.kBrushless);
         intakeTalon = new TalonSRX(Context.intakeMotorId);
-        
-        telescopeMotor = new CANSparkMax(Context.climberMotorID, MotorType.kBrushless);
-        coilMotor = new TalonSRX (Context.climberMotorID);
 
         //----- Pneumatics -----
         intakeFlipSolenoid = new DoubleSolenoid(Context.intakeFlipChannelA, Context.intakeFlipChannelB);
@@ -84,6 +81,8 @@ public class RobotController {
 
         //----- Controllers -----
         /* Change this line when using a different drive train. Don't forget to change the motor ids in context */
+        telescopeMotor = new CANSparkMax(Context.climberMotorID, MotorType.kBrushless);
+        coilMotor = new TalonSRX (Context.climberMotorID);
         drivetrain = new TalonFXDrivetrain(leftDriveMotor1, leftDriveMotor2, rightDriveMotor1, rightDriveMotor2, leftDriveEncoderInterface, rightDriveEncoderInterface);
         autoDrive = new AutoDrive();
         navX = new NavX(new AHRS(SPI.Port.kMXP));
