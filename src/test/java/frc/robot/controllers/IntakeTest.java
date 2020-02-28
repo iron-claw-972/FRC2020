@@ -17,7 +17,7 @@ public class IntakeTest
 {
     // Declaration of variables used to store inputs to motors
     public double intakeTalonPower = 0;
-    public double flipSolenoidPower = 0;
+    public Object flipSolenoidPower = 0;
 
     // Creation of mock sparks and putting them into NeoDrivetrain
     public DoubleSolenoid flipSolenoid = mock(DoubleSolenoid.class);
@@ -35,8 +35,8 @@ public class IntakeTest
         }).when(intakeTalon).set(eq(ControlMode.PercentOutput), any(Double.class));
 
         doAnswer(invocation -> {
-            Double power = invocation.getArgument(0, Double.class);
-            flipSolenoidPower = power.doubleValue();
+            Object power = invocation.getArgument(0, Object.class);
+            flipSolenoidPower = power;
             return null;
         }).when(flipSolenoid).set(any());
     }
@@ -44,13 +44,15 @@ public class IntakeTest
     // Test that ensures that coil method increases coil motor power to 0.5
     @Test
     public void flipOutTest() {
-        assert(true);
+        intake.flipOut();
+        assertEquals(flipSolenoidPower, DoubleSolenoid.Value.kForward);
     }
 
     // Test that ensures that coil method increases coil motor power to 0.5
     @Test
     public void flipInTest() {
-        assert(true);
+        intake.flipIn();
+        assertEquals(flipSolenoidPower, DoubleSolenoid.Value.kReverse);
     }
 
     // Test that ensures that coil method increases coil motor power to 0.5
