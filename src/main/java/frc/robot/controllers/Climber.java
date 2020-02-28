@@ -3,7 +3,6 @@ package frc.robot.controllers;
 import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.util.*;
 
 public class Climber

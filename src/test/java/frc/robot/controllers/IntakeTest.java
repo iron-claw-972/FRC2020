@@ -6,12 +6,9 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import org.junit.*;
-import com.revrobotics.CANSparkMax;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.*;
-import com.ctre.phoenix.motorcontrol.*;
 import edu.wpi.first.wpilibj.*;
-import frc.robot.util.Context;
 
 public class IntakeTest
 {
