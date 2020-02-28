@@ -8,17 +8,19 @@ import frc.robot.util.*;
 
 public class Climber
 {
-    public TalonSRX coilMotor;
+    public TalonSRX coilMotor1;
+    public TalonSRX coilMotor2;
     public CANSparkMax telescopeMotor;
     PID liftPID;
     long pastTime;
     double desiredPosition;
 
     //Initializes Climber with Talon SRX motor, CANSparkMax, PID for the telescope, and initial time
-    public Climber(TalonSRX coilMotor_, CANSparkMax telescopeMotor_){
-        coilMotor = coilMotor_;
+    public Climber(TalonSRX coilMotor1_, TalonSRX coilMotor2_, CANSparkMax telescopeMotor_){
+        coilMotor1 = coilMotor1_;
+        coilMotor2 = coilMotor2_;
         telescopeMotor = telescopeMotor_;
-        liftPID = new PID(1, 0, 0); //Not tuned & not used
+        liftPID = new PID(.2, 0, 0); //Not tuned & not used
         pastTime = System.currentTimeMillis();
 
     }
@@ -29,16 +31,18 @@ public class Climber
 
     //Spins the motor to coil the winch
     public void coil(){
-        coilMotor.set(ControlMode.PercentOutput, Context.coilSpeed);
+        coilMotor1.set(ControlMode.PercentOutput, Context.coilSpeed);
+        coilMotor2.set(ControlMode.PercentOutput, Context.coilSpeed);
     }
 
     //Spins the motor to uncoil the winch
     public void uncoil(){
-        coilMotor.set(ControlMode.PercentOutput, Context.uncoilSpeed);
+        coilMotor1.set(ControlMode.PercentOutput, Context.uncoilSpeed);
+        coilMotor2.set(ControlMode.PercentOutput, Context.uncoilSpeed);
     }
 
     //Loop to react to button press
-    public double loop() {
+    public void loop() {
         //Finds current encoder value of the wheel, the current time and the change in time since the last run
         double currentPosition = telescopeMotor.getEncoder().getPosition();
         long currentTime = System.currentTimeMillis();
@@ -46,7 +50,8 @@ public class Climber
         //depending on button press sets desired position and updates the PID for the power
         if (Context.robotController.driverJoystick.getClimbU())
         {
-            desiredPosition = 1;
+            desiredPosition = 5;
+            uncoil();
         }
         else if (Context.robotController.driverJoystick.getClimbD())
         {
@@ -57,6 +62,5 @@ public class Climber
         telescopeMove(pidVal);
         //updates the past time for next loop
         pastTime = currentTime;
-        return pidVal;
     }
 }

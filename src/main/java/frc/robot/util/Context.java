@@ -66,7 +66,9 @@ public class Context {
     public static final int omniSparkID = -1;
 
     //----- Climbing System -----
-    public static final int climberMotorID = 10;
+    public static final int climberMotorID = 15;
+    public static final int coilMotor1 = 5;
+    public static final int coilMotor2 = 6;
     public static final double coilSpeed = 0.5;
     public static final double uncoilSpeed = -0.5;
 
