@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.*;
 import frc.robot.controllers.RobotController;
+import frc.robot.controllers.RobotValidator;
 import frc.robot.util.*;
 import frc.robot.shuffleboard.*;
 import edu.wpi.cscore.UsbCamera;
@@ -77,5 +78,10 @@ public class Robot extends TimedRobot {
     Context.robotController.climber.loop();  
     Context.setWOFTargetColor();
 
+  }
+
+  public void testInit() {
+    RobotValidator robotValidator = new RobotValidator();
+    robotValidator.runTests();
   }
 }

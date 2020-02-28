@@ -125,4 +125,9 @@ public class Context {
             WOFTargetColor = 'N';
         }
     }
+
+    //----- Firmware Versions -----
+    public static final int latestFalconFirmware = 20302; // 20.3.0.2 CRF, updated 27Feb20
+    public static final int latestTalonFirmware = 202; // 20.2 CRF, updated 27Feb20
+    public static final int latestVictorFirmware = 201; // 20.1 CRF, updated 27Feb20
 }
