@@ -67,8 +67,8 @@ public class Context {
 
     //----- Climbing System -----
     public static final int climberMotorID = 15;
-    public static final int coilMotor1 = 5;
-    public static final int coilMotor2 = 6;
+    public static final int coilMotor1ID = 5;
+    public static final int coilMotor2ID = 6;
     public static final double coilSpeed = 0.5;
     public static final double uncoilSpeed = -0.5;
 

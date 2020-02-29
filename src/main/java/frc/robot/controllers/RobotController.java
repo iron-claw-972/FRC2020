@@ -43,7 +43,7 @@ public class RobotController {
     public ParallelScheduler parallelScheduler;
     public NMFController nmfController;
 
-    public TalonFX leftDriveMotor1;
+    public TalonSRX leftDriveMotor1;
     public TalonFX leftDriveMotor2;
     public TalonFX rightDriveMotor1;
     public TalonFX rightDriveMotor2;
@@ -63,7 +63,7 @@ public class RobotController {
 
     public RobotController () {
         //----- Motors -----
-        leftDriveMotor1 = new TalonFX(Context.leftMotor1ID);
+        leftDriveMotor1 = new TalonSRX(Context.leftMotor1ID);
         leftDriveMotor2 = new TalonFX(Context.leftMotor2ID);
         rightDriveMotor1 = new TalonFX(Context.rightMotor1ID);
         rightDriveMotor2 = new TalonFX(Context.rightMotor2ID);
@@ -83,9 +83,9 @@ public class RobotController {
         //----- Controllers -----
         /* Change this line when using a different drive train. Don't forget to change the motor ids in context */
         telescopeMotor = new CANSparkMax(Context.climberMotorID, MotorType.kBrushless);
-        coilMotor1 = new TalonSRX (Context.coilMotor1);
-        coilMotor2 = new TalonSRX (Context.coilMotor2);
-        drivetrain = new TalonFXDrivetrain(leftDriveMotor1, leftDriveMotor2, rightDriveMotor1, rightDriveMotor2, leftDriveEncoderInterface, rightDriveEncoderInterface);
+        coilMotor1 = new TalonSRX (Context.coilMotor1ID);
+        coilMotor2 = new TalonSRX (Context.coilMotor2ID);
+        //drivetrain = new TalonFXDrivetrain(leftDriveMotor1, leftDriveMotor2, rightDriveMotor1, rightDriveMotor2, leftDriveEncoderInterface, rightDriveEncoderInterface);
         autoDrive = new AutoDrive();
         navX = new NavX(new AHRS(SPI.Port.kMXP));
         ntInterface = new NetworktablesInterface();
@@ -93,7 +93,7 @@ public class RobotController {
         intake = new Intake(intakeTalon, intakeFlipSolenoid);
         nmfController = new NMFController(nmfNeo, omniNeo);
         opticalLocalization = new OpticalLocalization();
-        climber = new Climber(coilMotor1, coilMotor2, telescopeMotor);
+        climber = new Climber(coilMotor1, coilMotor2, leftDriveMotor1, telescopeMotor);
         sequentialScheduler = new SequentialScheduler();
 
         driverStation = DriverStation.getInstance();
@@ -102,6 +102,7 @@ public class RobotController {
     }
 
     public void initAll() {
+        climber.resetClimbEncoder();
     }
 
     public void loopAll() {

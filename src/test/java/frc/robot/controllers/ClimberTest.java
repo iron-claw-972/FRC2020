@@ -14,12 +14,15 @@ public class ClimberTest
 {
     // Declaration of variables used to store inputs to motors
     public double telescopePower = 0;
-    public double coilPower = 0;
+    public double coil1Power = 0;
+    public double coil2Power = 0;
 
     // Creation of mock sparks and putting them into NeoDrivetrain
     public CANSparkMax telescope = mock(CANSparkMax.class);
-    public TalonSRX coil = mock(TalonSRX.class);
-    public Climber climb = new Climber(coil, telescope);
+    public TalonSRX coil1 = mock(TalonSRX.class);
+    public TalonSRX coil2 = mock(TalonSRX.class);
+    public TalonSRX telescopeEncoderMotor = mock(TalonSRX.class);
+    public Climber climb = new Climber(coil1, coil2, telescopeEncoderMotor, telescope);
 
     // @Before allows for the setup() method to be called before any other methods
     @Before
@@ -34,16 +37,22 @@ public class ClimberTest
 
         doAnswer(invocation -> {
             Double power = invocation.getArgument(1, Double.class);
-            coilPower = power.doubleValue();
+            coil1Power = power.doubleValue();
             return null;
-        }).when(coil).set(eq(ControlMode.PercentOutput), any(Double.class));
+        }).when(coil1).set(eq(ControlMode.PercentOutput), any(Double.class));
+
+        doAnswer(invocation -> {
+            Double power = invocation.getArgument(1, Double.class);
+            coil2Power = power.doubleValue();
+            return null;
+        }).when(coil2).set(eq(ControlMode.PercentOutput), any(Double.class));
     }
 
     // Test that ensures that coil method increases coil motor power to 0.5
     @Test
     public void coilUpTest() {
         climb.coil();
-        double finalValue = coilPower;
+        double finalValue = coil1Power;
         assertEquals(finalValue, 0.5, 0.1);
     }
 
@@ -51,7 +60,7 @@ public class ClimberTest
     @Test
     public void coilDownTest() {
         climb.uncoil();
-        double finalValue = coilPower;
+        double finalValue = coil1Power;
         assertEquals(finalValue, -0.5, 0.1);
     }
 }
