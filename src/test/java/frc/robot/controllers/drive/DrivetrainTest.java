@@ -76,7 +76,7 @@ public class DrivetrainTest {
         assertEquals(0.0, drivetrain.leftSignal, 0.0);
         assertEquals(0.0, drivetrain.rightSignal, 0.0);
 
-        drivetrain.arcadeDrive(-0.0, -0.0);
+        drivetrain.arcadeDrive(-0, -0);
         assertEquals(0.0, drivetrain.leftSignal, 0.0);
         assertEquals(0.0, drivetrain.rightSignal, 0.0);
 
@@ -91,6 +91,43 @@ public class DrivetrainTest {
         drivetrain.arcadeDrive(0, 1);
         assertEquals(Context.maxDrivingSpeed, drivetrain.leftSignal, 0.0);
         assertEquals(-Context.maxDrivingSpeed, drivetrain.rightSignal, 0.0);
+
+        drivetrain.arcadeDrive(-0, -1);
+        assertEquals(-Context.maxDrivingSpeed, drivetrain.leftSignal, 0.0);
+        assertEquals(Context.maxDrivingSpeed, drivetrain.rightSignal, 0.0);
+    }
+
+    @Test
+    public void testCurvatureDrive() {
+        drivetrain.curvatureDrive(0, 0, false);
+        assertEquals(0, drivetrain.leftSignal, 0.0);
+        assertEquals(0, drivetrain.rightSignal, 0.0);
+        drivetrain.resetQuickStopAccum();
+
+        drivetrain.curvatureDrive(0, 1, true);
+        assertEquals(Context.maxDrivingSpeed, drivetrain.leftSignal, 0.0);
+        assertEquals(-Context.maxDrivingSpeed, drivetrain.rightSignal, 0.0);
+        drivetrain.resetQuickStopAccum();
+
+        drivetrain.curvatureDrive(-0, -0, false);
+        assertEquals(0.0, drivetrain.leftSignal, 0.0);
+        assertEquals(0.0, drivetrain.rightSignal, 0.0);
+        drivetrain.resetQuickStopAccum();
+
+        drivetrain.curvatureDrive(1, 0, true);
+        assertEquals(Context.maxDrivingSpeed, drivetrain.leftSignal, 0.0);
+        assertEquals(Context.maxDrivingSpeed, drivetrain.rightSignal, 0.0);
+        drivetrain.resetQuickStopAccum();
+
+        drivetrain.curvatureDrive(-10000, 0, true);
+        assertEquals(-Context.maxDrivingSpeed, drivetrain.leftSignal, 0.0);
+        assertEquals(-Context.maxDrivingSpeed, drivetrain.rightSignal, 0.0);
+        drivetrain.resetQuickStopAccum();
+
+        drivetrain.curvatureDrive(-0, -1, true);
+        assertEquals(-Context.maxDrivingSpeed, drivetrain.leftSignal, 0.0);
+        assertEquals(Context.maxDrivingSpeed, drivetrain.rightSignal, 0.0);
+        drivetrain.resetQuickStopAccum();
     }
 
 }
