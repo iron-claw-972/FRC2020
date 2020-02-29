@@ -116,6 +116,13 @@ public abstract class Drivetrain {
     tankDrivePIDF(leftMotorOutput * Context.maxDrivingSpeed, rightMotorOutput * Context.maxDrivingSpeed);
   }
 
+  /**
+   * Quick stop accum messes up unit test. Must be reset to give predictable results
+   */
+  public void resetQuickStopAccum() {
+    m_quickStopAccumulator = 0;
+  }
+
   public void tankDrivePIDF(double leftGoalPower, double rightGoalPower) {
     double deltaTime = (double)(System.currentTimeMillis() - pastTime);
 
