@@ -1,10 +1,7 @@
 package frc.robot.actions;
-
 import static org.junit.Assert.*;
 import org.junit.*;
-
 import static org.mockito.Mockito.*;
-
 import frc.robot.controllers.NavX;
 import frc.robot.controllers.NetworktablesInterface;
 import frc.robot.controllers.RobotController;
