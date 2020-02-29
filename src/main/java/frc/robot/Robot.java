@@ -20,6 +20,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     Context.robotController = new RobotController();
     robotStartTime = System.currentTimeMillis()/1000.0;
+    /*
     Context.robotController.compressor.start();
 
     camera = edu.wpi.first.cameraserver.CameraServer.getInstance().startAutomaticCapture();
@@ -30,23 +31,24 @@ public class Robot extends TimedRobot {
       new Trigger(Context.toggleTrack, new VisionAlign()),
       new Trigger(Context.shiftGearsButtonID, new ShiftGears())
     });
+    */
   }
 
   @Override
   public void robotPeriodic() {
-    Dashboard.update();
+    //Dashboard.update();
   }
 
   @Override
   public void autonomousInit() {
-    Context.robotController.drivetrain.resetEncoders();
-    origTime = System.currentTimeMillis();
+    //Context.robotController.drivetrain.resetEncoders();
+    //origTime = System.currentTimeMillis();
     //Context.robotController.autoDrive.startSpline();
   }
 
   @Override
   public void autonomousPeriodic() {
-    Context.robotController.autoDrive.loop((System.currentTimeMillis() - origTime)/1000);
+    //Context.robotController.autoDrive.loop((System.currentTimeMillis() - origTime)/1000);
   }
 
   @Override
@@ -62,6 +64,7 @@ public class Robot extends TimedRobot {
   {
     Context.robotController.loopAll();
 
+    /*
     double driverThrottle = Context.robotController.driverJoystick.getThrottle();
     double driverYaw = Context.robotController.driverJoystick.getYaw();
     
@@ -74,8 +77,7 @@ public class Robot extends TimedRobot {
     }
     //System.out.println(String.format("X: 0x%08X, Y:  0x%08X",Context.robotController.opticalLocalization.LeftMovementX, Context.robotController.opticalLocalization.LeftMovementY));
 
-    Context.robotController.climber.loop();  
     Context.setWOFTargetColor();
-
+    */
   }
 }

@@ -27,5 +27,5 @@ public class PID {
 		double deriv = (present - lastError) / timeFrame;
 		lastError = present;
 		return present * pFactor + integral * iFactor + deriv * dFactor;
-    }
+	}
 }

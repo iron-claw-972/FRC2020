@@ -68,4 +68,13 @@ public class DriverJoystick {
     public boolean getClimbD() {
         return joystick.getRawButton(Context.climbButtonDown);
     }
+
+    public boolean getPIDUp() {
+        return joystick.getRawButton(Context.thingID);
+    }
+
+    public boolean getPIDDown() {
+        return joystick.getRawButton(Context.shiftGearsButtonID);
+    }
+
 }

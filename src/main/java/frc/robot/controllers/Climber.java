@@ -24,7 +24,7 @@ public class Climber
         telescopeMotor = telescopeMotor_;
         telescopeEncoderMotor = telescopeEncoderMotor_;
         telescopeEncoderMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
-        liftPID = new PID(.1, 0, 0); //Not tuned & not used
+        liftPID = new PID(.0002, 0, 0.0004); //Not tuned & not used
         pastTime = System.currentTimeMillis(); 
     }
 
@@ -34,7 +34,7 @@ public class Climber
     
     //Moves the telescope
     public void telescopeMove(double PIDVal) {
-        telescopeMotor.set(PIDVal);
+        telescopeMotor.set(PIDVal * 1.01);
     }
 
     //Spins the motor to coil the winch
@@ -53,19 +53,33 @@ public class Climber
     public void loop() {
         //Finds current encoder value of the wheel, the current time and the change in time since the last run
         double currentPosition = telescopeEncoderMotor.getSelectedSensorPosition();
+        System.out.println("Encoder Value: " + currentPosition);
         long currentTime = System.currentTimeMillis();
         double deltaTime = currentTime - pastTime;
+        desiredPosition = currentPosition;
         //depending on button press sets desired position and updates the PID for the power
         if (Context.robotController.driverJoystick.getClimbU())
         {
-            desiredPosition = 10;
+            desiredPosition = 18500;
             //uncoil();
         }
         else if (Context.robotController.driverJoystick.getClimbD())
         {
-            desiredPosition = 0;
+            desiredPosition = 50;
             //coil();
         }
+
+        if (Context.robotController.driverJoystick.getPIDUp())
+        {
+            liftPID.dFactor += 0.0001;
+            System.out.println("D factor: " + liftPID.dFactor);
+        }
+        else if (Context.robotController.driverJoystick.getPIDDown())
+        {
+            liftPID.dFactor -= 0.0001;
+            System.out.println("D factor: " + liftPID.dFactor);
+        }
+
         double pidVal = liftPID.update(desiredPosition, currentPosition, deltaTime);
         telescopeMove(-pidVal);
         //updates the past time for next loop

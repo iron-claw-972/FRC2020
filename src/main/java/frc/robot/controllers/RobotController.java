@@ -64,6 +64,7 @@ public class RobotController {
     public RobotController () {
         //----- Motors -----
         leftDriveMotor1 = new TalonSRX(Context.leftMotor1ID);
+        /*
         leftDriveMotor2 = new TalonFX(Context.leftMotor2ID);
         rightDriveMotor1 = new TalonFX(Context.rightMotor1ID);
         rightDriveMotor2 = new TalonFX(Context.rightMotor2ID);
@@ -79,25 +80,29 @@ public class RobotController {
         
         compressor = new Compressor();
         compressor.setClosedLoopControl(true);
-
+        */
         //----- Controllers -----
         /* Change this line when using a different drive train. Don't forget to change the motor ids in context */
         telescopeMotor = new CANSparkMax(Context.climberMotorID, MotorType.kBrushless);
         coilMotor1 = new TalonSRX (Context.coilMotor1ID);
         coilMotor2 = new TalonSRX (Context.coilMotor2ID);
-        //drivetrain = new TalonFXDrivetrain(leftDriveMotor1, leftDriveMotor2, rightDriveMotor1, rightDriveMotor2, leftDriveEncoderInterface, rightDriveEncoderInterface);
+        /*drivetrain = new TalonFXDrivetrain(leftDriveMotor1, leftDriveMotor2, rightDriveMotor1, rightDriveMotor2, leftDriveEncoderInterface, rightDriveEncoderInterface);
         autoDrive = new AutoDrive();
         navX = new NavX(new AHRS(SPI.Port.kMXP));
         ntInterface = new NetworktablesInterface();
+        */
         driverJoystick = new DriverJoystick();
+        /*
         intake = new Intake(intakeTalon, intakeFlipSolenoid);
         nmfController = new NMFController(nmfNeo, omniNeo);
         opticalLocalization = new OpticalLocalization();
+        */
         climber = new Climber(coilMotor1, coilMotor2, leftDriveMotor1, telescopeMotor);
+        /*
         sequentialScheduler = new SequentialScheduler();
 
         driverStation = DriverStation.getInstance();
-
+        */
         Context.robotController = this;
     }
 
@@ -106,9 +111,12 @@ public class RobotController {
     }
 
     public void loopAll() {
+        climber.loop();  
+        /*
         ntInterface.loop();
         opticalLocalization.Update();
         intake.loop();
         nmfController.loop();
+        */
     }
 }
