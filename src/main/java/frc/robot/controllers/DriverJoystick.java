@@ -69,6 +69,10 @@ public class DriverJoystick {
         return joystick.getRawButton(Context.climbButtonDown);
     }
 
+    public boolean getTestValues() {
+        return joystick.getRawButton(Context.shoot);
+    }
+
     public boolean getPIDUp() {
         return joystick.getRawButton(Context.thingID);
     }
