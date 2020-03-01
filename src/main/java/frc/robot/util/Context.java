@@ -76,17 +76,13 @@ public class Context {
     public static final double maxDrivingAcceleration = 0.5; // m/s/s
     public static final double maxDrivingJerk = 1.0; // m/s/s/s
     public static final double maxTurningSpeed = 0.5; // radians/s
+    public static final double TRACK_WIDTH = 0.675; // meters
     /* Not used in trajectories */
     public static final double maxTurningAcceleration = 0;
     public static final double maxTurningJerk = 0;
-
-    public static final DriveConstraints BASE_CONSTRAINTS = new DriveConstraints(
-        maxAutoDrivingSpeed, maxDrivingAcceleration, maxDrivingJerk, maxTurningSpeed, maxTurningAcceleration, maxTurningJerk
-    );
-    public static final double TRACK_WIDTH = 0.675; // meters
-    public static final double kA = 0.2; // m/s/s
+    public static final double kA = 0.0; // m/s/s
     public static final double kStatic = 0.0;
-    public static final double kV = 0.04;
+    public static final double kV = 0.0;
 
     //----- Superstructure/Game Measurements -----
     public static final double M_FLYWHEEL_RADIUS = 0.0508;

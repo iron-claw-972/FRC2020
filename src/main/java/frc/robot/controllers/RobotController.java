@@ -16,6 +16,7 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.*;
 
 import frc.robot.util.Context;
+import frc.robot.controllers.auto.AutoDrive;
 import frc.robot.controllers.drive.*;
 import frc.robot.execution.ParallelScheduler;
 import frc.robot.execution.SequentialScheduler;;
