@@ -8,6 +8,7 @@ import com.acmerobotics.roadrunner.path.Path;
 import com.acmerobotics.roadrunner.path.PathBuilder;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryGenerator;
+import com.acmerobotics.roadrunner.trajectory.constraints.DriveConstraints;
 
 import frc.robot.util.Context;
 
@@ -17,6 +18,15 @@ import frc.robot.util.Context;
 public class AutoDrive {
     Trajectory trajectory;
     public Localizer localizer;
+
+    private static final DriveConstraints BASE_CONSTRAINTS = new DriveConstraints(
+        Context.maxDrivingSpeed,
+        Context.maxDrivingAcceleration,
+        Context.maxDrivingJerk,
+        Context.maxTurningSpeed,
+        Context.maxTurningAcceleration,
+        Context.maxTurningJerk
+    );
 
     public AutoDrive() {
         localizer = new Localizer(Context.TRACK_WIDTH);
@@ -28,7 +38,7 @@ public class AutoDrive {
                 .splineTo(new Pose2d(2, -2, 0))
                 .build();
 
-        return TrajectoryGenerator.INSTANCE.generateTrajectory(path, Context.BASE_CONSTRAINTS);
+        return TrajectoryGenerator.INSTANCE.generateTrajectory(path, BASE_CONSTRAINTS);
     }
 
     public List<Double> getWheelVelocities(double time) {

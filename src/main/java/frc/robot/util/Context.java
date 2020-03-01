@@ -73,14 +73,10 @@ public class Context {
     public static final double maxDrivingAcceleration = 2.0; // m/s/s
     public static final double maxDrivingJerk = 3.0; // m/s/s/s
     public static final double maxTurningSpeed = 1.5; // radians/s
+    public static final double TRACK_WIDTH = 0.675; // meters
     /* Not used in trajectories */
     public static final double maxTurningAcceleration = 0;
     public static final double maxTurningJerk = 0;
-
-    public static final DriveConstraints BASE_CONSTRAINTS = new DriveConstraints(
-        maxDrivingSpeed, maxDrivingAcceleration, maxDrivingJerk, maxTurningSpeed, maxTurningAcceleration, maxTurningJerk
-    );
-    public static final double TRACK_WIDTH = 0.675; // meters
     /* Also not useful anywhere */
     public static final double kA = 0.0; // m/s/s
     public static final double kStatic = 0.0;
