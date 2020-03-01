@@ -51,7 +51,7 @@ public class AutoDrive {
 
         // Context.robotController.drivetrain.printWheelVelocities();
         // System.out.println("LeftDes: " + wheelVelocities.get(0) + "| RightDes: " + wheelVelocities.get(1));
-        Context.robotController.drivetrain.tankDrivePID(wheelVelocities.get(1), wheelVelocities.get(0));
+        Context.robotController.drivetrain.tankDrivePID(wheelVelocities.get(0), wheelVelocities.get(1));
     }
 
 }
