@@ -30,13 +30,13 @@ public class ClimberPranav
         telescopeMotor = telescopeMotor_;
         telescopeEncoderMotor = telescopeEncoderMotor_;
         telescopeEncoderMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
-        liftPID = new PID(.0002, 0, 0.0004); //Not tuned & not used
+        liftPID = new PID(.0001, 0, 0.0003); //Not tuned & not used
         pastTime = System.currentTimeMillis(); 
     }
     public double  getPolyMotorPower(int step){
-        double output = Math.pow(1.1, step*.28)/100 + .3;
+        double output = Math.pow(1.1, step*.27)/100 + .57;
         output = output>1 ? 1:output;
-        output = currentPosition > 14400 ? 0:output;
+        output = currentPosition > 14490 ? 0:output;
         return output;
     }
     public void resetClimbEncoder() {
@@ -64,7 +64,7 @@ public class ClimberPranav
     public void loop() {
         //Finds current encoder value of the wheel, the current time and the change in time since the last run
         currentPosition = telescopeEncoderMotor.getSelectedSensorPosition();
-        System.out.println("Encoder Value: " + currentPosition);
+        System.out.println("Encoder Value: " + currentPosition + "Controller " + PolyControllerOn);
         long currentTime = System.currentTimeMillis();
         double deltaTime = currentTime - pastTime;
         desiredPosition = currentPosition;
@@ -72,7 +72,7 @@ public class ClimberPranav
         if (Context.robotController.driverJoystick.getClimbU())
         {
             currentLiftStep++;
-            desiredPosition = 14000;
+            desiredPosition = 14950;
             PIDControllerOn = false;
             PolyControllerOn = true;
             //uncoil();
