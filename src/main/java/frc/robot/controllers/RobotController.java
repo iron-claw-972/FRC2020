@@ -37,7 +37,7 @@ public class RobotController {
     public ShooterController shooterController;
     public Intake intake;
     public OpticalLocalization opticalLocalization;
-    public Climber climber;
+    public ClimberPranav climber;
   
     public SequentialScheduler sequentialScheduler;
     public ParallelScheduler parallelScheduler;
@@ -97,7 +97,7 @@ public class RobotController {
         nmfController = new NMFController(nmfNeo, omniNeo);
         opticalLocalization = new OpticalLocalization();
         */
-        climber = new Climber(coilMotor1, coilMotor2, leftDriveMotor1, telescopeMotor);
+        climber = new ClimberPranav(coilMotor1, coilMotor2, leftDriveMotor1, telescopeMotor);
         /*
         sequentialScheduler = new SequentialScheduler();
 
