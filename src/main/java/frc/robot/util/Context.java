@@ -11,7 +11,7 @@ public class Context {
     public static RobotController robotController;
 
     //----- Drivetrain Values -----
-    public static final double maxDrivingSpeed = 1.0; // m/s
+    public static final double maxDrivingSpeed = 2.0; // m/s
     public static final int leftMotor1ID = 1;
     public static final int leftMotor2ID = 2;
     public static final int rightMotor1ID = 3;
@@ -39,8 +39,8 @@ public class Context {
     public static final int inUseLengthMillis = 1000;
 
     // Joystick Axis
-    public static final int yawAxisID = 1;
-    public static final int throttleAxisID = 4;
+    public static final int yawAxisID = 4;
+    public static final int throttleAxisID = 1;
 
     // Button IDs
     public static final int climbButtonDown = 1;

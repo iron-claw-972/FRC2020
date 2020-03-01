@@ -116,6 +116,13 @@ public abstract class Drivetrain {
     tankDrivePIDF(leftMotorOutput * Context.maxDrivingSpeed, rightMotorOutput * Context.maxDrivingSpeed);
   }
 
+  /**
+   * Quick stop accum messes up unit test. Must be reset to give predictable results
+   */
+  public void resetQuickStopAccum() {
+    m_quickStopAccumulator = 0;
+  }
+
   public void tankDrivePIDF(double leftGoalPower, double rightGoalPower) {
     double deltaTime = (double)(System.currentTimeMillis() - pastTime);
 
@@ -126,19 +133,7 @@ public abstract class Drivetrain {
     double rightDistTraveled = getRightDist() - pastRightDist;
     double rightVelocity = rightDistTraveled/deltaTime;
     double rightPower = rightDrivePIDF.update(rightGoalPower, rightVelocity, deltaTime);
-
-    // Allows robot to coast to a halt on teleop
-    if (leftGoalPower == 0) {
-      tankDrive(0, rightPower);
-    } else {
-      tankDrive(leftPower, rightPower);
-    }
-    if (rightGoalPower == 0) {
-      tankDrive(leftPower, 0);
-    } else {
-      tankDrive(leftPower, rightPower);
-    }
-
+      
     tankDrive(leftPower, rightPower);
 
     pastTime = System.currentTimeMillis();

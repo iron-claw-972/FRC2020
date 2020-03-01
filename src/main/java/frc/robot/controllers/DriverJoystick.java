@@ -68,4 +68,17 @@ public class DriverJoystick {
     public boolean getClimbD() {
         return joystick.getRawButton(Context.climbButtonDown);
     }
+
+    /**
+     * For some inexplicable reason the drive code completely breaks when you input negative zero so use this to invert the values instead
+     */
+    public static double invertValue(double joyValue) {
+        joyValue = -joyValue;
+
+        if (joyValue == -0.0) {
+            joyValue = 0.0;
+        }
+
+        return joyValue;
+    }
 }
