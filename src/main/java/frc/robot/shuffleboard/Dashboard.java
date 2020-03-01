@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.cscore.UsbCamera;
-import frc.robot.controllers.AutoOptions;
 import frc.robot.controllers.drive.TalonFXDrivetrain.Gear;
 import frc.robot.util.Context;
 
@@ -18,9 +17,6 @@ public class Dashboard {
     private static NetworkTableEntry NMFEntry1, NMFEntry2, NMFEntry3, NMFEntry4, NMFEntry5;
 
     public static SendableChooser<Gear> gearChooser;
-    public static SendableChooser<AutoOptions.Start> autoStartChooser;
-    public static SendableChooser<AutoOptions.Port> autoPortChooser;
-    public static SendableChooser<AutoOptions.PickUp> autoPickUpChooser;
 
     private static final boolean config = true;
     private static ShuffleboardTab configTab;
@@ -113,18 +109,7 @@ public class Dashboard {
             .withPosition(7, 4)
             .withSize(4, 1)
             .withProperties(Map.of("Number of Rows", 1, "Number of columns", 3, "Label Position", "HIDDEN"));
-        autoLayout.add("Starting Positions", autoStartChooser)
-            .withWidget(BuiltInWidgets.kComboBoxChooser)
-            .withPosition(0,0)
-            .withSize(1,1);
-        autoLayout.add("Target Port", autoPortChooser)
-            .withWidget(BuiltInWidgets.kComboBoxChooser)
-            .withPosition(1,0)
-            .withSize(1,1);
-        autoLayout.add("Pick Up Positions", autoPickUpChooser)
-            .withWidget(BuiltInWidgets.kComboBoxChooser)
-            .withPosition(2,0)
-            .withSize(1,1);
+
 
 
         if(config) {

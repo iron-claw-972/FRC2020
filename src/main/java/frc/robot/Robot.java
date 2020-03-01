@@ -41,6 +41,8 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     Context.robotController.drivetrain.resetEncoders();
     origTime = System.currentTimeMillis();
+
+    Context.robotController.sequentialScheduler.add(); 
     //Context.robotController.autoDrive.startSpline();
   }
 
