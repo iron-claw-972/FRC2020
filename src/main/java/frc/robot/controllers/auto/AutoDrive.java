@@ -19,6 +19,8 @@ public class AutoDrive {
     Trajectory trajectory;
     public Localizer localizer;
 
+    public boolean done = false;
+
     private static final DriveConstraints BASE_CONSTRAINTS = new DriveConstraints(
         Context.maxDrivingSpeed,
         Context.maxDrivingAcceleration,
@@ -30,15 +32,16 @@ public class AutoDrive {
 
     public AutoDrive() {
         localizer = new Localizer(Context.TRACK_WIDTH);
-        trajectory = generateTrajectory();
+        
     }
 
-    public Trajectory generateTrajectory() {
-        Path path = new PathBuilder(new Pose2d(0, 0, 0))
-                .splineTo(new Pose2d(2, -2, 0))
+    public void generateTrajectory(Pose2d pose) {
+        Path path = new PathBuilder(localizer.getPoseEstimate())
+                .splineTo(pose)
                 .build();
 
-        return TrajectoryGenerator.INSTANCE.generateTrajectory(path, BASE_CONSTRAINTS);
+        done = false;
+        trajectory = TrajectoryGenerator.INSTANCE.generateTrajectory(path, BASE_CONSTRAINTS);
     }
 
     public List<Double> getWheelVelocities(double time) {
@@ -49,6 +52,16 @@ public class AutoDrive {
     }
 
     public void loop(double time) {
+
+
+        //This is run when the trajectory is done
+        if (time >= trajectory.duration()) {
+            System.out.println(time + "    " + trajectory.duration());
+            //done = true;
+            Context.robotController.drivetrain.tankDrivePIDF(0, 0); 
+            return;
+        }
+
         localizer.update();
 
         /* Hacky fix for autism roadrunner error */

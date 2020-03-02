@@ -19,6 +19,10 @@ public class Forward extends Action {
     }
 
     public void loop() {
-        Context.robotController.autoDrive.loop()
+        Context.robotController.autoDrive.loop((System.currentTimeMillis()-startTime)/1000.0);
+
+        if (Context.robotController.autoDrive.done) {
+            markComplete();
+        }
     }
 }

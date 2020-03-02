@@ -14,20 +14,20 @@ public class NeoDrivetrain extends Drivetrain {
     private final double neoDriveMotorGearRatio = (1/12.0) * (50.0) * (1/34.0) * (40.0); // neo revs / wheel revs
     private final double neoDriveTicksPerMeter = neoDriveMotorGearRatio / (neoDriveWheelDiameter * Math.PI);
     
-    public NeoDrivetrain(CANSparkMax leftMotor1_, CANSparkMax leftMotor2_, CANSparkMax rightMotor1_, CANSparkMax rightMotor2_) {
+    public NeoDrivetrain(CANSparkMax leftMotor1_, CANSparkMax rightMotor1_) {
         super(leftDrivePIDF, rightDrivePIDF);
 
         leftMotor1 = leftMotor1_;
-        leftMotor2 = leftMotor2_;
+        // leftMotor2 = leftMotor2_;
         rightMotor1 = rightMotor1_;
-        rightMotor2 = rightMotor2_;
+        // rightMotor2 = rightMotor2_;
     }
 
     public void tankDrive(double leftPower, double rightPower) {
         leftMotor1.set(leftPower);
-        leftMotor2.set(leftPower);
+        // leftMotor2.set(leftPower);
         rightMotor1.set(rightPower);
-        rightMotor2.set(rightPower);
+        // rightMotor2.set(rightPower);
     }
 
     protected double getLeftTicks() {

@@ -144,20 +144,6 @@ public class Dashboard {
         gearChooser = new SendableChooser<Gear>();
         gearChooser.setDefaultOption("Lo", Gear.LOW);
         gearChooser.addOption("Hi", Gear.HIGH);
-
-        autoStartChooser = new SendableChooser<AutoOptions.Start>();
-        autoStartChooser.setDefaultOption("Left", AutoOptions.Start.LEFT);
-        autoStartChooser.addOption("Middle", AutoOptions.Start.MIDDLE);
-        autoStartChooser.addOption("Right", AutoOptions.Start.RIGHT);
-
-        autoPortChooser = new SendableChooser<AutoOptions.Port>();
-        autoPortChooser.addOption("Low", AutoOptions.Port.LOW);
-        autoPortChooser.setDefaultOption("High", AutoOptions.Port.HIGH);
-
-        autoPickUpChooser = new SendableChooser<AutoOptions.PickUp>();
-        autoPickUpChooser.addOption("Alliance Trench", AutoOptions.PickUp.TRENCH_ALLIANCE);
-        autoPickUpChooser.setDefaultOption("Enemy Trench", AutoOptions.PickUp.TRENCH_ENEMY);
-        autoPickUpChooser.addOption("Rendezvous", AutoOptions.PickUp.RENDEZVOUS);
     }
 
     public static Gear getGear() {

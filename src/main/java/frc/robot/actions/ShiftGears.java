@@ -7,7 +7,7 @@ public class ShiftGears extends Action {
     {
         //TODO: Move actual shifting logic to action
         if (!isComplete){
-            Context.robotController.drivetrain.shiftGears();
+            //Context.robotController.drivetrain.shiftGears();
             markComplete();
         }
     }
