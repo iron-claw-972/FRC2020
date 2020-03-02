@@ -15,7 +15,7 @@ class DistanceSensor {
         counter = new Counter(DIO);
     }
 
-    public double GetDistance()
+    public double getDistance()
     {
         return (counter.getPeriod())*100000-290; //given that 10us is 1cm and that the rise and fall variables are times in seconds, we can safely say that 1 second pulse width is 100,000cm
         //290 is calibrated value with a meter stick
