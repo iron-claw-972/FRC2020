@@ -32,12 +32,12 @@ public class AutoDrive {
         localizer = new Localizer(Context.TRACK_WIDTH);
     }
 
-    public Trajectory generateTrajectory(Pose2d desiredPose) {
+    public void generateTrajectory(Pose2d desiredPose) {
         Path path = new PathBuilder(localizer.getPoseEstimate())
                 .splineTo(desiredPose)
                 .build();
 
-        return TrajectoryGenerator.INSTANCE.generateTrajectory(path, BASE_CONSTRAINTS);
+        trajectory = TrajectoryGenerator.INSTANCE.generateTrajectory(path, BASE_CONSTRAINTS);
     }
 
     public List<Double> getWheelVelocities(double time) {
