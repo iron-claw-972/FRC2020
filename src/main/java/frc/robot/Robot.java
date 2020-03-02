@@ -41,25 +41,23 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     Context.robotController.drivetrain.resetEncoders();
     origTime = System.currentTimeMillis();
-    //Context.robotController.autoDrive.startSpline();
+    // Context.robotController.sequentialScheduler.add(action);
   }
 
   @Override
   public void autonomousPeriodic() {
-    Context.robotController.autoDrive.loop((System.currentTimeMillis() - origTime)/1000);
+    // Context.robotController.sequentialScheduler.loop();
   }
 
   @Override
-  public void teleopInit()
-  {
+  public void teleopInit() {
     //Context.robotController.drivetrain.resetEncoders();
     Context.robotController.initAll();
   }
   
   @Override
 
-  public void teleopPeriodic()
-  {
+  public void teleopPeriodic() {
     Context.robotController.loopAll();
 
     double driverThrottle = Context.robotController.driverJoystick.getThrottle();
