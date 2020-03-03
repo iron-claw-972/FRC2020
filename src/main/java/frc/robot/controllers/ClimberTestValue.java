@@ -27,26 +27,29 @@ public class ClimberTestValue
     
     //Moves the telescope
     public void telescopeMove(double loopValue) {
-        telescopeMotor.set(loopValue);
+        telescopeMotor.set(-loopValue);
     }
 
     //Loop to react to button press
     public void loop() {
         //Finds current encoder value of the wheel, the current time and the change in time since the last run
         double currentPosition = telescopeEncoderMotor.getSelectedSensorPosition();
-        System.out.println("Encoder Value: " + currentPosition);
         //depending on button press sets desired position and updates the PID for the power
         if (Context.robotController.driverJoystick.getTestValues())
         {
-            if (currentPosition < 14000)
+            if (currentPosition < 10000)
             {
-                if (((currentPosition - 5) <= currentPosition) && ((currentPosition + 5) >= currentPosition))
+                if (((currentPosition - 2) <= currentPosition) && ((currentPosition + 2) >= currentPosition))
                 {
-                    power += 0.01;
-                    System.out.println("Power: " + power + "\t Encoder: " + currentPosition);
+                    power += 0.001;
+                    System.out.println("Power: " + power + "    Encoder: " + currentPosition);
                 }
                 telescopeMove(power);
             } 
+        }
+        else
+        {
+            telescopeMove(0);
         }
     }
 }

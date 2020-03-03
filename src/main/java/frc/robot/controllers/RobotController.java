@@ -38,6 +38,7 @@ public class RobotController {
     public Intake intake;
     public OpticalLocalization opticalLocalization;
     public ClimberPranav climber;
+    //public ClimberTestValue climberHelp;
   
     public SequentialScheduler sequentialScheduler;
     public ParallelScheduler parallelScheduler;
@@ -98,6 +99,7 @@ public class RobotController {
         opticalLocalization = new OpticalLocalization();
         */
         climber = new ClimberPranav(coilMotor1, coilMotor2, leftDriveMotor1, telescopeMotor);
+        //climberHelp = new ClimberTestValue(leftDriveMotor1, telescopeMotor);
         /*
         sequentialScheduler = new SequentialScheduler();
 
@@ -108,10 +110,12 @@ public class RobotController {
 
     public void initAll() {
         climber.resetClimbEncoder();
+        //climberHelp.resetClimbEncoder();
     }
 
     public void loopAll() {
         climber.loop();  
+        //climberHelp.loop();
         /*
         ntInterface.loop();
         opticalLocalization.Update();
