@@ -23,6 +23,9 @@ public class ClimberPranav
     double desiredPosition;
     double currentPosition;
 
+    int topEncoderHeight = 14490;
+    int bottomEncoderHeight = 50;
+
     //Initializes Climber with Talon SRX motor, CANSparkMax, PID for the telescope, and initial time
     public ClimberPranav(TalonSRX coilMotor1_, TalonSRX coilMotor2_, TalonSRX telescopeEncoderMotor_, CANSparkMax telescopeMotor_){
         coilMotor1 = coilMotor1_;
@@ -36,7 +39,7 @@ public class ClimberPranav
     public double  getPolyMotorPower(int step){
         double output = Math.pow(1.1, step*.27)/100 + .57;
         output = output>1 ? 1:output;
-        output = currentPosition > 14490 ? 0:output;
+        output = currentPosition > topEncoderHeight ? 0:output;
         return output;
     }
     public void resetClimbEncoder() {
@@ -68,18 +71,20 @@ public class ClimberPranav
         long currentTime = System.currentTimeMillis();
         double deltaTime = currentTime - pastTime;
         desiredPosition = currentPosition;
-        //depending on button press sets desired position and updates the PID for the power
+
+        //depending on button press sets desired position and updates the PID for the power. uses pid if going down, uses exponential curve if going up
         if (Context.robotController.driverJoystick.getClimbU())
         {
             currentLiftStep++;
-            desiredPosition = 14950;
+            desiredPosition = topEncoderHeight;
             PIDControllerOn = false;
             PolyControllerOn = true;
             //uncoil();
         }
         else if (Context.robotController.driverJoystick.getClimbD())
         {
-            desiredPosition = 50;
+            currentLiftStep--;
+            desiredPosition = bottomEncoderHeight;
             PIDControllerOn = true;
             PolyControllerOn = false;
             //coil();
@@ -101,7 +106,6 @@ public class ClimberPranav
         else {
             telescopeMove(0);
         }
-
 
         
         
