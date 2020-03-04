@@ -73,8 +73,7 @@ public class Robot extends TimedRobot {
       System.out.println("X: " + Context.robotController.opticalLocalization.LeftMovementX + " Y: " + Context.robotController.opticalLocalization.LeftMovementY);
     }
     //System.out.println(String.format("X: 0x%08X, Y:  0x%08X",Context.robotController.opticalLocalization.LeftMovementX, Context.robotController.opticalLocalization.LeftMovementY));
-
-    Context.robotController.climber.loop();  
+ 
     Context.setWOFTargetColor();
 
   }
