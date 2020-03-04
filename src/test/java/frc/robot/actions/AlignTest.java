@@ -10,8 +10,7 @@ import frc.robot.util.Context;
 public class AlignTest
 {
     @Before
-    public void setup()
-    {
+    public void setup() {
         Context.robotController = mock(RobotController.class);
         Context.robotController.navX = mock(NavX.class);
         Context.robotController.ntInterface = mock(NetworktablesInterface.class);
@@ -23,8 +22,7 @@ public class AlignTest
     }
 
     @Test
-    public void localizationTest()
-    {
+    public void localizationTest() {
         VisionAlign testVision = new VisionAlign();
         assertEquals((int)testVision.rotationLocalized, 0, 0.1);
 
