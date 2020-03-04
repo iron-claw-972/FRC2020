@@ -13,6 +13,12 @@ public class NMFController {
     CANSparkMax omniSpark;
     CANEncoder omniEncoder;
 
+    public static enum State {
+        IDLE, INTAKING, SHOOTING
+    }
+    public State state;
+    public boolean reversed;
+    public boolean stopped;
 
     public double NMFidleSpeed = 0;
     public double NMFintakeSpeed = 0;
@@ -46,22 +52,27 @@ public class NMFController {
 
     public void spinNMFIntaking(){
         NMFtargetSpeed = NMFintakeSpeed;
+        state = State.INTAKING;
     }
 
     public void spinNMFIdle(){
         NMFtargetSpeed = NMFidleSpeed;
+        state = State.IDLE;
     }
 
     public void spinNMFShooting(){
         NMFtargetSpeed = NMFshootingSpeed;
+        state = State.SHOOTING;
     }
 
     public void spinNMFReverse(){
         NMFtargetSpeed = NMFreverseSpeed;
+        reversed = true;
     }
 
     public void stopNMF(){
         NMFtargetSpeed = 0;
+        stopped = true;
     }
 
     public void spinOmni(){

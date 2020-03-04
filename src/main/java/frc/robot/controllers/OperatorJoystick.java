@@ -3,37 +3,28 @@ package frc.robot.controllers;
 import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.Joystick;
-import frc.robot.actions.*;
 import frc.robot.util.*;
 
 /**
  * This class is wrapper class to allow the abstraction of buttons and joysticks (removes the need to specify ports every time you get a button)
  */
-public class DriverJoystick implements CompetitionJoystick {
+public class OperatorJoystick implements CompetitionJoystick {
     public Joystick joystick;
     private long inUseStartTime = 0;
     public ArrayList<Trigger> triggers = new ArrayList<Trigger>();
 
-    public DriverJoystick() {
-        joystick = new Joystick(Context.driverJoystickID);
+    public OperatorJoystick() {
+        joystick = new Joystick(Context.operatorJoystickID);
 
         addTriggers(new Trigger[]{
-            new Trigger(this, Trigger.Type.BUTTON, Context.toggleTrack, new VisionAlign()),
-            new Trigger(this, Trigger.Type.BUTTON, Context.shiftGearsButtonID, new ShiftGears())
+            
         });
-    }
-
-    public double getThrottle() {
-        return getAxisDeadBandManaged(Context.throttleAxisID);
-    }
-
-    public double getYaw() {
-        return getAxisDeadBandManaged(Context.yawAxisID);
     }
 
     public boolean getButtonPressed(int buttonID) {
         return joystick.getRawButtonPressed(buttonID);
     }
+
 
     public boolean getAxisPressed(int axisID) {
         return joystick.getRawAxis(axisID) > 0.5;

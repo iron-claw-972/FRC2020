@@ -26,10 +26,7 @@ public class Robot extends TimedRobot {
     camera.setVideoMode(PixelFormat.kMJPEG, Context.cameraWidth, Context.cameraHeight, Context.cameraFPS);
     Dashboard.init(camera);
 
-    Context.robotController.driverJoystick.addTriggers(new Trigger[]{
-      new Trigger(Context.toggleTrack, new VisionAlign()),
-      new Trigger(Context.shiftGearsButtonID, new ShiftGears())
-    });
+    
   }
 
   @Override
