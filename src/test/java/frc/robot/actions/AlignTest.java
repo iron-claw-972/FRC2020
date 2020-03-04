@@ -24,7 +24,7 @@ public class AlignTest
     @Test
     public void localizationTest() {
         VisionAlign testVision = new VisionAlign();
-        assertEquals((int)testVision.rotationLocalized, 0, 0.1);
+        assertEquals(testVision.rotationLocalized, 0.0, 0.1);
 
     }
 
