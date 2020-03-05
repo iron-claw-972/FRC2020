@@ -5,22 +5,22 @@ import frc.robot.controllers.*;
 import com.google.gson.Gson;
 
 public class Trigger {
+    private CompetitionJoystick joystick;
+    private Type type;
     public int id;
     public Action action;
     private Gson gson;
-    private CompetitionJoystick joystick;
-    private Type type;
-
-    public Trigger(CompetitionJoystick joystick, Type type, int id, Action action) {
-        this.id = id;
-        this.action = action;
-        this.joystick = joystick;
-        this.type = type;
-        gson = new Gson();
-    }
 
     public static enum Type {
         BUTTON, AXIS
+    }
+
+    public Trigger(CompetitionJoystick joystick, Type type, int id, Action action) {
+        this.joystick = joystick;
+        this.type = type;
+        this.id = id;
+        this.action = action;
+        gson = new Gson();
     }
 
     public void loop() {
