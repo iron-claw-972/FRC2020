@@ -63,54 +63,32 @@ public class Climber
         coilMotor2.set(ControlMode.PercentOutput, Context.uncoilSpeed);
     }
 
-    //Loop to react to button press
-    public void loop() {
-        //Finds current encoder value of the wheel, the current time and the change in time since the last run
+    public void up() {
         currentPosition = telescopeEncoderMotor.getSelectedSensorPosition();
-        System.out.println("Encoder Value: " + currentPosition + "Controller " + PolyControllerOn);
+        currentLiftStep++;
+        desiredPosition = topEncoderHeight;
+        telescopeMove(-getPolyMotorPower(currentLiftStep));
+    }
+
+    public void down() {
+        currentPosition = telescopeEncoderMotor.getSelectedSensorPosition();
         long currentTime = System.currentTimeMillis();
         double deltaTime = currentTime - pastTime;
         desiredPosition = currentPosition;
-
-        //depending on button press sets desired position and updates the PID for the power. uses pid if going down, uses exponential curve if going up
-        if (Context.robotController.driverJoystick.getClimbU())
-        {
-            currentLiftStep++;
-            desiredPosition = topEncoderHeight;
-            PIDControllerOn = false;
-            PolyControllerOn = true;
-            //uncoil();
-        }
-        else if (Context.robotController.driverJoystick.getClimbD())
-        {
-            currentLiftStep--;
-            desiredPosition = bottomEncoderHeight;
-            PIDControllerOn = true;
-            PolyControllerOn = false;
-            //coil();
-        }
-        else{
-            PIDControllerOn = false;
-            PolyControllerOn = false;
-        }
-
+        currentLiftStep--;
+        desiredPosition = bottomEncoderHeight;
         double pidVal = liftPID.update(desiredPosition, currentPosition, deltaTime);
-
-
-        if (PIDControllerOn){
-            telescopeMove(-pidVal);
-        }
-        else if (PolyControllerOn){
-            telescopeMove(-getPolyMotorPower(currentLiftStep));
-        }
-        else {
-            telescopeMove(0);
-        }
-
-        
-        
-        //updates the past time for next loop
+        telescopeMove(-pidVal);
         pastTime = currentTime;
+    }
+
+    public void idle() {
+        telescopeMove(0);
+    }
+
+    //Loop to react to button press
+    public void loop() {
+
     }
 
     public boolean isClimbDone() {

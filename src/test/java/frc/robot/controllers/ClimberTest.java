@@ -18,8 +18,10 @@ public class ClimberTest
 
     // Creation of mock sparks and putting them into NeoDrivetrain
     public CANSparkMax telescope = mock(CANSparkMax.class);
-    public TalonSRX coil = mock(TalonSRX.class);
-    public Climber climb = new Climber(coil, telescope);
+    public TalonSRX coil1 = mock(TalonSRX.class);
+    public TalonSRX coil2 = mock(TalonSRX.class);
+    public TalonSRX telescopeEncoderMotor = mock(TalonSRX.class);
+    public Climber climb = new Climber(coil1, coil2, telescopeEncoderMotor, telescope);
 
     // @Before allows for the setup() method to be called before any other methods
     @Before
@@ -36,7 +38,7 @@ public class ClimberTest
             Double power = invocation.getArgument(1, Double.class);
             coilPower = power.doubleValue();
             return null;
-        }).when(coil).set(eq(ControlMode.PercentOutput), any(Double.class));
+        }).when(coil1).set(eq(ControlMode.PercentOutput), any(Double.class));
     }
 
     // Test that ensures that coil method increases coil motor power to 0.5
