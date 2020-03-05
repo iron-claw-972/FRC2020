@@ -35,7 +35,8 @@ public class Context {
     public static final int gearShifterChannelB = 1;
 
     //----- Human Input Device Values -----
-    public static final int joystickID = 0;
+    public static final int driverJoystickID = 0;
+    public static final int operatorJoystickID = 1;
     public static final double joystickMaxDeadband = 0.05;
     public static final int inUseLengthMillis = 1000;
 
