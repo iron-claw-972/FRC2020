@@ -43,10 +43,10 @@ public class Context {
     public static final int throttleAxisID = 1;
 
     // Button IDs
-    public static final int climbButtonDown = 1;
-    public static final int climbButtonUp = 2;
+    public static final int climbButtonDown = 2;
+    public static final int climbButtonUp = 4;
     public static final int shoot = 3; 
-    public static final int toggleTrack = 4;
+    public static final int toggleTrack = -1;
     public static final int shiftGearsButtonID = 6;
     public static final int loopyLoopBreak = 7;
 
