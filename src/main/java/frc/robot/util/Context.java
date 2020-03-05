@@ -102,8 +102,6 @@ public class Context {
 
     //----- WOF Colors -----
     public static char WOFTargetColor = 'N'; //N for none. B,G,R,Y for other colors.
-
-	
     public static final Map<Character, String> WOFColors = Map.of( //Map of Driver Station Colors
         'B', "#0000FF",
         'G', "#00FF00",

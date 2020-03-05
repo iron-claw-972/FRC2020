@@ -12,11 +12,13 @@ import java.util.Map;
 
 public class Dashboard {
     private static ShuffleboardTab tab;
-    private static NetworkTableEntry voltageEntry, currentEntry, WOFEntry, timeEntry, shooterSpeedEntry;
-    private static ShuffleboardLayout NMFLayout, autoLayout;
+    private static NetworkTableEntry fmsEntry, voltageEntry, currentEntry, timeEntry, shooterSpeedEntry, autoEntry;
+    private static ShuffleboardLayout NMFLayout, WOFLayout;
     private static NetworkTableEntry NMFEntry1, NMFEntry2, NMFEntry3, NMFEntry4, NMFEntry5;
+    private static NetworkTableEntry WOFEntryB, WOFEntryG, WOFEntryR, WOFEntryY;
 
     public static SendableChooser<Gear> gearChooser;
+    public static SendableChooser<AutoOptions.Start> autoChooser;
 
     private static final boolean config = true;
     private static ShuffleboardTab configTab;
@@ -32,46 +34,74 @@ public class Dashboard {
             .withProperties(Map.of("Show controls", false, "Show crosshair", false))
             .withSize(7,5);
 
+        // fmsEntry = tab.add("FMS")
+        //     .withWidget(BuiltInWidgets.)
+        //     .withPosition(0,0)
+        //     .withProperties(Map.of("Show controls", false, "Show crosshair", false))
+        //     .withSize(7,5);
+
         voltageEntry = tab.add("Voltage", 0)
             .withWidget(BuiltInWidgets.kNumberBar)
-            .withPosition(7,0)
-            .withSize(2,1)
+            .withPosition(7,1)
+            .withSize(1,1)
             .withProperties(Map.of("Min", 10, "Max", 14))
             .getEntry();
 
-        currentEntry = tab.add("Current Being Drawn", 0)
+        currentEntry = tab.add("Current", 0)
             .withWidget(BuiltInWidgets.kNumberBar)
-            .withPosition(7,1)
-            .withSize(2,1)
+            .withPosition(8,1)
+            .withSize(1,1)
             .withProperties(Map.of("Min", 0, "Max", 100))
             .getEntry();
 
-        WOFEntry = tab.add("WOF Color", "#000000")
+        WOFLayout = tab.getLayout("WOF Color", BuiltInLayouts.kGrid)
             .withPosition(7,2)
             .withSize(1,1) 
+            .withProperties(Map.of("Number of Rows", 2, "Number of columns", 2, "Label Position", "HIDDEN"));;
+        WOFEntryB = WOFLayout.add("B", false)
+            .withWidget(BuiltInWidgets.kBooleanBox)
+            .withPosition(0, 0)
+            .withSize(1, 1)
+            .withProperties(Map.of("Color when true", Context.WOFColors.get('B'), "Color when false", Context.WOFColors.get('N')))
             .getEntry();
-        
+        WOFEntryG = WOFLayout.add("G", false)
+            .withWidget(BuiltInWidgets.kBooleanBox)
+            .withPosition(0, 0)
+            .withSize(1, 1)
+            .withProperties(Map.of("Color when true", Context.WOFColors.get('G'), "Color when false", Context.WOFColors.get('N')))
+            .getEntry();
+        WOFEntryR = WOFLayout.add("R", false)
+            .withWidget(BuiltInWidgets.kBooleanBox)
+            .withPosition(0, 0)
+            .withSize(1, 1)
+            .withProperties(Map.of("Color when true", Context.WOFColors.get('R'), "Color when false", Context.WOFColors.get('N')))
+            .getEntry();
+        WOFEntryY = WOFLayout.add("Y", false)
+            .withWidget(BuiltInWidgets.kBooleanBox)
+            .withPosition(0, 0)
+            .withSize(1, 1)
+            .withProperties(Map.of("Color when true", Context.WOFColors.get('Y'), "Color when false", Context.WOFColors.get('N')))
+            .getEntry();
+
         tab.add("Gear", gearChooser)
             .withWidget(BuiltInWidgets.kSplitButtonChooser)
             .withPosition(8,2)
             .withSize(1,1); 
 
-        //Column 2
-
         timeEntry = tab.add("Time Left", "15 s")
-            .withPosition(9,0)
-            .withSize(2,1) 
+            .withPosition(10,0)
+            .withSize(1,1) 
             .getEntry();
 
         shooterSpeedEntry = tab.add("Shooter Speed (RPM)", 0)
             .withWidget(BuiltInWidgets.kGraph)
             .withPosition(9,1)
-            .withSize(2,2)
+            .withSize(2,3)
             .withProperties(Map.of("Min", 0, "Max", 600,"Visible Time", 10))
             .getEntry();
         
         NMFLayout = tab.getLayout("Count To Five Tutorial", BuiltInLayouts.kGrid)
-            .withPosition(7, 3)
+            .withPosition(7, 4)
             .withSize(4, 1)
             .withProperties(Map.of("Number of Rows", 1, "Number of columns", 5, "Label Position", "TOP"));
         NMFEntry1 = NMFLayout.add("1", false)
@@ -105,11 +135,10 @@ public class Dashboard {
             .withProperties(Map.of("Color when true", "yellow", "Color when false", "#DDDDDD"))
             .getEntry(); 
 
-        autoLayout = tab.getLayout("Auto Selection", BuiltInLayouts.kGrid)
-            .withPosition(7, 4)
-            .withSize(4, 1)
-            .withProperties(Map.of("Number of Rows", 1, "Number of columns", 3, "Label Position", "HIDDEN"));
-
+        tab.add("Auto Configs", autoChooser)
+            .withWidget(BuiltInWidgets.kComboBoxChooser)
+            .withPosition(7,3)
+            .withSize(2,1);
 
 
         if(config) {
@@ -121,7 +150,10 @@ public class Dashboard {
         voltageEntry.setDouble(edu.wpi.first.wpilibj.RobotController.getBatteryVoltage());
         currentEntry.setDouble(0.0);
 
-        WOFEntry.setString(Context.WOFColors.get(Context.WOFTargetColor));
+        WOFEntryB.setBoolean(Context.WOFTargetColor == 'B');
+        WOFEntryG.setBoolean(Context.WOFTargetColor == 'G');
+        WOFEntryR.setBoolean(Context.WOFTargetColor == 'R');
+        WOFEntryY.setBoolean(Context.WOFTargetColor == 'Y');
 
         //gearEntry.setValue(Context.robotController.drivetrain.gear);
         
@@ -144,9 +176,10 @@ public class Dashboard {
         gearChooser = new SendableChooser<Gear>();
         gearChooser.setDefaultOption("Lo", Gear.LOW);
         gearChooser.addOption("Hi", Gear.HIGH);
-    }
 
-    public static Gear getGear() {
-        return gearChooser.getSelected();
+        autoChooser = new SendableChooser<AutoOptions.Start>();
+        autoChooser.setDefaultOption("Left", AutoOptions.Start.LEFT);
+        autoChooser.addOption("Middle", AutoOptions.Start.MIDDLE);
+        autoChooser.addOption("Right", AutoOptions.Start.RIGHT);
     }
 }
