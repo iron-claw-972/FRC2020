@@ -4,7 +4,6 @@ import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.util.*;
 
 public class Climber
@@ -25,6 +24,7 @@ public class Climber
 
     int topEncoderHeight = 14490;
     int bottomEncoderHeight = 50;
+    double pidVal;
 
     //Initializes Climber with Talon SRX motor, CANSparkMax, PID for the telescope, and initial time
     public Climber(TalonSRX coilMotor1_, TalonSRX coilMotor2_, TalonSRX telescopeEncoderMotor_, CANSparkMax telescopeMotor_){
@@ -65,19 +65,22 @@ public class Climber
 
     public void up() {
         currentPosition = telescopeEncoderMotor.getSelectedSensorPosition();
+        long currentTime = System.currentTimeMillis();
+        double deltaTime = currentTime - pastTime;
         currentLiftStep++;
         desiredPosition = topEncoderHeight;
+        pidVal = liftPID.update(desiredPosition, currentPosition, deltaTime);
         telescopeMove(-getPolyMotorPower(currentLiftStep));
+        pastTime = currentTime;
     }
 
     public void down() {
         currentPosition = telescopeEncoderMotor.getSelectedSensorPosition();
         long currentTime = System.currentTimeMillis();
         double deltaTime = currentTime - pastTime;
-        desiredPosition = currentPosition;
         currentLiftStep--;
         desiredPosition = bottomEncoderHeight;
-        double pidVal = liftPID.update(desiredPosition, currentPosition, deltaTime);
+        pidVal = liftPID.update(desiredPosition, currentPosition, deltaTime);
         telescopeMove(-pidVal);
         pastTime = currentTime;
     }
@@ -92,9 +95,16 @@ public class Climber
     }
 
     public boolean isClimbDone() {
-        double encoderValue = telescopeEncoderMotor.getSelectedSensorPosition();
-        if (encoderValue < 20) {
-            return true;
+        if (desiredPosition == topEncoderHeight) {
+            if ((currentPosition >= topEncoderHeight - 5) && (currentPosition <= topEncoderHeight + 5)) {
+                return true;
+            }
+        }
+
+        if (desiredPosition == bottomEncoderHeight) {
+            if ((currentPosition >= bottomEncoderHeight - 5) && (currentPosition <= bottomEncoderHeight + 5)) {
+                return true;
+            }
         }
         return false;
     }
