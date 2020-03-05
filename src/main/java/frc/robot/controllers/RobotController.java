@@ -18,7 +18,8 @@ import edu.wpi.first.wpilibj.*;
 import frc.robot.util.Context;
 import frc.robot.controllers.drive.*;
 import frc.robot.execution.ParallelScheduler;
-import frc.robot.execution.SequentialScheduler;;
+import frc.robot.execution.SequentialScheduler;
+import frc.robot.controllers.auto.*;
 
 public class RobotController {
     public CANSparkMax telescopeMotor;
