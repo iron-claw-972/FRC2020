@@ -29,6 +29,7 @@ public class RobotController {
     public NavX navX;
     public NetworktablesInterface ntInterface;
     public DriverJoystick driverJoystick;
+    public OperatorJoystick operatorJoystick;
     // public VisionAllignment visionAllignment;
     public Compressor compressor;
     public ShooterController shooterController;
@@ -87,6 +88,7 @@ public class RobotController {
         navX = new NavX(new AHRS(SPI.Port.kMXP));
         ntInterface = new NetworktablesInterface();
         driverJoystick = new DriverJoystick();
+        operatorJoystick = new OperatorJoystick();
         intake = new Intake(intakeTalon, intakeFlipSolenoid);
         nmfController = new NMFController(nmfNeo, omniNeo);
         opticalLocalization = new OpticalLocalization();
@@ -107,5 +109,7 @@ public class RobotController {
         opticalLocalization.Update();
         intake.loop();
         nmfController.loop();
+        driverJoystick.loop();
+        operatorJoystick.loop();
     }
 }
