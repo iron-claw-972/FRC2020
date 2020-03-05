@@ -2,25 +2,50 @@ package frc.robot.controllers;
 
 import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.util.*;
 
 public class Climber
 {
-    public TalonSRX coilMotor;
+    public TalonSRX coilMotor1;
+    public TalonSRX coilMotor2;
+    public TalonSRX telescopeEncoderMotor;
     public CANSparkMax telescopeMotor;
+
+    int currentLiftStep = 0;
+    boolean PIDControllerOn = false;
+    boolean PolyControllerOn = false;
+
     PID liftPID;
     long pastTime;
     double desiredPosition;
+    double currentPosition;
+
+    int topEncoderHeight = 14490;
+    int bottomEncoderHeight = 50;
 
     //Initializes Climber with Talon SRX motor, CANSparkMax, PID for the telescope, and initial time
-    public Climber(TalonSRX coilMotor_, CANSparkMax telescopeMotor_){
-        coilMotor = coilMotor_;
+    public Climber(TalonSRX coilMotor1_, TalonSRX coilMotor2_, TalonSRX telescopeEncoderMotor_, CANSparkMax telescopeMotor_){
+        coilMotor1 = coilMotor1_;
+        coilMotor2 = coilMotor2_;
         telescopeMotor = telescopeMotor_;
-        liftPID = new PID(1, 0, 0); //Not tuned & not used
-        pastTime = System.currentTimeMillis();
-
+        telescopeEncoderMotor = telescopeEncoderMotor_;
+        telescopeEncoderMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
+        liftPID = new PID(.0001, 0, 0.0003);
+        pastTime = System.currentTimeMillis(); 
     }
+    public double  getPolyMotorPower(int step){
+        double output = Math.pow(1.1, step*.27)/100 + .57; //some testing can be done to find the ideal function
+        output = output>1 ? 1:output;
+        output = currentPosition > topEncoderHeight ? 0:output;
+        return output;
+    }
+    public void resetClimbEncoder() {
+        telescopeEncoderMotor.setSelectedSensorPosition(0);
+    }
+    
     //Moves the telescope
     public void telescopeMove(double PIDVal) {
         telescopeMotor.set(PIDVal);
@@ -28,34 +53,49 @@ public class Climber
 
     //Spins the motor to coil the winch
     public void coil(){
-        coilMotor.set(ControlMode.PercentOutput, Context.coilSpeed);
+        coilMotor1.set(ControlMode.PercentOutput, Context.coilSpeed);
+        coilMotor2.set(ControlMode.PercentOutput, Context.coilSpeed);
     }
 
     //Spins the motor to uncoil the winch
     public void uncoil(){
-        coilMotor.set(ControlMode.PercentOutput, Context.uncoilSpeed);
+        coilMotor1.set(ControlMode.PercentOutput, Context.uncoilSpeed);
+        coilMotor2.set(ControlMode.PercentOutput, Context.uncoilSpeed);
+    }
+
+    public void up() {
+        currentPosition = telescopeEncoderMotor.getSelectedSensorPosition();
+        currentLiftStep++;
+        desiredPosition = topEncoderHeight;
+        telescopeMove(-getPolyMotorPower(currentLiftStep));
+    }
+
+    public void down() {
+        currentPosition = telescopeEncoderMotor.getSelectedSensorPosition();
+        long currentTime = System.currentTimeMillis();
+        double deltaTime = currentTime - pastTime;
+        desiredPosition = currentPosition;
+        currentLiftStep--;
+        desiredPosition = bottomEncoderHeight;
+        double pidVal = liftPID.update(desiredPosition, currentPosition, deltaTime);
+        telescopeMove(-pidVal);
+        pastTime = currentTime;
+    }
+
+    public void idle() {
+        telescopeMove(0);
     }
 
     //Loop to react to button press
-    public double loop() {
-        //Finds current encoder value of the wheel, the current time and the change in time since the last run
-        double currentPosition = telescopeMotor.getEncoder().getPosition();
-        long currentTime = System.currentTimeMillis();
-        double deltaTime = currentTime - pastTime;
-        //depending on button press sets desired position and updates the PID for the power
-        if (Context.robotController.driverJoystick.getClimbU())
-        {
-            desiredPosition = 1;
+    public void loop() {
+
+    }
+
+    public boolean isClimbDone() {
+        double encoderValue = telescopeEncoderMotor.getSelectedSensorPosition();
+        if (encoderValue < 20) {
+            return true;
         }
-        else if (Context.robotController.driverJoystick.getClimbD())
-        {
-            desiredPosition = 0;
-            coil();
-        }
-        double pidVal = liftPID.update(desiredPosition, currentPosition, deltaTime);
-        telescopeMove(pidVal);
-        //updates the past time for next loop
-        pastTime = currentTime;
-        return pidVal;
+        return false;
     }
 }
