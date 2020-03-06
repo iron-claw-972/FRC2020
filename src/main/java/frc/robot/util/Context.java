@@ -48,9 +48,19 @@ public class Context {
     public static final int climbButtonDown = 2;
     public static final int climbButtonUp = 4;
     public static final int shoot = 3; 
-    public static final int toggleTrack = -1;
+    public static final int toggleTrack = -1; //will be one right bumper of driver joystick
     public static final int shiftGearsButtonID = 1;
+    public static final int quickTurnLeftTriggerID = -1;
+    public static final int quickTurnRightTriggerID = -1;
     public static final int loopyLoopBreak = 7;
+    public static final int flipOutIntakeButtonID = -1;
+    public static final int flipInIntakeButtonID = -1;
+    public static final int reverseNMFDirectionButtonID = -1;
+    public static final int reverseIntakeDirectionButtonID = -1;
+    public static final int spinIntakeButtonID = -1;
+    public static final int spinNMFToggleButtonID = 4;
+
+
 
     //----- Vision Alignment System -----
     public static final double alignmentTimeout = 3000; //after how many milliseconds stop the alignment loop and abort
