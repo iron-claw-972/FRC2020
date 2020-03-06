@@ -82,8 +82,8 @@ public class RobotController {
         //----- Controllers -----
         /* Change this line when using a different drive train. Don't forget to change the motor ids in context */
         telescopeMotor = new CANSparkMax(Context.climberMotorID, MotorType.kBrushless);
-        coilMotor1 = new TalonSRX (Context.coilMotorID);
-        coilMotor2 = new TalonSRX (Context.coilMotorID);
+        coilMotor1 = new TalonSRX (Context.coilMotor1ID);
+        coilMotor2 = new TalonSRX (Context.coilMotor2ID);
         drivetrain = new TalonFXDrivetrain(leftDriveMotor1, leftDriveMotor2, rightDriveMotor1, rightDriveMotor2, leftDriveEncoderInterface, rightDriveEncoderInterface);
         autoDrive = new AutoDrive();
         navX = new NavX(new AHRS(SPI.Port.kMXP));

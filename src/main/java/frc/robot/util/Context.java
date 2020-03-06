@@ -13,10 +13,10 @@ public class Context {
     //----- Drivetrain Values -----
     public static final double maxDrivingSpeed = 2.0; // m/s
     public static final double maxTheoreticalDrivingSpeed = 3.0; // m/s
-    public static final int leftMotor1ID = 1;
-    public static final int leftMotor2ID = 2;
-    public static final int rightMotor1ID = 3;
-    public static final int rightMotor2ID = 4;
+    public static final int leftMotor1ID = 0;
+    public static final int leftMotor2ID = 1;
+    public static final int rightMotor1ID = 14;
+    public static final int rightMotor2ID = 15;
   
     //----- Flywheel Shooter Values -----
     public static final int shooterMotorID = 2;
@@ -29,7 +29,7 @@ public class Context {
     public static final int rightEncoderChannelB = 3;
 
     // Falcon Drivetrain Values
-    public static final int leftEncoderInterfaceID = 9;
+    public static final int leftEncoderInterfaceID = 8;
     public static final int rightEncoderInterfaceID = 10;
     public static final int gearShifterChannelA = 0;
     public static final int gearShifterChannelB = 1;
@@ -48,9 +48,19 @@ public class Context {
     public static final int climbButtonDown = 2;
     public static final int climbButtonUp = 4;
     public static final int shoot = 3; 
-    public static final int toggleTrack = -1;
-    public static final int shiftGearsButtonID = 6;
+    public static final int toggleTrack = 6; //will be one right bumper of driver joystick
+    public static final int shiftGearsButtonID = 1;
+    public static final int quickTurnLeftTriggerID = 2;
+    public static final int quickTurnRightTriggerID = 3;
     public static final int loopyLoopBreak = 7;
+    public static final int flipOutIntakeButtonID = 5;
+    public static final int flipInIntakeButtonID = 6;
+    public static final int reverseNMFDirectionButtonID = -1;
+    public static final int reverseIntakeDirectionButtonID = -1;
+    public static final int spinIntakeTriggerID = 2;
+    public static final int spinNMFToggleButtonID = 4;
+
+
 
     //----- Vision Alignment System -----
     public static final double alignmentTimeout = 3000; //after how many milliseconds stop the alignment loop and abort
@@ -61,15 +71,16 @@ public class Context {
     //----- Intake System -----
     public static final int intakeFlipChannelA = -1;
     public static final int intakeFlipChannelB = -1;
-    public static final int intakeMotorId = -1;
+    public static final int intakeMotorId = 8;
 
     // NMF Values
     public static final int nmfSparkID = -1;
-    public static final int omniSparkID = -1;
+    public static final int omniSparkID = 5;
 
     //----- Climbing System -----
-    public static final int climberMotorID = 10;
-    public static final int coilMotorID = 11;
+    public static final int climberMotorID = 4;
+    public static final int coilMotor1ID = 2;
+    public static final int coilMotor2ID = 3;
     public static final double coilSpeed = 0.5;
     public static final double uncoilSpeed = -0.5;
 
@@ -121,7 +132,8 @@ public class Context {
             } else { //Corrupted
                 WOFTargetColor = 'N';
             }
-        } else {
+        } 
+        else {
             WOFTargetColor = 'N';
         }
     }
