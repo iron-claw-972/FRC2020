@@ -63,7 +63,7 @@ public class ShooterController {
     private void updateParameters() {
         //updates all necessary
 
-        actualVelocity = flywheelVelocity(); //accounts for fact that ball rolls on inside of hood
+        actualVelocity = shootingVelocity(); //accounts for fact that ball rolls on inside of hood
         lastTime = time;
         time = Context.getRelativeTimeSeconds(startTime);
         deltaTime = time - lastTime;
@@ -72,7 +72,7 @@ public class ShooterController {
 
     private void updateVelocity() {
         //passes input to motor controller
-        setCurrent = AdditionalMath.Clamp(speedConverter(setVelocity), -0.8, 0.8);
+        setCurrent = AdditionalMath.Clamp(speedConverter(setVelocity), -MAX_CURRENT, MAX_CURRENT);
         leftShooterTalon.set(ControlMode.PercentOutput, -setCurrent); //Sign depends on motor orientation
         rightShooterTalon.set(ControlMode.PercentOutput, setCurrent);
     }
@@ -90,7 +90,7 @@ public class ShooterController {
     
     public void loop(double desiredVelocity) {
         //change desiredVelocity, and then execute update methods
-        this.desiredVelocity = desiredVelocity;
+        this.desiredVelocity = (orientation) ? desiredVelocity : -desiredVelocity;;
         loop();
     }
 
@@ -100,7 +100,7 @@ public class ShooterController {
         //speedToCurrentRate, minCurrent calculated via linear regression (best fit)
     }
 
-    public double flywheelVelocity() {
+    public double shootingVelocity() {
         //get the linear speed of the flywheel
         //Sensor output is clicks/0.1s
         return velCorrectCoeff * M_SHOOTING_RADIUS * 2 * Math.PI * 10 * rightShooterTalon.getSelectedSensorVelocity()/Context.FALCON_ENCODER_CPR / 2;
