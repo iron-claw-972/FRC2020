@@ -49,7 +49,7 @@ public class Context {
     public static final int climbButtonUp = 4;
     public static final int shoot = 3; 
     public static final int toggleTrack = -1;
-    public static final int shiftGearsButtonID = 6;
+    public static final int shiftGearsButtonID = 1;
     public static final int loopyLoopBreak = 7;
 
     //----- Vision Alignment System -----
@@ -122,7 +122,8 @@ public class Context {
             } else { //Corrupted
                 WOFTargetColor = 'N';
             }
-        } else {
+        } 
+        else {
             WOFTargetColor = 'N';
         }
     }
