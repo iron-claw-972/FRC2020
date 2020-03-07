@@ -9,18 +9,16 @@ import frc.robot.util.*;
 public class ClimberTestValue
 {
     public CANSparkMax telescopeMotor;
-    public CANEncoder telescopeEncoderMotor;
     double power;
 
     //Initializes Climber with Talon SRX motor, CANSparkMax, PID for the telescope, and initial time
     public ClimberTestValue(CANSparkMax telescopeMotor_){
         telescopeMotor = telescopeMotor_;
-        telescopeEncoderMotor = new CANEncoder(telescopeMotor);
         power = 0;
     }
 
     public void resetClimbEncoder() {
-        telescopeEncoderMotor.setPosition(0);
+        telescopeMotor.getEncoder().setPosition(0);
     }
     
     //Moves the telescope
@@ -31,7 +29,7 @@ public class ClimberTestValue
     //Loop to react to button press
     public void loop() {
         //Finds current encoder value of the wheel, the current time and the change in time since the last run
-        double currentPosition = telescopeEncoderMotor.getPosition();
+        double currentPosition = telescopeMotor.getEncoder().getPosition();
         //depending on button press sets desired position and updates the PID for the power
         if (Context.robotController.driverJoystick.getTestValues())
         {
