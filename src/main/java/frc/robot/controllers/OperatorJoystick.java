@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.util.*;
+import frc.robot.actions.*;
 
 /**
  * This class is wrapper class to allow the abstraction of buttons and joysticks (removes the need to specify ports every time you get a button)
@@ -17,6 +18,10 @@ public class OperatorJoystick implements CompetitionJoystick {
         joystick = new Joystick(Context.operatorJoystickID);
 
         addTriggers(new Trigger[]{
+            new Trigger(this, Trigger.Type.BUTTON, Context.flipOutIntakeButtonID, new FlipOutIntake()),
+            new Trigger(this, Trigger.Type.BUTTON, Context.flipInIntakeButtonID, new FlipInIntake()),
+            new Trigger(this, Trigger.Type.BUTTON, Context.reverseNMFDirectionButtonID, new ReverseNMF()),
+            new Trigger(this, Trigger.Type.BUTTON, Context.spinNMFToggleButtonID, new StopNMF())
             
         });
     }

@@ -35,6 +35,10 @@ public class Intake {
         setSpeed = 0;
     }
 
+    public void reverseIntaking(){
+        setSpeed = -intakingSpeed;
+    }
+
     public void loop() {
         intakeTalon.set(ControlMode.PercentOutput, setSpeed); //motion profiling later, ik this is bad
     }
