@@ -13,7 +13,6 @@ public class Climber
 {
     public CANSparkMax coilMotor1;
     public CANSparkMax coilMotor2;
-    public TalonSRX telescopeEncoderMotor;
     public CANSparkMax telescopeMotor;
 
     int currentLiftStep = 0;
@@ -25,17 +24,16 @@ public class Climber
     double desiredPosition;
     double currentPosition;
 
-    int topEncoderHeight = 14490;
-    int bottomEncoderHeight = 50;
+    int topEncoderHeight = 60;
+    int bottomEncoderHeight = 5;
     double pidVal;
+    int topWinchHeight = 10;
 
     //Initializes Climber with Talon SRX motor, CANSparkMax, PID for the telescope, and initial time
-    public Climber(CANSparkMax coilMotor1_, CANSparkMax coilMotor2_, TalonSRX telescopeEncoderMotor_, CANSparkMax telescopeMotor_){
+    public Climber(CANSparkMax coilMotor1_, CANSparkMax coilMotor2_, CANSparkMax telescopeMotor_){
         coilMotor1 = coilMotor1_;
         coilMotor2 = coilMotor2_;
         telescopeMotor = telescopeMotor_;
-        telescopeEncoderMotor = telescopeEncoderMotor_;
-        telescopeEncoderMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
         liftPID = new PID(.0001, 0, 0.0003);
         pastTime = System.currentTimeMillis(); 
     }
@@ -46,7 +44,7 @@ public class Climber
         return output;
     }
     public void resetClimbEncoder() {
-        telescopeEncoderMotor.setSelectedSensorPosition(0);
+        telescopeMotor.set(0);
     }
     
     //Moves the telescope
@@ -55,19 +53,13 @@ public class Climber
     }
 
     //Spins the motor to coil the winch
-    public void coil(){
-        coilMotor1.set(Context.coilSpeed);
-        coilMotor2.set(Context.coilSpeed);
-    }
-
-    //Spins the motor to uncoil the winch
-    public void uncoil(){
-        coilMotor1.set(Context.uncoilSpeed);
-        coilMotor2.set(Context.uncoilSpeed);
+    public void coil(double speed){
+        coilMotor1.set(speed);
+        coilMotor2.set(speed);
     }
 
     public void up() {
-        currentPosition = telescopeEncoderMotor.getSelectedSensorPosition();
+        currentPosition = telescopeMotor.get();
         long currentTime = System.currentTimeMillis();
         double deltaTime = currentTime - pastTime;
         currentLiftStep++;
@@ -78,7 +70,7 @@ public class Climber
     }
 
     public void down() {
-        currentPosition = telescopeEncoderMotor.getSelectedSensorPosition();
+        currentPosition = telescopeMotor.get();
         long currentTime = System.currentTimeMillis();
         double deltaTime = currentTime - pastTime;
         currentLiftStep--;
@@ -86,10 +78,6 @@ public class Climber
         pidVal = liftPID.update(desiredPosition, currentPosition, deltaTime);
         telescopeMove(-pidVal);
         pastTime = currentTime;
-    }
-
-    public void idle() {
-        telescopeMove(0);
     }
 
     //Loop to react to button press
@@ -111,6 +99,17 @@ public class Climber
             if ((currentPosition >= bottomEncoderHeight - marginOfError) && (currentPosition <= bottomEncoderHeight + marginOfError)) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    public boolean isWinchDone()
+    {
+        int marginOfError = 5;
+        double winchPosition1 = coilMotor1.get();
+        double winchPosition2 = coilMotor2.get();
+        if (((winchPosition1 >= topWinchHeight - marginOfError) && (winchPosition1 <= topWinchHeight + marginOfError)) || ((winchPosition2 >= topWinchHeight - marginOfError) && (winchPosition2 <= topWinchHeight + marginOfError))) {
+            return true;
         }
         return false;
     }

@@ -93,7 +93,7 @@ public class RobotController {
         intake = new Intake(intakeTalon, intakeFlipSolenoid);
         nmfController = new NMFController(nmfNeo, omniNeo);
         opticalLocalization = new OpticalLocalization();
-        climber = new Climber(coilMotor1, coilMotor2, intakeTalon, telescopeMotor);
+        climber = new Climber(coilMotor1, coilMotor2, telescopeMotor);
         sequentialScheduler = new SequentialScheduler();
 
         driverStation = DriverStation.getInstance();

@@ -27,7 +27,7 @@ public class Climb extends Action{
             Context.robotController.climber.down();
             break;
             case IDLE:
-            Context.robotController.climber.idle();
+            Context.robotController.climber.telescopeMove(0);
             break;
         }
         

@@ -60,7 +60,7 @@ public class Context {
     public static final int reverseIntakeDirectionButtonID = -1;
     public static final int spinIntakeTriggerID = 2;
     public static final int spinNMFToggleButtonID = 4;
-
+    public static final int winchID = 3;
 
 
     //----- Vision Alignment System -----
@@ -83,7 +83,6 @@ public class Context {
     public static final int coilMotor1ID = 2;
     public static final int coilMotor2ID = 3;
     public static final double coilSpeed = 0.5;
-    public static final double uncoilSpeed = -0.5;
 
     //----- Acme Robotics Tank Drive -----
     // maxVel, maxAccel, maxJerk, maxAngVel, maxAngAccel, maxAngJerk
