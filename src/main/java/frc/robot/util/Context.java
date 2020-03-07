@@ -58,7 +58,7 @@ public class Context {
     public static final int flipOutIntakeButtonID = 5;
     public static final int flipInIntakeButtonID = 6;
     public static final int reverseNMFDirectionButtonID = 3;
-    public static final int reverseIntakeDirectionButtonID = 1;
+    public static final int reverseIntakeDirectionButtonID = 2;
     public static final int spinIntakeTriggerID = 2;
     public static final int spinNMFToggleTriggerID = 3;
 
