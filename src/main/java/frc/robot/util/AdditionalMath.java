@@ -48,4 +48,14 @@ public class AdditionalMath
         if(value<0) return value-decouple;
         return value;
     }
+
+    public static final double mPerFt = 0.3048;
+
+    public static double ftToM(double feet, double inches) {
+        return (feet + inches/12) * mPerFt;
+    }
+
+    public static double ftToM(double feet) {
+        return ftToM(feet, 0);
+    }
 }
