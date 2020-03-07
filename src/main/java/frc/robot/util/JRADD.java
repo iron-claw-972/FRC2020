@@ -2,14 +2,13 @@ package frc.robot.util;
 
 public class JRADD {
     /*
-    Intersection of 254's JRAD with a P gain (so as to offset late-stage kF accumulation).
-    ///////////////////OUT OF DATE EXPLANATION///////////////////////////
-    v'[t + dt] = kF * setpoint + v'[t] + kI * dt * (kLoadRatio * setpoint – actual)
-    v[t + dt] = v'[t + dt] + kP * (kT * setpoint - actual)
-        removes kF control at peak and slows the shooter
+    Intersection of 254's JRAD with a P gain (so as to create a rev-up "brake").
+    1. v'[t + dt] = kF * setpoint + v'[t] + kI * dt * (kLoadRatio * setpoint – actual)
+    2. P = kF/((1 - kT) * kLoadRatio * loadRatio)
+        removes kF control at desired speed and preemptively slows the shooter
+        loadRatio is adjusted by desiredValue
+    3. v[t + dt] = v'[t + dt] + kP * P * (kT * setpoint - actual)
     */
-
-    //TODO: Add linear kLoadRatio function to account for constant friction energy loss
 
     /////Variable Declarations///
     public double kP;
@@ -61,7 +60,6 @@ public class JRADD {
             proportional = 1;
         }
         output = updateValue + kP * proportional * (kT * kLoadRatio * loadRatio * setpoint - actual);
-        //System.out.println("proportional: " + proportional + " output: " + output + " updateValue: " + updateValue + " loadRatio: " + loadRatio + " setpoint: " + (kLoadRatio * loadRatio * setpoint));
         return output;
     }
 

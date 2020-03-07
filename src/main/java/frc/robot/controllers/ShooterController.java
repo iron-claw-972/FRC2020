@@ -45,7 +45,8 @@ public class ShooterController {
     private double M_SHOOTING_RADIUS;
 
     public ShooterController(int _leftShooterID, int _rightShooterID, boolean _orientation) {
-        //initialize parameters
+        //initialize variables
+
         leftShooterID = _leftShooterID;
         rightShooterID = _rightShooterID;
         orientation = _orientation;
@@ -56,6 +57,7 @@ public class ShooterController {
         rightShooterTalon.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
         velocityJRADD = new JRADD(kP, kT, kF, kI, kLoadRatio, loadRatioConstant, loadRatioRate);
+
         M_SHOOTING_RADIUS = Context.M_FLYWHEEL_RADIUS + Context.M_BALL_DIAMETER/2;
         startTime = System.currentTimeMillis();
     }
@@ -63,7 +65,7 @@ public class ShooterController {
     private void updateParameters() {
         //updates all necessary
 
-        actualVelocity = shootingVelocity(); //accounts for fact that ball rolls on inside of hood
+        actualVelocity = shootingVelocity();
         lastTime = time;
         time = Context.getRelativeTimeSeconds(startTime);
         deltaTime = time - lastTime;
@@ -72,29 +74,35 @@ public class ShooterController {
 
     private void updateVelocity() {
         //passes input to motor controller
+
         setCurrent = AdditionalMath.Clamp(speedConverter(setVelocity), -MAX_CURRENT, MAX_CURRENT);
         leftShooterTalon.set(ControlMode.PercentOutput, -setCurrent); //Sign depends on motor orientation
         rightShooterTalon.set(ControlMode.PercentOutput, setCurrent);
     }
 
     public void startShooting() {
+        //Used to update objects/parameters relying on constant updates after a period without updates
+
         lastTime = Context.getRelativeTimeSeconds(startTime);
         velocityJRADD = new JRADD(velocityJRADD.kP, velocityJRADD.kT, velocityJRADD.kF, velocityJRADD.kI, velocityJRADD.kLoadRatio, loadRatioConstant, loadRatioRate);
     }
 
     public void loop() {
         //execute update methods
+
         updateParameters();
         updateVelocity();
     }
     
     public void loop(double desiredVelocity) {
         //change desiredVelocity, and then execute update methods
+
         this.desiredVelocity = (orientation) ? desiredVelocity : -desiredVelocity;;
         loop();
     }
 
     private double speedConverter(double speed) {
+
         return Math.signum(speed) * (Math.abs(speed) * speedToCurrentRate + minCurrent);
         //converts a desired speed into a motor controller input with ControlMode.PercentOutput
         //speedToCurrentRate, minCurrent calculated via linear regression (best fit)
@@ -102,12 +110,15 @@ public class ShooterController {
 
     public double shootingVelocity() {
         //get the linear speed of the flywheel
+
         //Sensor output is clicks/0.1s
+        //Accounts for ball rolling inside hood with division by 2
         return velCorrectCoeff * M_SHOOTING_RADIUS * 2 * Math.PI * 10 * rightShooterTalon.getSelectedSensorVelocity()/Context.FALCON_ENCODER_CPR / 2;
     }
 
     public double flywheelRPM() {
         //get the RPM of the flywheel
+
         return 600 * rightShooterTalon.getSelectedSensorVelocity()/2048;
     }
     

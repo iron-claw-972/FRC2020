@@ -4,7 +4,7 @@ import frc.robot.util.*;
 public class RecursiveMotionProfile {
 
     //Made to accommodate the difficulty of pre-calculating motion profiles
-    //for continuous tasks such as drivetrain, shooter velocity, teleop, etc.
+    //for continuous tasks such as drivetrain, shooter velocity, teleop functions in general, etc.
 
     private long startTime;
 
@@ -41,6 +41,9 @@ public class RecursiveMotionProfile {
     }
 
     public void updateParameters(double desiredVel, double currentVel, double currentAccel) {
+
+        //Pass current motion states to object
+        //Used to update the next state of each derivative 
 
         this.currentAccel = currentAccel;
         this.desiredVel = desiredVel;
