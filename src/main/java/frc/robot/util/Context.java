@@ -60,6 +60,7 @@ public class Context {
     public static final int reverseNMFDirectionDpadID = 3;
     public static final int reverseIntakeDirectionDpadID = 4;
     public static final int spinNMFToggleButtonID = 2;
+    public static final int nmfSlowSpinDpadID = 1;
 
 
 
