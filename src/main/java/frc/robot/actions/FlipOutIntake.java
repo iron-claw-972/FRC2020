@@ -8,6 +8,7 @@ public class FlipOutIntake extends Action {
         super.start();
         
         Context.robotController.intake.flipOut();
+        Context.robotController.intake.beginIntaking();
         Context.robotController.nmfController.spinNMFIntaking();
 
         markComplete();
