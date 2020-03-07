@@ -32,9 +32,16 @@ public class OperatorJoystick implements CompetitionJoystick {
         return joystick.getRawButtonPressed(buttonID);
     }
 
+    public boolean getButtonReleased(int buttonID) {
+        return joystick.getRawButtonReleased(buttonID);
+    }
 
     public boolean getAxisPressed(int axisID) {
         return joystick.getRawAxis(axisID) > 0.5;
+    }
+
+    public boolean getAxisReleased(int axisID) {
+        return joystick.getRawAxis(axisID) <=0 ;
     }
 
     public boolean getDpadPressed(int dpadID) {
@@ -51,6 +58,10 @@ public class OperatorJoystick implements CompetitionJoystick {
 
         }
         return dpadID == dpadValue;
+    }
+
+    public boolean getDpadReleased(int dpadID) {
+         return joystick.getPOV()==-1;
     }
 
     public boolean isInUse() {

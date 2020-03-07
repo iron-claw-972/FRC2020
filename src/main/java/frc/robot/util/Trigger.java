@@ -12,7 +12,7 @@ public class Trigger {
     private Gson gson;
 
     public static enum Type {
-        BUTTON, AXIS
+        BUTTON, AXIS, DPAD
     }
 
     public Trigger(CompetitionJoystick joystick, Type type, int id, Action action) {
@@ -24,7 +24,7 @@ public class Trigger {
     }
 
     public void loop() {
-        if(type == Type.BUTTON ? joystick.getButtonPressed(id) : joystick.getAxisPressed(id)){
+        if(type == Type.BUTTON ? joystick.getButtonPressed(id) : ( type == Type.AXIS ? joystick.getAxisPressed(id) : joystick.getDpadPressed(id))){
             // The action is serialized to json and deselerialized in order to create a deep copy,
             // which is necessary in order to not edit the action passed to the trigger in the
             // trigger's initilzation. Without doing this, the trigger's action would be edited
