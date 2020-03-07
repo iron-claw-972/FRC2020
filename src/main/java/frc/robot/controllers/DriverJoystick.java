@@ -19,7 +19,9 @@ public class DriverJoystick implements CompetitionJoystick {
 
         addTriggers(new Trigger[]{
             new Trigger(this, Trigger.Type.BUTTON, Context.toggleTrack, new VisionAlign()),
-            new Trigger(this, Trigger.Type.BUTTON, Context.shiftGearsButtonID, new ShiftGears())
+            new Trigger(this, Trigger.Type.BUTTON, Context.shiftGearsButtonID, new ShiftGears()),
+            new Trigger(this, Trigger.Type.BUTTON, Context.climbButtonUp, new Climb(Climb.ClimbActions.UP)),
+            new Trigger(this, Trigger.Type.BUTTON, Context.climbButtonDown, new Climb(Climb.ClimbActions.DOWN))
         });
     }
 
