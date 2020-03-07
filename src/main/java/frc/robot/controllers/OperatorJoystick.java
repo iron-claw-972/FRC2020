@@ -37,6 +37,22 @@ public class OperatorJoystick implements CompetitionJoystick {
         return joystick.getRawAxis(axisID) > 0.5;
     }
 
+    public boolean getDpadPressed(int dpadID) {
+        int dpadValue = 0;
+        switch (joystick.getPOV()){
+            case 0:
+                dpadValue=1;
+            case 90:
+                dpadValue=2;
+            case 180:
+                dpadValue=3;
+            case 270:
+                dpadValue=4;
+
+        }
+        return dpadID == dpadValue;
+    }
+
     public boolean isInUse() {
         return inUseStartTime + Context.inUseLengthMillis > System.currentTimeMillis();
     }
