@@ -5,14 +5,14 @@ import frc.robot.util.Context;
 
 public class Winch extends Action{
 
-    public enum winchState {
+    public enum WinchState {
         COIL,
         IDLE
     }
 
-    public winchState state = winchState.IDLE;
+    public WinchState state = WinchState.IDLE;
 
-    public Winch (Winch.winchState state_){
+    public Winch (Winch.WinchState state_){
         state = state_;
     }
 
