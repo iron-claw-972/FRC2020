@@ -2,6 +2,7 @@ package frc.robot.execution;
 
 import frc.robot.actions.Action;
 import frc.robot.util.*;
+import frc.robot.util.Trigger.Type;
 import java.util.*;
 
 public class ParallelScheduler {
@@ -12,6 +13,7 @@ public class ParallelScheduler {
         currentActions.add(action);
         action.start();
     }
+
 
     public void add(Action[] actions)
     {
@@ -41,4 +43,4 @@ public class ParallelScheduler {
     {
         return currentActions.size() == 0;
     }
-} 
+}  

@@ -49,12 +49,16 @@ public class OperatorJoystick implements CompetitionJoystick {
         switch (joystick.getPOV()){
             case 0:
                 dpadValue=1;
+                break;
             case 90:
                 dpadValue=2;
+                break;
             case 180:
                 dpadValue=3;
+                break;
             case 270:
                 dpadValue=4;
+                break;
 
         }
         return dpadID == dpadValue;

@@ -34,5 +34,22 @@ public class Trigger {
             Action clone = gson.fromJson(seralized, action.getClass());
             Context.robotController.parallelScheduler.add(clone);
         }
+        switch (type) {
+            case BUTTON:
+                if (joystick.getButtonReleased(id)){
+                    action.buttonReleased();
+                }
+                break;
+            case AXIS:
+                if (joystick.getAxisReleased(id)){
+                    action.buttonReleased();
+                }
+                break;
+            case DPAD:
+                if (joystick.getDpadReleased(id)){
+                    action.buttonReleased();
+                }
+                break;
+        }
     }
 }
