@@ -12,8 +12,8 @@ public class Winch extends Action{
 
     public winchState state = winchState.IDLE;
 
-    public Winch (){
-        state = winchState.COIL;
+    public Winch (Winch.winchState state_){
+        state = state_;
     }
 
     @Override
