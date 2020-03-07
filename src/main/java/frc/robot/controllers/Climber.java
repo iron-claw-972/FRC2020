@@ -3,6 +3,7 @@ package frc.robot.controllers;
 import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 
 import org.apache.commons.io.filefilter.CanReadFileFilter;
@@ -36,6 +37,7 @@ public class Climber
         telescopeMotor = telescopeMotor_;
         liftPID = new PID(.0001, 0, 0.0003);
         pastTime = System.currentTimeMillis(); 
+        
     }
     public double  getPolyMotorPower(int step){
         double output = Math.pow(1.1, step*.27)/100 + .57; //some testing can be done to find the ideal function
@@ -44,7 +46,9 @@ public class Climber
         return output;
     }
     public void resetClimbEncoder() {
-        telescopeMotor.set(0);
+        telescopeMotor.getEncoder().setPosition(0);
+        coilMotor1.getEncoder().setPosition(0);
+        coilMotor2.getEncoder().setPosition(0);
     }
     
     //Moves the telescope
@@ -53,13 +57,13 @@ public class Climber
     }
 
     //Spins the motor to coil the winch
-    public void coil(double speed){
+    public void coil(double speed) {
         coilMotor1.set(speed);
         coilMotor2.set(speed);
     }
 
     public void up() {
-        currentPosition = telescopeMotor.get();
+        currentPosition = telescopeMotor.getEncoder().getPosition();
         long currentTime = System.currentTimeMillis();
         double deltaTime = currentTime - pastTime;
         currentLiftStep++;
@@ -70,7 +74,7 @@ public class Climber
     }
 
     public void down() {
-        currentPosition = telescopeMotor.get();
+        currentPosition = telescopeMotor.getEncoder().getPosition();
         long currentTime = System.currentTimeMillis();
         double deltaTime = currentTime - pastTime;
         currentLiftStep--;
@@ -106,8 +110,8 @@ public class Climber
     public boolean isWinchDone()
     {
         int marginOfError = 5;
-        double winchPosition1 = coilMotor1.get();
-        double winchPosition2 = coilMotor2.get();
+        double winchPosition1 = coilMotor1.getEncoder().getPosition();
+        double winchPosition2 = coilMotor2.getEncoder().getPosition();
         if (((winchPosition1 >= topWinchHeight - marginOfError) && (winchPosition1 <= topWinchHeight + marginOfError)) || ((winchPosition2 >= topWinchHeight - marginOfError) && (winchPosition2 <= topWinchHeight + marginOfError))) {
             return true;
         }

@@ -9,7 +9,6 @@ import org.junit.*;
 import frc.robot.util.Context;
 
 import com.revrobotics.CANSparkMax;
-import com.ctre.phoenix.motorcontrol.can.*;
 
 public class ClimberTest
 {
@@ -21,7 +20,6 @@ public class ClimberTest
     public CANSparkMax telescope = mock(CANSparkMax.class);
     public CANSparkMax coil1 = mock(CANSparkMax.class);
     public CANSparkMax coil2 = mock(CANSparkMax.class);
-    public TalonSRX telescopeEncoderMotor = mock(TalonSRX.class);
     public Climber climb = new Climber(coil1, coil2, telescope);
 
     // @Before allows for the setup() method to be called before any other methods
