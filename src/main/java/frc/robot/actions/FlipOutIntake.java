@@ -14,6 +14,11 @@ public class FlipOutIntake extends Action {
         markComplete();
     }
 
+    public void buttonReleased(){
+        Context.robotController.intake.stopIntaking();
+        markComplete();
+    }
+
     public void loop()
     {
         

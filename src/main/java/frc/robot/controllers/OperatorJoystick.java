@@ -19,11 +19,10 @@ public class OperatorJoystick implements CompetitionJoystick {
 
         addTriggers(new Trigger[]{
             new Trigger(this, Trigger.Type.BUTTON, Context.flipOutIntakeButtonID, new FlipOutIntake()),
-            new Trigger(this, Trigger.Type.BUTTON, Context.flipInIntakeButtonID, new FlipInIntake()),
-            new Trigger(this, Trigger.Type.BUTTON, Context.reverseNMFDirectionButtonID, new ReverseNMF()),
-            new Trigger(this, Trigger.Type.AXIS, Context.spinNMFToggleTriggerID, new StopNMF()),
-            new Trigger(this, Trigger.Type.AXIS, Context.spinIntakeTriggerID, new SpinIntake()),
-            new Trigger(this, Trigger.Type.BUTTON, Context.reverseIntakeDirectionButtonID, new ReverseIntake()),
+            new Trigger(this, Trigger.Type.AXIS, Context.flipInIntakeTriggerID, new FlipInIntake()),
+            new Trigger(this, Trigger.Type.DPAD, Context.reverseNMFDirectionDpadID, new ReverseNMF()),
+            new Trigger(this, Trigger.Type.BUTTON, Context.spinNMFToggleButtonID, new StopNMF()),
+            new Trigger(this, Trigger.Type.DPAD, Context.reverseIntakeDirectionDpadID, new ReverseIntake()),
             
         });
     }

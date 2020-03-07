@@ -30,6 +30,7 @@ public class NMFController {
     public double NMFcurrentSpeed; //Encoder-read speed
     public double NMFsetSpeed; //The speed to set based on PID
     public double NMFtargetSpeed; //The current desired speed;
+    public double NMFrememberedSpeed;
     public PID NMFPID = new PID(0, 0, 0); //Need to tune
 
     public double omniCurrentSpeed; //Encoder-read speed
@@ -66,8 +67,14 @@ public class NMFController {
     }
 
     public void spinNMFReverse(){
+        NMFrememberedSpeed = NMFtargetSpeed;
         NMFtargetSpeed = NMFreverseSpeed;
         reversed = true;
+    }
+
+    public void spinNMFForward(){
+        NMFtargetSpeed = NMFrememberedSpeed;
+        reversed = false;
     }
 
     public void stopNMF(){

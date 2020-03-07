@@ -17,6 +17,10 @@ public class ReverseIntake extends Action {
 
         markComplete();
     }
+    
+    public void buttonReleased(){
+        Context.robotController.intake.stopIntaking();
+    }
 
     public void loop()
     {

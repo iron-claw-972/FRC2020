@@ -55,12 +55,11 @@ public class Context {
     public static final int quickTurnRightTriggerID = 3;
     public static final int loopyLoopBreak = 7;
 
-    public static final int flipOutIntakeButtonID = 5;
-    public static final int flipInIntakeButtonID = 6;
-    public static final int reverseNMFDirectionButtonID = 2;
-    public static final int reverseIntakeDirectionButtonID = 3;
-    public static final int spinIntakeTriggerID = 2;
-    public static final int spinNMFToggleTriggerID = 3;
+    public static final int flipOutIntakeButtonID = 6;
+    public static final int flipInIntakeTriggerID = 2;
+    public static final int reverseNMFDirectionDpadID = 3;
+    public static final int reverseIntakeDirectionDpadID = 4;
+    public static final int spinNMFToggleButtonID = 2;
 
 
 

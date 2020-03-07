@@ -9,21 +9,12 @@ public class ReverseNMF extends Action {
         
         if (!Context.robotController.nmfController.reversed) {
             Context.robotController.nmfController.spinNMFReverse();
-        } else {
-            Context.robotController.nmfController.reversed = false;
-            switch(Context.robotController.nmfController.state) {
-                case IDLE:
-                    Context.robotController.nmfController.spinNMFIdle();
-                    break;
-                case INTAKING:
-                    Context.robotController.nmfController.spinNMFIntaking();
-                    break;
-                case SHOOTING:
-                    Context.robotController.nmfController.spinNMFShooting();
-                    break;
-            }
-        }
+        } 
+        
+    }
 
+    public void buttonReleased(){
+        Context.robotController.nmfController.spinNMFForward();
         markComplete();
     }
 
