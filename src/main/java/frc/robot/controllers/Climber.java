@@ -4,12 +4,15 @@ import com.ctre.phoenix.motorcontrol.can.*;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.revrobotics.CANSparkMax;
+
+import org.apache.commons.io.filefilter.CanReadFileFilter;
+
 import frc.robot.util.*;
 
 public class Climber
 {
-    public TalonSRX coilMotor1;
-    public TalonSRX coilMotor2;
+    public CANSparkMax coilMotor1;
+    public CANSparkMax coilMotor2;
     public TalonSRX telescopeEncoderMotor;
     public CANSparkMax telescopeMotor;
 
@@ -27,7 +30,7 @@ public class Climber
     double pidVal;
 
     //Initializes Climber with Talon SRX motor, CANSparkMax, PID for the telescope, and initial time
-    public Climber(TalonSRX coilMotor1_, TalonSRX coilMotor2_, TalonSRX telescopeEncoderMotor_, CANSparkMax telescopeMotor_){
+    public Climber(CANSparkMax coilMotor1_, CANSparkMax coilMotor2_, TalonSRX telescopeEncoderMotor_, CANSparkMax telescopeMotor_){
         coilMotor1 = coilMotor1_;
         coilMotor2 = coilMotor2_;
         telescopeMotor = telescopeMotor_;
@@ -53,14 +56,14 @@ public class Climber
 
     //Spins the motor to coil the winch
     public void coil(){
-        coilMotor1.set(ControlMode.PercentOutput, Context.coilSpeed);
-        coilMotor2.set(ControlMode.PercentOutput, Context.coilSpeed);
+        coilMotor1.set(Context.coilSpeed);
+        coilMotor2.set(Context.coilSpeed);
     }
 
     //Spins the motor to uncoil the winch
     public void uncoil(){
-        coilMotor1.set(ControlMode.PercentOutput, Context.uncoilSpeed);
-        coilMotor2.set(ControlMode.PercentOutput, Context.uncoilSpeed);
+        coilMotor1.set(Context.uncoilSpeed);
+        coilMotor2.set(Context.uncoilSpeed);
     }
 
     public void up() {
@@ -95,14 +98,17 @@ public class Climber
     }
 
     public boolean isClimbDone() {
+        int marginOfError = 5;
+        //if the telescope is moving up then the action is done once it is within a range of the top encoder value
         if (desiredPosition == topEncoderHeight) {
-            if ((currentPosition >= topEncoderHeight - 5) && (currentPosition <= topEncoderHeight + 5)) {
+            if ((currentPosition >= topEncoderHeight - marginOfError) && (currentPosition <= topEncoderHeight + marginOfError)) {
                 return true;
             }
         }
 
+        //if the telescope is moving down then the action is done once it is within a range of the bottom encoder value
         if (desiredPosition == bottomEncoderHeight) {
-            if ((currentPosition >= bottomEncoderHeight - 5) && (currentPosition <= bottomEncoderHeight + 5)) {
+            if ((currentPosition >= bottomEncoderHeight - marginOfError) && (currentPosition <= bottomEncoderHeight + marginOfError)) {
                 return true;
             }
         }

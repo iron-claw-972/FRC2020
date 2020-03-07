@@ -22,8 +22,8 @@ import frc.robot.execution.SequentialScheduler;;
 
 public class RobotController {
     public CANSparkMax telescopeMotor;
-    public TalonSRX coilMotor1;
-    public TalonSRX coilMotor2;
+    public CANSparkMax coilMotor1;
+    public CANSparkMax coilMotor2;
     public TalonFXDrivetrain drivetrain;
     public AutoDrive autoDrive;
     public NavX navX;
@@ -80,8 +80,8 @@ public class RobotController {
         //----- Controllers -----
         /* Change this line when using a different drive train. Don't forget to change the motor ids in context */
         telescopeMotor = new CANSparkMax(Context.climberMotorID, MotorType.kBrushless);
-        coilMotor1 = new TalonSRX (Context.coilMotorID);
-        coilMotor2 = new TalonSRX (Context.coilMotorID);
+        coilMotor1 = new CANSparkMax(Context.coilMotor1ID, MotorType.kBrushless);
+        coilMotor2 = new CANSparkMax(Context.coilMotor2ID, MotorType.kBrushless);
         drivetrain = new TalonFXDrivetrain(leftDriveMotor1, leftDriveMotor2, rightDriveMotor1, rightDriveMotor2, leftDriveEncoderInterface, rightDriveEncoderInterface);
         autoDrive = new AutoDrive();
         navX = new NavX(new AHRS(SPI.Port.kMXP));
@@ -90,7 +90,7 @@ public class RobotController {
         intake = new Intake(intakeTalon, intakeFlipSolenoid);
         nmfController = new NMFController(nmfNeo, omniNeo);
         opticalLocalization = new OpticalLocalization();
-        climber = new Climber(coilMotor1, coilMotor2, coilMotor1, telescopeMotor);
+        climber = new Climber(coilMotor1, coilMotor2, intakeTalon, telescopeMotor);
         sequentialScheduler = new SequentialScheduler();
 
         driverStation = DriverStation.getInstance();

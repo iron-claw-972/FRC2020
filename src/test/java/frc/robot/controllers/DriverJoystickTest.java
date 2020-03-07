@@ -45,8 +45,9 @@ public class DriverJoystickTest {
         when(driverJoystick.joystick.getRawAxis(1)).thenReturn(0.001);
         when(driverJoystick.joystick.getRawAxis(2)).thenReturn(-0.5);
 
-        trigger0 = new Trigger(1, new Complete());
-        trigger1 = new Trigger(2, new Complete0());
+        //CompetitionJoystick joystick, Type type, int id, Action action
+        trigger0 = new Trigger(driverJoystick, Trigger.Type.BUTTON, 2, new Complete());
+        trigger1 = new Trigger(driverJoystick, Trigger.Type.BUTTON, 4, new Complete0());
 
         Context.robotController.parallelScheduler = mock(ParallelScheduler.class);
 
@@ -107,4 +108,5 @@ public class DriverJoystickTest {
         driverJoystick.triggers.clear();
         passedAction = null;
     }
-}*/
+}
+*/
