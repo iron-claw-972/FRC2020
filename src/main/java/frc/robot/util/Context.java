@@ -75,11 +75,11 @@ public class Context {
     public static final int intakeMotorId = 8;
 
     // NMF Values
-    public static final int nmfSparkID = -1;
+    public static final int nmfSparkID = 4;
     public static final int omniSparkID = 5;
 
     //----- Climbing System -----
-    public static final int climberMotorID = 4;
+    public static final int climberMotorID = 6;
     public static final int coilMotor1ID = 2;
     public static final int coilMotor2ID = 3;
     public static final double coilSpeed = 0.5;
