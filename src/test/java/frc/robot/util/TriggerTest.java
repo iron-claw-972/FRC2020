@@ -42,7 +42,7 @@ public class TriggerTest {
     public void testNotPressed() {
         Complete completeAction = new Complete();
     
-        Trigger trigger = new Trigger(1, completeAction);
+        Trigger trigger = new Trigger(Context.robotController.driverJoystick, Trigger.Type.BUTTON, 1, completeAction);
 
         trigger.loop();
         
@@ -55,7 +55,7 @@ public class TriggerTest {
     public void testPassing() {
         Complete completeAction = new Complete();
     
-        Trigger trigger = new Trigger(2, completeAction);
+        Trigger trigger = new Trigger(Context.robotController.driverJoystick, Trigger.Type.BUTTON, 2, completeAction);
 
         trigger.loop();
 
@@ -68,7 +68,7 @@ public class TriggerTest {
     public void testCloning() {
         Complete completeAction = new Complete();
     
-        Trigger trigger = new Trigger(2, completeAction);
+        Trigger trigger = new Trigger(Context.robotController.driverJoystick, Trigger.Type.BUTTON, 2, completeAction);
 
         trigger.loop();
 
