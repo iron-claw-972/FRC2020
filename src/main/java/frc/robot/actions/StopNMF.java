@@ -1,29 +1,18 @@
 package frc.robot.actions;
 
+import frc.robot.controllers.NMFController;
 import frc.robot.util.*;
 
 public class StopNMF extends Action {
 
     public void start() {
-        super.start();
-        
-        if (!Context.robotController.nmfController.reversed) {
-            Context.robotController.nmfController.stopNMF();
-        } else {
-            Context.robotController.nmfController.stopped = false;
-            switch(Context.robotController.nmfController.state) {
-                case IDLE:
-                    Context.robotController.nmfController.spinNMFIdle();
-                    break;
-                case INTAKING:
-                    Context.robotController.nmfController.spinNMFIntaking();
-                    break;
-                case SHOOTING:
-                    Context.robotController.nmfController.spinNMFShooting();
-                    break;
-            }
+        super.start(); //its a toggle, when it is stopped, it starts and vice versa
+        if (Context.robotController.nmfController.NMFtargetSpeed == 0){
+            Context.robotController.nmfController.startNMF();
         }
-
+        else{
+            Context.robotController.nmfController.stopNMF();
+        }
         markComplete();
     }
 

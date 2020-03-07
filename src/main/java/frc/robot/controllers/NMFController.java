@@ -14,7 +14,7 @@ public class NMFController {
     CANEncoder omniEncoder;
 
     public static enum State {
-        IDLE, INTAKING, SHOOTING
+        IDLE, INTAKING, SHOOTING;
     }
     public State state;
     public boolean reversed;
@@ -72,7 +72,19 @@ public class NMFController {
 
     public void stopNMF(){
         NMFtargetSpeed = 0;
-        stopped = true;
+    }
+
+    public void startNMF(){
+        switch (state){
+            case IDLE:
+                NMFtargetSpeed = NMFidleSpeed;
+                break;
+            case SHOOTING:
+                NMFtargetSpeed = NMFshootingSpeed;
+                break;
+            case INTAKING:
+                NMFtargetSpeed = NMFintakeSpeed;
+        }
     }
 
     public void spinOmni(){
