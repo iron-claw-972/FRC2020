@@ -86,18 +86,17 @@ public class ShooterController {
         velocityJRADD = new JRADD(velocityJRADD.kP, velocityJRADD.kT, velocityJRADD.kF, velocityJRADD.kI, velocityJRADD.kLoadRatio, loadRatioConstant, loadRatioRate);
     }
 
-    public void loop() {
+    public void updateObjects() {
         //execute update methods
 
         updateParameters();
         updateVelocity();
     }
     
-    public void loop(double desiredVelocity) {
-        //change desiredVelocity, and then execute update methods
+    public void setDesiredVelocity(double _desiredVelocity) {
+        //change desiredVelocity, which is altered by invertShooter
 
-        this.desiredVelocity = (invertShooter) ? desiredVelocity : -desiredVelocity;
-        loop();
+        desiredVelocity = (invertShooter) ? _desiredVelocity : -_desiredVelocity;
     }
 
     private double speedConverter(double speed) {
