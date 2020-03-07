@@ -35,8 +35,7 @@ public class ShooterController {
     private int leftShooterID;
     private TalonFX rightShooterTalon;
     private int rightShooterID;
-    private boolean orientation; //Direction of rotation by current relative to horizontal plane
-                                 //true if positive current = clockwise rotation
+    private boolean invertShooter; //inverts direction of motor rotation, true = positive is clockwise, false = positive is counter clockwise
 
     private final double minCurrent = 0.0560258; //minimum current needed for flywheel motor to overcome friction, etc. (to go into motion)
     private final double speedToCurrentRate = 0.0125859; //the linear conversion rate between a velocity and necessary current
@@ -49,7 +48,7 @@ public class ShooterController {
 
         leftShooterID = _leftShooterID;
         rightShooterID = _rightShooterID;
-        orientation = _orientation;
+        invertShooter = _orientation;
 
         leftShooterTalon = new TalonFX(leftShooterID);
         leftShooterTalon.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
@@ -76,7 +75,7 @@ public class ShooterController {
         //passes input to motor controller
 
         setCurrent = AdditionalMath.Clamp(speedConverter(setVelocity), -MAX_CURRENT, MAX_CURRENT);
-        leftShooterTalon.set(ControlMode.PercentOutput, -setCurrent); //Sign depends on motor orientation
+        leftShooterTalon.set(ControlMode.PercentOutput, -setCurrent); //Sign depends on motor invertShooter
         rightShooterTalon.set(ControlMode.PercentOutput, setCurrent);
     }
 
@@ -97,7 +96,7 @@ public class ShooterController {
     public void loop(double desiredVelocity) {
         //change desiredVelocity, and then execute update methods
 
-        this.desiredVelocity = (orientation) ? desiredVelocity : -desiredVelocity;;
+        this.desiredVelocity = (invertShooter) ? desiredVelocity : -desiredVelocity;
         loop();
     }
 

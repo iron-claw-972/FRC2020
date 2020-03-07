@@ -62,24 +62,4 @@ public class JRADD {
         output = updateValue + kP * proportional * (kT * kLoadRatio * loadRatio * setpoint - actual);
         return output;
     }
-
-    public void setP(double m) {
-        kP += m;
-    }
-
-    public void setT(double m) {
-        kT += m;
-    }
-
-    public void setF(double m) {
-        kF += m;
-    }
-
-    public void setI(double m) {
-        kI += m;
-    }
-    
-    public void setLoadRatio(double m) {
-        kLoadRatio += m;
-    }
 }
