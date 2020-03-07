@@ -1,4 +1,4 @@
-package frc.robot.util;
+/*package frc.robot.util;
 
 import static org.junit.Assert.*;
 import org.junit.*;
@@ -78,4 +78,4 @@ public class TriggerTest {
 
         passedAction = null;
     }
-}
+}*/
