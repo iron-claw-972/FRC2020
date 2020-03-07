@@ -37,8 +37,8 @@ public class RobotController {
     public ShooterController shooterController;
     public Intake intake;
     public OpticalLocalization opticalLocalization;
-    public ClimberPranav climber;
-    //public ClimberTestValue climberHelp;
+    //public ClimberPranav climber;
+    public ClimberTestValue climberHelp;
   
     public SequentialScheduler sequentialScheduler;
     public ParallelScheduler parallelScheduler;
@@ -64,7 +64,7 @@ public class RobotController {
 
     public RobotController () {
         //----- Motors -----
-        leftDriveMotor1 = new TalonSRX(Context.leftMotor1ID);
+        //leftDriveMotor1 = new TalonSRX(Context.leftMotor1ID);
         /*
         leftDriveMotor2 = new TalonFX(Context.leftMotor2ID);
         rightDriveMotor1 = new TalonFX(Context.rightMotor1ID);
@@ -98,8 +98,8 @@ public class RobotController {
         nmfController = new NMFController(nmfNeo, omniNeo);
         opticalLocalization = new OpticalLocalization();
         */
-        climber = new ClimberPranav(coilMotor1, coilMotor2, leftDriveMotor1, telescopeMotor);
-        //climberHelp = new ClimberTestValue(leftDriveMotor1, telescopeMotor);
+        //climber = new ClimberPranav(coilMotor1, coilMotor2, leftDriveMotor1, telescopeMotor);
+        climberHelp = new ClimberTestValue(telescopeMotor);
         /*
         sequentialScheduler = new SequentialScheduler();
 
@@ -109,13 +109,13 @@ public class RobotController {
     }
 
     public void initAll() {
-        climber.resetClimbEncoder();
-        //climberHelp.resetClimbEncoder();
+        //climber.resetClimbEncoder();
+        climberHelp.resetClimbEncoder();
     }
 
     public void loopAll() {
-        climber.loop();  
-        //climberHelp.loop();
+        //climber.loop();  
+        climberHelp.loop();
         /*
         ntInterface.loop();
         opticalLocalization.Update();
