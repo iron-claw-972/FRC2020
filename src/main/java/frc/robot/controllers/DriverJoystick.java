@@ -74,14 +74,6 @@ public class DriverJoystick implements CompetitionJoystick {
         }
     }
 
-    public boolean getClimbU() {
-        return joystick.getRawButton(Context.climbButtonUp);
-    }
-
-    public boolean getClimbD() {
-        return joystick.getRawButton(Context.climbButtonDown);
-    }
-
     /**
      * For some inexplicable reason the drive code completely breaks when you input negative zero so use this to invert the values instead
      */
