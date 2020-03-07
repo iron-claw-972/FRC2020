@@ -15,7 +15,7 @@ public class Robot extends TimedRobot {
 
   private UsbCamera camera;
 
-  private final AutoConfigs autoConfig = AutoConfigs.CENTER_BASIC;
+  private final AutoConfigs autoConfig = AutoConfigs.POWER_PORT_BASIC;
 
   @Override
   public void robotInit() {
