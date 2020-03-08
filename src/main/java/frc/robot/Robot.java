@@ -14,7 +14,7 @@ public class Robot extends TimedRobot {
   public double origTime;
   public double robotStartTime;
 
-  private UsbCamera camera;
+  // private UsbCamera camera;
 
   @Override
   public void robotInit() {
@@ -22,16 +22,14 @@ public class Robot extends TimedRobot {
     robotStartTime = System.currentTimeMillis()/1000.0;
     Context.robotController.compressor.start();
 
-    camera = edu.wpi.first.cameraserver.CameraServer.getInstance().startAutomaticCapture();
-    camera.setVideoMode(PixelFormat.kMJPEG, Context.cameraWidth, Context.cameraHeight, Context.cameraFPS);
-    Dashboard.init(camera);
-
-    
+    // camera = edu.wpi.first.cameraserver.CameraServer.getInstance().startAutomaticCapture();
+    // camera.setVideoMode(PixelFormat.kMJPEG, Context.cameraWidth, Context.cameraHeight, Context.cameraFPS);
+    // Dashboard.init(camera);
   }
 
   @Override
   public void robotPeriodic() {
-    Dashboard.update();
+    // Dashboard.update();
   }
 
   @Override

@@ -34,6 +34,7 @@ public class Context {
     public static final int gearShifterChannelA = 0;
     public static final int gearShifterChannelB = 1;
     public static final int driveTrainCooling = 5;
+    public static final int pcmCanID = 17;
 
     //----- Human Input Device Values -----
     public static final int driverJoystickID = 0;
@@ -78,6 +79,7 @@ public class Context {
     // NMF Values
     public static final int nmfSparkID = 4;
     public static final int omniSparkID = 5;
+    public static final int nmfEncoderInterfaceID = 9;
 
     //----- Climbing System -----
     public static final int climberMotorID = 6;

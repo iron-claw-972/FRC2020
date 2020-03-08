@@ -49,6 +49,8 @@ public class RobotController {
 
     public TalonSRX leftDriveEncoderInterface;
     public TalonSRX rightDriveEncoderInterface;
+
+    public TalonSRX nmfEncoderInterface;
     
     public CANSparkMax nmfNeo;
     public CANSparkMax omniNeo;
@@ -68,6 +70,7 @@ public class RobotController {
         rightDriveMotor2 = new TalonFX(Context.rightMotor2ID);
         leftDriveEncoderInterface = new TalonSRX(Context.leftEncoderInterfaceID);
         rightDriveEncoderInterface = new TalonSRX(Context.rightEncoderInterfaceID);
+        nmfEncoderInterface = new TalonSRX(Context.nmfEncoderInterfaceID);
 
         omniNeo = new CANSparkMax(Context.omniSparkID, MotorType.kBrushless);
         nmfNeo = new CANSparkMax(Context.nmfSparkID, MotorType.kBrushless);
@@ -76,7 +79,7 @@ public class RobotController {
         //----- Pneumatics -----
         intakeFlipSolenoid = new DoubleSolenoid(Context.intakeFlipChannelA, Context.intakeFlipChannelB);
         
-        compressor = new Compressor();
+        compressor = new Compressor(Context.pcmCanID);
         compressor.setClosedLoopControl(true);
 
         //----- Controllers -----
@@ -91,10 +94,11 @@ public class RobotController {
         driverJoystick = new DriverJoystick();
         operatorJoystick = new OperatorJoystick();
         intake = new Intake(intakeTalon, intakeFlipSolenoid);
-        nmfController = new NMFController(nmfNeo, omniNeo);
+        nmfController = new NMFController(nmfNeo, omniNeo, nmfEncoderInterface);
         opticalLocalization = new OpticalLocalization();
         climber = new Climber(coilMotor1, coilMotor2, intakeTalon, telescopeMotor);
         sequentialScheduler = new SequentialScheduler();
+        parallelScheduler = new ParallelScheduler();
 
         driverStation = DriverStation.getInstance();
 
@@ -112,5 +116,7 @@ public class RobotController {
         nmfController.loop();
         driverJoystick.loop();
         operatorJoystick.loop();
+        sequentialScheduler.loop();
+        parallelScheduler.loop();
     }
 }

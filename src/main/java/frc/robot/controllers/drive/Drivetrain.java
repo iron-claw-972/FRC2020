@@ -29,11 +29,12 @@ public abstract class Drivetrain {
 
   private void chooseDriveMethod(double leftMotorOutput, double rightMotorOutput) {
     // Drive with pid only when output is > 0.5 and scale tankdrive output to make it bounded by maxDrivingSpeed
-    if (Math.abs(leftMotorOutput) < 0.5 || Math.abs(rightMotorOutput) < 0.5) {
-      tankDrive(leftMotorOutput * Context.maxDrivingSpeed / Context.maxTheoreticalDrivingSpeed, rightMotorOutput * Context.maxDrivingSpeed / Context.maxTheoreticalDrivingSpeed);
-    } else {
-      tankDrivePIDF(leftMotorOutput * Context.maxDrivingSpeed, rightMotorOutput * Context.maxDrivingSpeed);
-    }
+    // if (Math.abs(leftMotorOutput) < 0.5 || Math.abs(rightMotorOutput) < 0.5) {
+    //   tankDrive(leftMotorOutput * Context.maxDrivingSpeed / Context.maxTheoreticalDrivingSpeed, rightMotorOutput * Context.maxDrivingSpeed / Context.maxTheoreticalDrivingSpeed);
+    // } else {
+    //   tankDrivePIDF(leftMotorOutput * Context.maxDrivingSpeed, rightMotorOutput * Context.maxDrivingSpeed);
+    // }
+    tankDrive(leftMotorOutput, rightMotorOutput);
   }
 
   public void arcadeDrive(double power, double turn) {
