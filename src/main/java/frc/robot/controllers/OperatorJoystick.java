@@ -24,6 +24,7 @@ public class OperatorJoystick implements CompetitionJoystick {
             new Trigger(this, Trigger.Type.BUTTON, Context.spinNMFToggleButtonID, new StopNMF()),
             new Trigger(this, Trigger.Type.DPAD, Context.reverseIntakeDirectionDpadID, new ReverseIntake()),
             new Trigger(this, Trigger.Type.DPAD, Context.nmfSlowSpinDpadID, new NMFSlowSpin()),
+            new Trigger(this, Trigger.Type.AXIS, Context.shoot, new Shoot())
             
         });
     }

@@ -112,7 +112,7 @@ public class RobotController {
     public void loopAll() {
         ntInterface.loop();
         opticalLocalization.Update();
-        //intake.loop();
+        intake.loop();
         nmfController.loop();
         driverJoystick.loop();
         operatorJoystick.loop();

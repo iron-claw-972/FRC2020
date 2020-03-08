@@ -25,9 +25,9 @@ public class NMFController {
     public double NMFidleSpeed = .3;
     public double NMFintakeSpeed = .4;
     public double NMFshootingSpeed = .5;
-    public double NMFreverseSpeed = 80;
-    public double omniForwardsSpeed = 30;
-    public double omniReverseSpeed = -30;
+    public double NMFreverseSpeed = -.3;
+    public double omniForwardsSpeed = .7;
+    public double omniReverseSpeed = -.7;
 
     public double NMFcurrentSpeed; //Encoder-read speed
     public double NMFsetSpeed; //The speed to set based on PID
@@ -125,7 +125,7 @@ public class NMFController {
 
         omniCurrentSpeed = omniEncoder.getVelocity();
         omniSetSpeed = omniPID.update(omniTargetSpeed, omniCurrentSpeed, deltaTime);
-        omniSpark.set(omniSetSpeed);
+        omniSpark.set(omniTargetSpeed);
 
     }
 }

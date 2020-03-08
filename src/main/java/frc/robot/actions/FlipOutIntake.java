@@ -10,8 +10,6 @@ public class FlipOutIntake extends Action {
         Context.robotController.intake.flipOut();
         Context.robotController.intake.beginIntaking();
         Context.robotController.nmfController.spinNMFIntaking();
-
-        markComplete();
     }
 
     public void buttonReleased(){
@@ -21,6 +19,6 @@ public class FlipOutIntake extends Action {
 
     public void loop()
     {
-        
+        Context.robotController.nmfController.spinNMFIntaking();
     }
 }
