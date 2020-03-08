@@ -118,8 +118,7 @@ public class NMFController {
 
         NMFcurrentSpeed = NMFencoder.getVelocity();
         NMFsetSpeed = NMFPID.update(NMFtargetSpeed, NMFcurrentSpeed, deltaTime);
-        // System.out.println("vel: " 
-        + NMFcurrentSpeed + ", pos: " + NMFencoder.getVelocity() + ", dt: " + deltaTime + ", tar:" + NMFtargetSpeed);
+        // System.out.println("vel: "  + NMFcurrentSpeed + ", pos: " + NMFencoder.getVelocity() + ", dt: " + deltaTime + ", tar:" + NMFtargetSpeed);
         System.out.println("target_speed: " + NMFtargetSpeed);
         NMFspark.set(NMFtargetSpeed);
         // System.out.println("talon encoder: " + nmfEncoderInterface.getSelectedSensorVelocity());
