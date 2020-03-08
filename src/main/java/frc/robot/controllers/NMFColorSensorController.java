@@ -2,7 +2,9 @@ package frc.robot.controllers;
 
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
- 
+import frc.robot.util.Context;
+import frc.robot.actions.*;
+
 import com.revrobotics.*;
 
 public class NMFColorSensorController {
@@ -86,10 +88,15 @@ public class NMFColorSensorController {
             
           }
       }
+
         for(boolean bool : ballPositions) {
           System.out.print(bool + " ");
         }
         System.out.println();
+      }
+
+      if (getBallCount()>=5){
+        Context.robotController.parallelScheduler.add(new FlipInIntake());
       }
       
       previousColor = currentColor;
@@ -97,5 +104,15 @@ public class NMFColorSensorController {
 
     public boolean[] getBallPositions(){
         return ballPositions;
+    }
+
+    public int getBallCount(){
+      int ballCount=0;
+      for(boolean bool : ballPositions) {
+        if (bool){
+          ballCount++;
+        }
+      }
+      return ballCount;
     }
 }
