@@ -53,19 +53,6 @@ public class Vector
     {
         return new Vector(x*Math.cos(Angle) - y*Math.sin(Angle), x* Math.sin(Angle) + y * Math.cos(Angle), z); // basic rotation matrix
     }
-    public void add(Vector B)
-    {
-        x+=B.x;
-        y+=B.y;
-        z+=B.z;
-    }
-
-    public void subtract(Vector B)
-    {
-        x-=B.x;
-        y-=B.y;
-        z-=B.z;
-    }
 
     public static Vector subtractVectors(Vector A, Vector B)
     {
