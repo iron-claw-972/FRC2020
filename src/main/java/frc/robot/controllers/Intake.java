@@ -40,6 +40,6 @@ public class Intake {
     }
 
     public void loop() {
-        intakeTalon.set(ControlMode.PercentOutput, setSpeed); //motion profiling later, ik this is bad
+        intakeTalon.set(ControlMode.PercentOutput, -setSpeed); //motion profiling later, ik this is bad
     }
 }

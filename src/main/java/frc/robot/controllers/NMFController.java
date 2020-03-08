@@ -22,23 +22,23 @@ public class NMFController {
     public boolean reversed;
     public boolean stopped;
 
-    public double NMFidleSpeed = 50;
-    public double NMFintakeSpeed = 60;
-    public double NMFshootingSpeed = 70;
+    public double NMFidleSpeed = .3;
+    public double NMFintakeSpeed = .4;
+    public double NMFshootingSpeed = .5;
     public double NMFreverseSpeed = 80;
-    public double omniForwardsSpeed = 0;
-    public double omniReverseSpeed = 0;
+    public double omniForwardsSpeed = 30;
+    public double omniReverseSpeed = -30;
 
     public double NMFcurrentSpeed; //Encoder-read speed
     public double NMFsetSpeed; //The speed to set based on PID
     public double NMFtargetSpeed; //The current desired speed;
     public double NMFrememberedSpeed;
-    public PID NMFPID = new PID(0.01, 0, 0); //Need to tune
+    public PID NMFPID = new PID(0, 0,0); //Need to tune
 
     public double omniCurrentSpeed; //Encoder-read speed
     public double omniSetSpeed; //The speed to set based on PID
     public double omniTargetSpeed; //The current desired speed;
-    public PID omniPID = new PID(0, 0, 0); //Need to tune
+    public PID omniPID = new PID(.01, 0, 0); //Need to tune
 
     private double startTime;
     private double lastTime;
@@ -51,6 +51,7 @@ public class NMFController {
         NMFencoder = NMFspark.getEncoder();
         omniSpark = OmniSpark;
         omniEncoder = omniSpark.getEncoder();
+        state = State.IDLE;
         this.nmfEncoderInterface = nmfEncoderInterface;
         nmfEncoderInterface.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
     }
@@ -118,8 +119,8 @@ public class NMFController {
         NMFcurrentSpeed = NMFencoder.getVelocity();
         NMFsetSpeed = NMFPID.update(NMFtargetSpeed, NMFcurrentSpeed, deltaTime);
         // System.out.println("vel: " + NMFcurrentSpeed + ", pos: " + NMFencoder.getVelocity() + ", dt: " + deltaTime + ", tar:" + NMFtargetSpeed);
-        System.out.println("set_speed: " + NMFsetSpeed);
-        // NMFspark.set(NMFsetSpeed);
+        System.out.println("target_speed: " + NMFtargetSpeed);
+        NMFspark.set(NMFtargetSpeed);
         // System.out.println("talon encoder: " + nmfEncoderInterface.getSelectedSensorVelocity());
 
         omniCurrentSpeed = omniEncoder.getVelocity();
