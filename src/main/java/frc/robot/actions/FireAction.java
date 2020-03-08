@@ -4,14 +4,15 @@ import frc.robot.controllers.*;
 import frc.robot.util.*;
 
 public class FireAction extends Action {
-
+    
     private final double NMF_ERROR_THRESHOLD = 0.1;
     private final double SHOOTER_ERROR_THRESHOLD = 0.1;
     private final double FIRING_TIME_OUT = 1.0;
 
     public enum Position { TRENCH, CLOSE_INIT_LINE, VARIABLE }
-    public enum Stage { CHECKING, IDLE, ACCELERATING, FIRING, DECELERATING, COMPLETE, TIME_OUT}
+    public enum Stage { CHECKING, ACCELERATING, FIRING, DECELERATING, COMPLETE, TIME_OUT}
 
+    Position shootingPosition;
     Stage shootingStage;
     double timeOutCounter;
 
@@ -34,24 +35,13 @@ public class FireAction extends Action {
     private final double CALIBRATED_INIT_SPEED = 0;
     private final double CALIBRATED_TRENCH_SPEED = 0; //calibrate
 
-    public FireAction(Position _position) {
-        switch(_position) {
-            case TRENCH:
-                variableDistance = false;
-                firingSpeed = CALIBRATED_TRENCH_SPEED;
-                break;
-            case CLOSE_INIT_LINE:
-                variableDistance = false;
-                firingSpeed = CALIBRATED_INIT_SPEED;
-                break;
-            case VARIABLE:
-                variableDistance = true;
-                firingSpeed = 5;
-                break;
-        }
+    public FireAction(Position _shootingPosition) {
+
+        shootingPosition = _shootingPosition;
     }
 
-    public void init() {
+    public void start() {
+        super.start();
 
         shootingStage = Stage.CHECKING;
         timeOutCounter = 0.0;
@@ -65,7 +55,7 @@ public class FireAction extends Action {
 
     public void loop() {
 
-        if(variableDistance) {
+        if(shootingPosition == Position.VARIABLE) {
             firingDistance = 100 * distanceSensor.getDistance(); //Conversion from cm to meters
         }
 
@@ -91,6 +81,19 @@ public class FireAction extends Action {
                 break;
             case ACCELERATING:
                 //Gets shooter and NMF up to speed before starting to eject balls.
+
+                switch(shootingPosition) {
+                    case VARIABLE:
+                        firingSpeed = AdditionalMath.ShooterSpeed(firingDistance, 40, 0.5, 2.5);
+                        //TODO: put real numbers into Context
+                        break;
+                    case CLOSE_INIT_LINE:
+                        firingSpeed = CALIBRATED_INIT_SPEED;
+                        break;
+                    case TRENCH:
+                        firingSpeed = CALIBRATED_TRENCH_SPEED;
+                        break;
+                }
 
                 shooterController.setDesiredVelocity(firingSpeed);
                 NMFController.spinNMFShooting();

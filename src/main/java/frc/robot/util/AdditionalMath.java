@@ -48,4 +48,17 @@ public class AdditionalMath
         if(value<0) return value-decouple;
         return value;
     }
+
+    public static double ShooterSpeed(double targetDistanceMeters, double shooterAngleDegrees, double shooterHeightMeters, double targetHeightMeters) {
+        double shooterAngleRadians = shooterAngleDegrees * Math.PI/180;
+        return Math.sqrt((9.81*Math.pow(targetDistanceMeters, 2))
+        /((2*Math.pow(Math.cos(shooterAngleRadians), 2))*(targetHeightMeters - shooterHeightMeters - targetDistanceMeters*Math.tan(shooterAngleRadians))));
+
+        /*  __________________________
+           /   (gd^2)/(2cos(a)^2)
+          /    -----------------
+        \/    (h_2 - h_1 - dtan(a))
+        */
+    }
+
 }

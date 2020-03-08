@@ -32,7 +32,9 @@ public class VisionAlign extends Action {
     public double rotationLocalized = 0.0;
     public double navXYawOffset = 0.0;
 
-    public void init() {
+    public void start() {
+        super.start();
+
         alignmentStatus = StatusEnum.IN_PROGRESS;
 
         timeoutCounter = 0.0;

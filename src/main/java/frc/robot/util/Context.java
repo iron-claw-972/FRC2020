@@ -18,7 +18,7 @@ public class Context {
     public static final int rightMotor1ID = 14;
     public static final int rightMotor2ID = 15;
   
-    //----- Flywheel Shooter Values -----
+    //----- Shooter Values -----
     public static final int shooterMotorID = 2;
     public static final int FALCON_ENCODER_CPR = 2048;
   
