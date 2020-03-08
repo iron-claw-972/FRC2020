@@ -1,8 +1,6 @@
 package frc.robot.util;
 
 public class Vector
-
-class Vector
 {
     public double x = 0;
     public double y = 0;

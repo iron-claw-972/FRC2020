@@ -54,10 +54,6 @@ public class Context {
     public static final int quickTurnLeftTriggerID = 2;
     public static final int quickTurnRightTriggerID = 3;
     public static final int loopyLoopBreak = 7;
-    public static final int toggleTrack = 4;
-
-    //----- Robotcontroller Static Reference -----
-    public static RobotController robotController;
     public static final int flipOutIntakeButtonID = 5;
     public static final int flipInIntakeButtonID = 6;
     public static final int reverseNMFDirectionButtonID = -1;
@@ -65,15 +61,8 @@ public class Context {
     public static final int spinIntakeTriggerID = 2;
     public static final int spinNMFToggleButtonID = 4;
 
-    //Optical localization constants
-    public static final double sensorSpacing = 50.0; // distance between the sensors in cm
-    public static final double sensorCenterOffset = 10.0; // sensor axis offset from center in cm
-    public static final int flipOutIntakeButtonID = 5;
-    public static final int flipInIntakeButtonID = 6;
-    public static final int reverseNMFDirectionButtonID = -1;
-    public static final int reverseIntakeDirectionButtonID = -1;
-    public static final int spinIntakeTriggerID = 2;
-    public static final int spinNMFToggleButtonID = 4;
+    //oiptical localization
+    public static double sensorSpacing = 50;
 
     //----- Vision Alignment System -----
     public static final double alignmentTimeout = 3000; //after how many milliseconds stop the alignment loop and abort

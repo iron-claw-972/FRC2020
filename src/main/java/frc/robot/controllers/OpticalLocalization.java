@@ -22,14 +22,14 @@ public class OpticalLocalization
     Integer RightMovementX = 0, RightMovementY = 0;
     double RightQuality = 0;
 
-    Vector LeftMov = new Vector(0,0);
-    Vector RightMov = new Vector(0,0);
-    Vector TotalMov = new Vector(0,0);
+    Vector LeftMov = new Vector();
+    Vector RightMov = new Vector();
+    Vector TotalMov = new Vector();
 
-    Vector OldLeftMov = new Vector(0, 0, 0);
-    Vector OldRightMov = new Vector(0, 0, 0);
+    Vector OldLeftMov = new Vector();
+    Vector OldRightMov = new Vector();
 
-    public Vector Position = new Vector(0,0,0);
+    public Vector Position = new Vector();
     public double Yaw = 0;
     public double Yaw_Delta = 0;
 
@@ -45,7 +45,7 @@ public class OpticalLocalization
         LeftMovementY = (Integer)(int) ((int)Data[5] | ((int)Data[6] << 8) | ((int)Data[7] << 16) | (int)(Data[8] << 24));
 
         IsNewLeftData = Data[9] >= 1; // check if the sensor data has been updated since last i2c data request
-        LeftMov = new Vector(LeftMovementX, LeftMovementY, Timer.getFPGATimestamp()); // 3rd argument as data received timestamp, used for interpolation
+        LeftMov = new Vector((double)LeftMovementX, (double)LeftMovementY, Timer.getFPGATimestamp()); // 3rd argument as data received timestamp, used for interpolation
 
         RightSensor.readOnly(Data, Data.length); // same but on the right
         RightQuality = Data[0];
