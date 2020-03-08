@@ -3,6 +3,7 @@ package frc.robot.controllers;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.*;
+import edu.wpi.first.shuffleboard.plugin.base.widget.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.cscore.UsbCamera;
 import frc.robot.controllers.drive.TalonFXDrivetrain.Gear;
@@ -13,9 +14,10 @@ import java.util.Map;
 public class Dashboard {
     private static ShuffleboardTab tab;
     private static NetworkTableEntry fmsEntry, voltageEntry, currentEntry, timeEntry, shooterSpeedEntry, autoEntry;
-    private static ShuffleboardLayout NMFLayout, WOFLayout;
+    private static ShuffleboardLayout NMFLayout, WOFLayout, alignLayout;
     private static NetworkTableEntry NMFEntry1, NMFEntry2, NMFEntry3, NMFEntry4, NMFEntry5;
     private static NetworkTableEntry WOFEntryB, WOFEntryG, WOFEntryR, WOFEntryY;
+    private static NetworkTableEntry alignFailEntry, aligningEntry, alignSucceedEntry;
 
     public static SendableChooser<Gear> gearChooser;
     public static SendableChooser<AutoOptions.Start> autoChooser;
@@ -34,17 +36,18 @@ public class Dashboard {
             .withProperties(Map.of("Show controls", false, "Show crosshair", false))
             .withSize(7,5);
 
-        // fmsEntry = tab.add("FMS")
-        //     .withWidget(BuiltInWidgets.)
-        //     .withPosition(0,0)
-        //     .withProperties(Map.of("Show controls", false, "Show crosshair", false))
-        //     .withSize(7,5);
+        fmsEntry = tab.add("FMS", )
+            .withWidget(new BasicFmsInfoWidget())
+            .withPosition(0,0)
+            .withSize(3,1)
+            .withProperties(Map.of("Show controls", false, "Show crosshair", false))
+            .withSize(7,5);
 
         voltageEntry = tab.add("Voltage", 0)
             .withWidget(BuiltInWidgets.kNumberBar)
             .withPosition(7,1)
             .withSize(1,1)
-            .withProperties(Map.of("Min", 10, "Max", 14))
+            .withProperties(Map.of("Min", 11, "Max", 14))
             .getEntry();
 
         currentEntry = tab.add("Current", 0)
@@ -66,19 +69,19 @@ public class Dashboard {
             .getEntry();
         WOFEntryG = WOFLayout.add("G", false)
             .withWidget(BuiltInWidgets.kBooleanBox)
-            .withPosition(0, 0)
+            .withPosition(1, 0)
             .withSize(1, 1)
             .withProperties(Map.of("Color when true", Context.WOFColors.get('G'), "Color when false", Context.WOFColors.get('N')))
             .getEntry();
         WOFEntryR = WOFLayout.add("R", false)
             .withWidget(BuiltInWidgets.kBooleanBox)
-            .withPosition(0, 0)
+            .withPosition(0, 1)
             .withSize(1, 1)
             .withProperties(Map.of("Color when true", Context.WOFColors.get('R'), "Color when false", Context.WOFColors.get('N')))
             .getEntry();
         WOFEntryY = WOFLayout.add("Y", false)
             .withWidget(BuiltInWidgets.kBooleanBox)
-            .withPosition(0, 0)
+            .withPosition(1, 1)
             .withSize(1, 1)
             .withProperties(Map.of("Color when true", Context.WOFColors.get('Y'), "Color when false", Context.WOFColors.get('N')))
             .getEntry();
@@ -95,12 +98,35 @@ public class Dashboard {
 
         shooterSpeedEntry = tab.add("Shooter Speed (RPM)", 0)
             .withWidget(BuiltInWidgets.kGraph)
-            .withPosition(9,1)
-            .withSize(2,3)
+            .withPosition(9,2)
+            .withSize(2,2)
             .withProperties(Map.of("Min", 0, "Max", 600,"Visible Time", 10))
             .getEntry();
+
+        alignLayout = tab.getLayout("Alignment Status", BuiltInLayouts.kGrid)
+            .withPosition(9,1)
+            .withSize(2,1) 
+            .withProperties(Map.of("Number of Rows", 1, "Number of columns", 3, "Label Position", "TOP"));;
+        alignFailEntry = alignLayout.add("Failed", true)
+            .withWidget(BuiltInWidgets.kBooleanBox)
+            .withPosition(0, 0)
+            .withSize(1, 1)
+            .withProperties(Map.of("Color when true", "#FF0000", "Color when false", "#DDDDDD"))
+            .getEntry();
+        aligningEntry = alignLayout.add("Aligning", true)
+            .withWidget(BuiltInWidgets.kBooleanBox)
+            .withPosition(1, 0)
+            .withSize(1, 1)
+            .withProperties(Map.of("Color when true", "#FFFF00", "Color when false", "#DDDDDD"))
+            .getEntry();
+        alignSucceedEntry = alignLayout.add("Success", true)
+            .withWidget(BuiltInWidgets.kBooleanBox)
+            .withPosition(2, 0)
+            .withSize(1, 1)
+            .withProperties(Map.of("Color when true", "#00FF00", "Color when false", "#DDDDDD"))
+            .getEntry();
         
-        NMFLayout = tab.getLayout("Count To Five Tutorial", BuiltInLayouts.kGrid)
+        NMFLayout = tab.getLayout("Counting To Five Tutorial", BuiltInLayouts.kGrid)
             .withPosition(7, 4)
             .withSize(4, 1)
             .withProperties(Map.of("Number of Rows", 1, "Number of columns", 5, "Label Position", "TOP"));
@@ -156,7 +182,6 @@ public class Dashboard {
         WOFEntryY.setBoolean(Context.WOFTargetColor == 'Y');
 
         //gearEntry.setValue(Context.robotController.drivetrain.gear);
-        
 
         // boolean[] NMFArray = Context.robotController.ballPositions.getBallPositions();
         // NMFEntry1.setBoolean(NMFArray[0]);

@@ -70,6 +70,7 @@ dependencies {
     implementation 'com.google.gms:google-services:3.2.0'
 
     implementation(group: "edu.wpi.first.shuffleboard", name: "api", version: "2020.2.2")
+    implementation(group: "edu.wpi.first.shuffleboard.plugin", name: "base", version: "2020.2.2")
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
