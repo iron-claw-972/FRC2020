@@ -5,7 +5,7 @@ public class PID {
 	//Proportional, Integral and Derivative Coefficients
     public double pFactor, iFactor, dFactor;
     //Integral Sum
-    private double integral;
+    public double integral;
     //The previous error for derivative calculation
     private double lastError;
 
