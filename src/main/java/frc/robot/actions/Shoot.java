@@ -15,10 +15,13 @@ public class Shoot extends Action {
 
         
     }
-    public void buttonReleased(){
+
+    public void buttonReleased() {
         Context.robotController.nmfController.spinNMFIdle();
         Context.robotController.nmfController.stopOmni();
+        markComplete();
     }
+
     public void loop()
     {
     }

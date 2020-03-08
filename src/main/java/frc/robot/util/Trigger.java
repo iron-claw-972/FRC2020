@@ -10,6 +10,7 @@ public class Trigger {
     public int id;
     public Action action;
     private Gson gson;
+    private Action clone = null;
 
     public static enum Type {
         BUTTON, AXIS, DPAD
@@ -31,25 +32,36 @@ public class Trigger {
             // and if the trigger were to be activated again, it would result in the addition
             // of a already complete action to the scheduler.
             String seralized = gson.toJson(this.action);
-            Action clone = gson.fromJson(seralized, action.getClass());
+            clone = gson.fromJson(seralized, action.getClass());
             Context.robotController.parallelScheduler.add(clone);
         }
-        switch (type) {
+
+        if (clone != null && !clone.isComplete){
+            System.out.println("Calling release");
+            switch (type) {
             case BUTTON:
                 if (joystick.getButtonReleased(id)){
-                    action.buttonReleased();
+                    System.out.println("Dubstep 0");
+                    clone.buttonReleased();
+                    clone = null;
                 }
                 break;
             case AXIS:
                 if (joystick.getAxisReleased(id)){
-                    action.buttonReleased();
+                    System.out.println("Dubstep 1");
+                    clone.buttonReleased();
+                    clone = null;
                 }
                 break;
             case DPAD:
                 if (joystick.getDpadReleased(id)){
-                    action.buttonReleased();
+                    System.out.println("Dubstep 2");
+                    clone.buttonReleased();
+                    clone = null;
                 }
                 break;
+            }
         }
+        
     }
 }

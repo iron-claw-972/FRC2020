@@ -12,7 +12,9 @@ public class FlipOutIntake extends Action {
         Context.robotController.nmfController.spinNMFIntaking();
     }
 
-    public void buttonReleased(){
+    @Override
+    public void buttonReleased() {
+        System.out.println("-----------Dubstep 73----------");
         Context.robotController.intake.stopIntaking();
         markComplete();
     }

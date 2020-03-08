@@ -19,6 +19,7 @@ import frc.robot.util.Context;
 import frc.robot.controllers.drive.*;
 import frc.robot.execution.ParallelScheduler;
 import frc.robot.execution.SequentialScheduler;
+import frc.robot.actions.Action;
 import frc.robot.controllers.auto.*;
 
 public class RobotController {
@@ -59,7 +60,6 @@ public class RobotController {
     public TalonSRX intakeTalon;
 
     public DriverStation driverStation;
-    public PowerDistributionPanel pdp;
     public UsbCamera camera;
 
     public RobotController () {

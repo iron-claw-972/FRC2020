@@ -24,6 +24,10 @@ public class ParallelScheduler {
     }
 
     public void loop() {
+        for (Action a : currentActions) {
+            //System.out.println(a.getClass().getName());
+        }
+
         ArrayList<Action> completedActions = new ArrayList<Action>();
         for (Action action : currentActions) {
             action.loop();

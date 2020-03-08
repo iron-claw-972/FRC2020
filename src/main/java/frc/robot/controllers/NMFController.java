@@ -3,6 +3,8 @@ package frc.robot.controllers;
 // import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.util.Context;
 import frc.robot.util.PID;
+import frc.robot.util.PIDF;
+
 import com.revrobotics.CANSparkMax;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -22,10 +24,12 @@ public class NMFController {
     public boolean reversed;
     public boolean stopped;
 
-    public double NMFidleSpeed = .3;
-    public double NMFintakeSpeed = .4;
-    public double NMFshootingSpeed = .5;
-    public double NMFreverseSpeed = -.3;
+    private final double gearRatio = (1.0/10) * (16.0/22) * (18.0/84); //NMF rotations / motor rotations
+
+    public double NMFidleSpeed = 10;
+    public double NMFintakeSpeed = 25;
+    public double NMFshootingSpeed = 30;
+    public double NMFreverseSpeed = -20;
     public double omniForwardsSpeed = .7;
     public double omniReverseSpeed = -.7;
 
@@ -33,7 +37,7 @@ public class NMFController {
     public double NMFsetSpeed; //The speed to set based on PID
     public double NMFtargetSpeed; //The current desired speed;
     public double NMFrememberedSpeed;
-    public PID NMFPID = new PID(0, 0,0); //Need to tune
+    public PIDF NMFPID = new PIDF(0.003, 0, 0, 0.008); //Need to tune
 
     public double omniCurrentSpeed; //Encoder-read speed
     public double omniSetSpeed; //The speed to set based on PID
@@ -54,6 +58,7 @@ public class NMFController {
         state = State.IDLE;
         this.nmfEncoderInterface = nmfEncoderInterface;
         nmfEncoderInterface.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+        lastTime = startTime;
     }
 
     public void spinNMFIntaking(){
@@ -112,20 +117,17 @@ public class NMFController {
     }
     
     public void loop(){
-        lastTime = currentTime;
-        currentTime = Context.getRelativeTimeSeconds(startTime/1000)*1000;
+        currentTime = System.currentTimeMillis();
         deltaTime = currentTime - lastTime;
 
-        NMFcurrentSpeed = NMFencoder.getVelocity();
+        NMFcurrentSpeed = NMFencoder.getVelocity() * gearRatio;
         NMFsetSpeed = NMFPID.update(NMFtargetSpeed, NMFcurrentSpeed, deltaTime);
-        // System.out.println("vel: "  + NMFcurrentSpeed + ", pos: " + NMFencoder.getVelocity() + ", dt: " + deltaTime + ", tar:" + NMFtargetSpeed);
-        System.out.println("target_speed: " + NMFtargetSpeed);
-        NMFspark.set(NMFtargetSpeed);
+        NMFspark.set(NMFsetSpeed);
         // System.out.println("talon encoder: " + nmfEncoderInterface.getSelectedSensorVelocity());
 
         omniCurrentSpeed = omniEncoder.getVelocity();
         omniSetSpeed = omniPID.update(omniTargetSpeed, omniCurrentSpeed, deltaTime);
         omniSpark.set(omniTargetSpeed);
-
+        lastTime = currentTime;
     }
 }

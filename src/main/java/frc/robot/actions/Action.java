@@ -20,6 +20,7 @@ public abstract class Action{
     {
         isComplete = true;
     }
+    
     public void buttonReleased(){
 
     }

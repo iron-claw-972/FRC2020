@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.robot.controllers.RobotController;
 import frc.robot.util.*;
 import frc.robot.shuffleboard.*;
@@ -18,6 +19,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    LiveWindow.disableAllTelemetry();
     Context.robotController = new RobotController();
     robotStartTime = System.currentTimeMillis()/1000.0;
     Context.robotController.compressor.start();
@@ -48,6 +50,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     //Context.robotController.drivetrain.resetEncoders();
     Context.robotController.initAll();
+    Context.robotController.parallelScheduler.currentActions.clear();
   }
   
   @Override
