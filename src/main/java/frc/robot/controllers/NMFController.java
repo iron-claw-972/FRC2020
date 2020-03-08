@@ -113,4 +113,20 @@ public class NMFController {
         omniSpark.set(omniSetSpeed);
 
     }
+
+    public double getNMFcurrentSpeed() {
+        return NMFcurrentSpeed;
+    }
+
+    public double getOmniCurrentSpeed() {
+        return omniCurrentSpeed;
+    }
+
+    public double getNMFError() {
+        return NMFtargetSpeed - NMFcurrentSpeed;
+    }
+
+    public double getOmniError() {
+        return omniTargetSpeed - omniCurrentSpeed;
+    }
 }

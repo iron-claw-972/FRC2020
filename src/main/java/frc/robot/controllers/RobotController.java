@@ -41,6 +41,7 @@ public class RobotController {
     public SequentialScheduler sequentialScheduler;
     public ParallelScheduler parallelScheduler;
     public NMFController nmfController;
+    public NMFColorSensorController nmfColorSensorController;
 
     public TalonFX leftDriveMotor1;
     public TalonFX leftDriveMotor2;
@@ -59,6 +60,7 @@ public class RobotController {
     public DriverStation driverStation;
     public PowerDistributionPanel pdp;
     public UsbCamera camera;
+    public DistanceSensor distanceSensor;
 
     public RobotController () {
         //----- Motors -----
@@ -98,6 +100,9 @@ public class RobotController {
 
         driverStation = DriverStation.getInstance();
 
+        //distanceSensor = new DistanceSensor(Channel_ID);
+        //Need channel ID
+
         Context.robotController = this;
     }
 
@@ -112,5 +117,6 @@ public class RobotController {
         nmfController.loop();
         driverJoystick.loop();
         operatorJoystick.loop();
+        shooterController.loop();
     }
 }

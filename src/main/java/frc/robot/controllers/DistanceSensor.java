@@ -3,11 +3,11 @@ package frc.robot.controllers;
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
 
-class DistanceSensor {
+public class DistanceSensor {
     int ID;
     DigitalInput DIO;
 
-    Counter counter; // fml if I knew about this before...
+    Counter counter;
 
     public DistanceSensor(int Channel_ID) {
         ID = Channel_ID;
@@ -22,7 +22,3 @@ class DistanceSensor {
         //return -1; //negative distance hopefully people understand that this is not a possibility and is an error code
     }
 }
-
-
-
-// shaking my smh this class is insanely complicated :\

@@ -86,7 +86,7 @@ public class VisionAlign extends Action {
                 break;
             }
             case ALIGNED: {
-                // Once the robot has alligned, it will exit the action, not attempting to hold its heading
+                // Once the robot has aligned, it will exit the action, not attempting to hold its heading
                 markComplete();
 
                 break;

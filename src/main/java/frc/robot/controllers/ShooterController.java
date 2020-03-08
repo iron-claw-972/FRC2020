@@ -86,7 +86,7 @@ public class ShooterController {
         velocityJRADD = new JRADD(velocityJRADD.kP, velocityJRADD.kT, velocityJRADD.kF, velocityJRADD.kI, velocityJRADD.kLoadRatio, loadRatioConstant, loadRatioRate);
     }
 
-    public void updateObjects() {
+    public void loop() {
         //execute update methods
 
         updateParameters();
@@ -126,6 +126,10 @@ public class ShooterController {
 
     public double getSetVelocity() {
         return setVelocity;
+    }
+
+    public double getError() {
+        return kLoadRatio * (loadRatioConstant + loadRatioRate * Math.abs(desiredVelocity)) * desiredVelocity - actualVelocity;
     }
 
 }
