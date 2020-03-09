@@ -54,10 +54,14 @@ public class AdditionalMath
         return Math.sqrt((9.81*Math.pow(targetDistanceMeters, 2))
         /((2*Math.pow(Math.cos(shooterAngleRadians), 2))*(targetHeightMeters - shooterHeightMeters - targetDistanceMeters*Math.tan(shooterAngleRadians))));
 
-        /*  __________________________
-           /   (gd^2)/(2cos(a)^2)
-          /    -----------------
+        /*
+            __________________________
+           /   (gd^2) / (2cos(a)^2)
+          /  ------------------------
         \/    (h_2 - h_1 - dtan(a))
+
+        is the equation for ejection speed assuming ball flies in parabola.
+
         */
     }
 

@@ -4,7 +4,7 @@ import frc.robot.controllers.*;
 import frc.robot.util.*;
 
 public class FireAction extends Action {
-    
+
     private final double NMF_ERROR_THRESHOLD = 0.1;
     private final double SHOOTER_ERROR_THRESHOLD = 0.1;
     private final double FIRING_TIME_OUT = 1.0;
@@ -61,13 +61,15 @@ public class FireAction extends Action {
 
         ballPositions = NMFColorSensor.getBallPositions();
         lastBalls = balls;
-        balls = 0;
 
+        int ballsCounted = 0;
         for(int i = 0; i < ballPositions.length; i++) {
             if(ballPositions[i]) {
-                balls++;
+                ballsCounted++;
             }
         }
+
+        balls = ballsCounted;
 
         switch(shootingStage) {
             case CHECKING:
@@ -84,7 +86,7 @@ public class FireAction extends Action {
 
                 switch(shootingPosition) {
                     case VARIABLE:
-                        firingSpeed = AdditionalMath.ShooterSpeed(firingDistance, 40, 0.5, 2.5);
+                        firingSpeed = AdditionalMath.ShooterSpeed(firingDistance, 40, 0.67, 2.4939);
                         //TODO: put real numbers into Context
                         break;
                     case CLOSE_INIT_LINE:
@@ -98,8 +100,6 @@ public class FireAction extends Action {
                 shooterController.setDesiredVelocity(firingSpeed);
                 NMFController.spinNMFShooting();
 
-                //TODO: Make alignment a condition
-
                 if(acceptNMFError() && acceptShooterError()) {
                     shootingStage = Stage.FIRING;
                     lastFiredTime = Context.getRelativeTimeSeconds(startTime);
@@ -107,7 +107,7 @@ public class FireAction extends Action {
 
                 break;
             case FIRING:
-                //Begin to eject balls. Checks if NMF empty or if the time for a ball fired is too long.
+                //Begin to eject balls. Checks if NMF empty (Success) or if the time for a ball fired is too long (Timed out).
 
                 NMFController.spinOmni();
 
@@ -131,8 +131,8 @@ public class FireAction extends Action {
                 markComplete();
                 break;
             case TIME_OUT:
-                //Too much time spent between balls fired, implying a jam. Ends the action.
-
+                //Too much time spent between balls fired, implying the NMF is stuck. Ends the action.
+                
                 shootingStage = Stage.DECELERATING;
                 break;
         }

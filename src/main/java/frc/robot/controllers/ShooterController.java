@@ -83,7 +83,7 @@ public class ShooterController {
         //Used to update objects/parameters relying on constant updates after a period without updates
 
         lastTime = Context.getRelativeTimeSeconds(startTime);
-        velocityJRADD = new JRADD(velocityJRADD.kP, velocityJRADD.kT, velocityJRADD.kF, velocityJRADD.kI, velocityJRADD.kLoadRatio, loadRatioConstant, loadRatioRate);
+        velocityJRADD = new JRADD(velocityJRADD.kP, velocityJRADD.kT, velocityJRADD.kF, velocityJRADD.kI, velocityJRADD.kLoadRatio, velocityJRADD.loadRatioConstant, velocityJRADD.loadRatioRate);
     }
 
     public void loop() {
