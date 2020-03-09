@@ -8,7 +8,8 @@ import frc.robot.actions.*;
 import com.revrobotics.*;
 
 public class NMFColorSensorController {
-    private final I2C.Port i2cPort = I2C.Port.kMXP;
+    // private final I2C.Port i2cPort = I2C.Port.kMXP; // For NavX
+    private final I2C.Port i2cPort = I2C.Port.kOnboard; // For Roborio
     public String previousColor = "None";
     public String currentColor = "None";
     public int currentPosition = 0;

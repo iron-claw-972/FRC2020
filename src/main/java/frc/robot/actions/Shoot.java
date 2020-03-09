@@ -12,8 +12,6 @@ public class Shoot extends Action {
         Context.robotController.intake.stopIntaking();
         Context.robotController.nmfController.spinOmni();
         Context.robotController.nmfController.spinNMFShooting();
-
-        
     }
 
     public void buttonReleased() {
@@ -22,7 +20,5 @@ public class Shoot extends Action {
         markComplete();
     }
 
-    public void loop()
-    {
-    }
+    public void loop() {}
 }

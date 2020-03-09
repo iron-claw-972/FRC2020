@@ -24,14 +24,14 @@ public class NMFController {
     public boolean reversed;
     public boolean stopped;
 
-    private final double gearRatio = (1.0/10) * (16.0/22) * (18.0/84); //NMF rotations / motor rotations
+    private final double NMFGearRatio = (1.0/10) * (16.0/22) * (18.0/84); //NMF rotations / motor rotations
 
     public double NMFidleSpeed = 10;
     public double NMFintakeSpeed = 25;
     public double NMFshootingSpeed = 30;
     public double NMFreverseSpeed = -20;
-    public double omniForwardsSpeed = .7;
-    public double omniReverseSpeed = -.7;
+    public double omniForwardsSpeed = -10;
+    public double omniReverseSpeed = -10;
 
     public double NMFcurrentSpeed; //Encoder-read speed
     public double NMFsetSpeed; //The speed to set based on PID
@@ -42,7 +42,9 @@ public class NMFController {
     public double omniCurrentSpeed; //Encoder-read speed
     public double omniSetSpeed; //The speed to set based on PID
     public double omniTargetSpeed; //The current desired speed;
-    public PID omniPID = new PID(.01, 0, 0); //Need to tune
+    public PIDF omniPID = new PIDF(-0.005, 0, 0, 0); //Need to tune
+
+    private double omniGearRatio = 1.0/10.0 * 24.0/18.0;
 
     private double startTime;
     private double lastTime;
@@ -120,14 +122,15 @@ public class NMFController {
         currentTime = System.currentTimeMillis();
         deltaTime = currentTime - lastTime;
 
-        NMFcurrentSpeed = NMFencoder.getVelocity() * gearRatio;
+        NMFcurrentSpeed = NMFencoder.getVelocity() * NMFGearRatio;
         NMFsetSpeed = NMFPID.update(NMFtargetSpeed, NMFcurrentSpeed, deltaTime);
         NMFspark.set(NMFsetSpeed);
-        // System.out.println("talon encoder: " + nmfEncoderInterface.getSelectedSensorVelocity());
 
-        omniCurrentSpeed = omniEncoder.getVelocity();
+        omniCurrentSpeed = omniEncoder.getVelocity() * omniGearRatio;
         omniSetSpeed = omniPID.update(omniTargetSpeed, omniCurrentSpeed, deltaTime);
-        omniSpark.set(omniTargetSpeed);
+        omniSpark.set(omniSetSpeed);
         lastTime = currentTime;
+
+        System.out.println("vel: " + omniCurrentSpeed + ", set: " + omniTargetSpeed + ", pow: " + omniSetSpeed + ", pos: " + omniEncoder.getPosition());
     }
 }

@@ -42,6 +42,7 @@ public class RobotController {
     public SequentialScheduler sequentialScheduler;
     public ParallelScheduler parallelScheduler;
     public NMFController nmfController;
+    public NMFColorSensorController nmfColorSensorController;
 
     public TalonFX leftDriveMotor1;
     public TalonFX leftDriveMotor2;
@@ -75,6 +76,7 @@ public class RobotController {
         omniNeo = new CANSparkMax(Context.omniSparkID, MotorType.kBrushless);
         nmfNeo = new CANSparkMax(Context.nmfSparkID, MotorType.kBrushless);
         intakeTalon = new TalonSRX(Context.intakeMotorId);
+        nmfColorSensorController = new NMFColorSensorController();
 
         //----- Pneumatics -----
         intakeFlipSolenoid = new DoubleSolenoid(Context.intakeFlipChannelA, Context.intakeFlipChannelB);
@@ -99,6 +101,7 @@ public class RobotController {
         climber = new Climber(coilMotor1, coilMotor2, intakeTalon, telescopeMotor);
         sequentialScheduler = new SequentialScheduler();
         parallelScheduler = new ParallelScheduler();
+        shooterController = new ShooterController(12, 13, true);
 
         driverStation = DriverStation.getInstance();
 
@@ -110,13 +113,15 @@ public class RobotController {
     }
 
     public void loopAll() {
+        shooterController.loop();
         ntInterface.loop();
-        opticalLocalization.Update();
+        // opticalLocalization.loop();
         intake.loop();
         nmfController.loop();
         driverJoystick.loop();
         operatorJoystick.loop();
         sequentialScheduler.loop();
         parallelScheduler.loop();
+        nmfColorSensorController.loop();
     }
 }

@@ -37,25 +37,21 @@ public class Trigger {
         }
 
         if (clone != null && !clone.isComplete){
-            System.out.println("Calling release");
             switch (type) {
             case BUTTON:
                 if (joystick.getButtonReleased(id)){
-                    System.out.println("Dubstep 0");
                     clone.buttonReleased();
                     clone = null;
                 }
                 break;
             case AXIS:
                 if (joystick.getAxisReleased(id)){
-                    System.out.println("Dubstep 1");
                     clone.buttonReleased();
                     clone = null;
                 }
                 break;
             case DPAD:
                 if (joystick.getDpadReleased(id)){
-                    System.out.println("Dubstep 2");
                     clone.buttonReleased();
                     clone = null;
                 }

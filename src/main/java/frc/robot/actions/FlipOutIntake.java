@@ -14,7 +14,6 @@ public class FlipOutIntake extends Action {
 
     @Override
     public void buttonReleased() {
-        System.out.println("-----------Dubstep 73----------");
         Context.robotController.intake.stopIntaking();
         markComplete();
     }
