@@ -1,13 +1,17 @@
 package frc.robot.controllers;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.*;
+import edu.wpi.first.shuffleboard.plugin.base.data.fms.FmsInfo;
 import edu.wpi.first.shuffleboard.plugin.base.widget.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.cscore.UsbCamera;
 import frc.robot.controllers.drive.TalonFXDrivetrain.Gear;
 import frc.robot.util.Context;
+
+import edu.wpi.first.wpilibj.DriverStation;
 
 import java.util.Map;
 
@@ -36,12 +40,12 @@ public class Dashboard {
             .withProperties(Map.of("Show controls", false, "Show crosshair", false))
             .withSize(7,5);
 
-        fmsEntry = tab.add("FMS", )
-            .withWidget(new BasicFmsInfoWidget())
-            .withPosition(0,0)
-            .withSize(3,1)
-            .withProperties(Map.of("Show controls", false, "Show crosshair", false))
-            .withSize(7,5);
+        // fmsEntry = tab.add("FMS", getFmsInfo())
+        //     .withWidget("Basic FMS Info")
+        //     .withPosition(0,0)
+        //     .withSize(3,1)
+        //     .withProperties(Map.of("Show controls", false, "Show crosshair", false))
+        //     .getEntry();
 
         voltageEntry = tab.add("Voltage", 0)
             .withWidget(BuiltInWidgets.kNumberBar)
@@ -175,6 +179,7 @@ public class Dashboard {
     public static void update() {
         voltageEntry.setDouble(edu.wpi.first.wpilibj.RobotController.getBatteryVoltage());
         currentEntry.setDouble(0.0);
+        // fmsEntry.setValue(getFmsInfo());
 
         WOFEntryB.setBoolean(Context.WOFTargetColor == 'B');
         WOFEntryG.setBoolean(Context.WOFTargetColor == 'G');
@@ -206,5 +211,22 @@ public class Dashboard {
         autoChooser.setDefaultOption("Left", AutoOptions.Start.LEFT);
         autoChooser.addOption("Middle", AutoOptions.Start.MIDDLE);
         autoChooser.addOption("Right", AutoOptions.Start.RIGHT);
+    }
+
+    private static FmsInfo getFmsInfo() {
+        DriverStation ds = DriverStation.getInstance();
+
+        return new FmsInfo(
+            Map.of(
+                "GameSpecificMessage", ds.getGameSpecificMessage(),
+                "EventName", ds.getEventName(),
+                "MatchNumber", ds.getMatchNumber(),
+                "ReplayNumber", ds.getReplayNumber(),
+                "MatchType", ds.getMatchType().ordinal(),
+                "IsRedAlliance", ds.getAlliance() == DriverStation.Alliance.Red,
+                "StationNumber", ds.getLocation(),
+                "FMSControlData", 0
+            )
+        );
     }
 }
