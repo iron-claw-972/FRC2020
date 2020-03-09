@@ -1,21 +1,30 @@
 package frc.robot.util;
 
 import frc.robot.actions.Action;
+import frc.robot.controllers.*;
 import com.google.gson.Gson;
 
 public class Trigger {
-    public int buttonID;
+    private CompetitionJoystick joystick;
+    private Type type;
+    public int id;
     public Action action;
     private Gson gson;
 
-    public Trigger (int buttonID, Action action) {
-        this.buttonID = buttonID;
+    public static enum Type {
+        BUTTON, AXIS
+    }
+
+    public Trigger(CompetitionJoystick joystick, Type type, int id, Action action) {
+        this.joystick = joystick;
+        this.type = type;
+        this.id = id;
         this.action = action;
         gson = new Gson();
     }
 
     public void loop() {
-        if(Context.robotController.driverJoystick.getButtonPressed(buttonID)){
+        if(type == Type.BUTTON ? joystick.getButtonPressed(id) : joystick.getAxisPressed(id)){
             // The action is serialized to json and deselerialized in order to create a deep copy,
             // which is necessary in order to not edit the action passed to the trigger in the
             // trigger's initilzation. Without doing this, the trigger's action would be edited

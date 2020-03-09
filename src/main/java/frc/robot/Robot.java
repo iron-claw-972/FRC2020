@@ -26,10 +26,7 @@ public class Robot extends TimedRobot {
     camera.setVideoMode(PixelFormat.kMJPEG, Context.cameraWidth, Context.cameraHeight, Context.cameraFPS);
     Dashboard.init(camera);
 
-    Context.robotController.driverJoystick.addTriggers(new Trigger[]{
-      new Trigger(Context.toggleTrack, new VisionAlign()),
-      new Trigger(Context.shiftGearsButtonID, new ShiftGears())
-    });
+    
   }
 
   @Override
@@ -41,25 +38,23 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     Context.robotController.drivetrain.resetEncoders();
     origTime = System.currentTimeMillis();
-    //Context.robotController.autoDrive.startSpline();
+    // Context.robotController.sequentialScheduler.add(action);
   }
 
   @Override
   public void autonomousPeriodic() {
-    Context.robotController.autoDrive.loop((System.currentTimeMillis() - origTime)/1000);
+    // Context.robotController.sequentialScheduler.loop();
   }
 
   @Override
-  public void teleopInit()
-  {
+  public void teleopInit() {
     //Context.robotController.drivetrain.resetEncoders();
     Context.robotController.initAll();
   }
   
   @Override
 
-  public void teleopPeriodic()
-  {
+  public void teleopPeriodic() {
     Context.robotController.loopAll();
 
     double driverThrottle = Context.robotController.driverJoystick.getThrottle();
@@ -73,7 +68,8 @@ public class Robot extends TimedRobot {
       System.out.println("X: " + Context.robotController.opticalLocalization.LeftMovementX + " Y: " + Context.robotController.opticalLocalization.LeftMovementY);
     }
     //System.out.println(String.format("X: 0x%08X, Y:  0x%08X",Context.robotController.opticalLocalization.LeftMovementX, Context.robotController.opticalLocalization.LeftMovementY));
-  
+ 
     Context.setWOFTargetColor();
+
   }
 }

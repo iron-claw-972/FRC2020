@@ -2,6 +2,8 @@ package frc.robot.controllers;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
@@ -11,26 +13,31 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.cscore.UsbCamera;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.*;
 
 import frc.robot.util.Context;
 import frc.robot.controllers.drive.*;
 import frc.robot.execution.ParallelScheduler;
-import frc.robot.execution.SequentialScheduler;;
+import frc.robot.execution.SequentialScheduler;
+import frc.robot.controllers.auto.*;
 
 public class RobotController {
+    public CANSparkMax telescopeMotor;
+    public CANSparkMax coilMotor1;
+    public CANSparkMax coilMotor2;
     public TalonFXDrivetrain drivetrain;
     public AutoDrive autoDrive;
     public NavX navX;
     public NetworktablesInterface ntInterface;
     public DriverJoystick driverJoystick;
+    public OperatorJoystick operatorJoystick;
     // public VisionAllignment visionAllignment;
     public Compressor compressor;
     public ShooterController shooterController;
     public Intake intake;
     public OpticalLocalization opticalLocalization;
+    public Climber climber;
+  
     public SequentialScheduler sequentialScheduler;
     public ParallelScheduler parallelScheduler;
     public NMFController nmfController;
@@ -74,15 +81,19 @@ public class RobotController {
 
         //----- Controllers -----
         /* Change this line when using a different drive train. Don't forget to change the motor ids in context */
+        telescopeMotor = new CANSparkMax(Context.climberMotorID, MotorType.kBrushless);
+        coilMotor1 = new CANSparkMax(Context.coilMotor1ID, MotorType.kBrushless);
+        coilMotor2 = new CANSparkMax(Context.coilMotor2ID, MotorType.kBrushless);
         drivetrain = new TalonFXDrivetrain(leftDriveMotor1, leftDriveMotor2, rightDriveMotor1, rightDriveMotor2, leftDriveEncoderInterface, rightDriveEncoderInterface);
         autoDrive = new AutoDrive();
         navX = new NavX(new AHRS(SPI.Port.kMXP));
         ntInterface = new NetworktablesInterface();
         driverJoystick = new DriverJoystick();
-        //visionAllignment = new VisionAllignment();
+        operatorJoystick = new OperatorJoystick();
         intake = new Intake(intakeTalon, intakeFlipSolenoid);
         nmfController = new NMFController(nmfNeo, omniNeo);
         opticalLocalization = new OpticalLocalization();
+        climber = new Climber(coilMotor1, coilMotor2, intakeTalon, telescopeMotor);
         sequentialScheduler = new SequentialScheduler();
 
         driverStation = DriverStation.getInstance();
@@ -91,14 +102,15 @@ public class RobotController {
     }
 
     public void initAll() {
+        climber.resetClimbEncoder();
     }
 
     public void loopAll() {
         ntInterface.loop();
         opticalLocalization.Update();
-        // visionAllignment.loop();
-        //ballPositions.loop();
         intake.loop();
         nmfController.loop();
+        driverJoystick.loop();
+        operatorJoystick.loop();
     }
 }

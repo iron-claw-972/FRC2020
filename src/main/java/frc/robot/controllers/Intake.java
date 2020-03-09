@@ -5,8 +5,6 @@ import com.ctre.phoenix.motorcontrol.can.*;
 
 import edu.wpi.first.wpilibj.*;
 
-import frc.robot.util.*;
-
 public class Intake {
     private DoubleSolenoid flipSolenoid;
     private TalonSRX intakeTalon;
