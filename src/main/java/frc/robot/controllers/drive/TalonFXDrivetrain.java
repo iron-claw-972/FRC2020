@@ -58,7 +58,7 @@ public class TalonFXDrivetrain extends Drivetrain {
         leftEncoderInterface.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
 
         // Gear shifting setup
-        gearShifterSolenoid = new DoubleSolenoid(Context.gearShifterChannelA, Context.gearShifterChannelB);
+        gearShifterSolenoid = new DoubleSolenoid(Context.pcmCanID, Context.gearShifterChannelA, Context.gearShifterChannelB);
         gear = defaultGear;
         shiftGears(gear);
     }
