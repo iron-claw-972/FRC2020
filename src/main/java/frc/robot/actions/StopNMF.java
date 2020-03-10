@@ -7,10 +7,9 @@ public class StopNMF extends Action {
 
     public void start() {
         super.start(); //its a toggle, when it is stopped, it starts and vice versa
-        if (Context.robotController.nmfController.NMFtargetSpeed == 0){
+        if (Context.robotController.nmfController.NMFtargetSpeed == 0) {
             Context.robotController.nmfController.startNMF();
-        }
-        else{
+        } else {
             Context.robotController.nmfController.stopNMF();
         }
         markComplete();
