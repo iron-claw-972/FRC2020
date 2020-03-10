@@ -41,8 +41,52 @@ public enum AutoConfigs {
     
     POWER_PORT_GATHER_TRENCH(
         new VisionAlign(),
-        new DriveToPose(ftToM(5, 2.625), ftToM(5, 5.25), 0),
-        new Forward(11.0)
+        new Forward(1.0)
+    ),
+    POWER_PORT_GATHER_RENDEZVOUS(
+        new VisionAlign(),
+        new Forward(1.0)
+    ),
+    ALLIANCE_TRENCH_GATHER(
+        new VisionAlign(),
+        new Forward(1.0)
+    ),
+    MIDDLE_FIELD_GATHER(
+        new VisionAlign(),
+        new Forward(1.0)
+    ),
+    
+    POWER_PORT_FAR_SHOOT_TRENCH(
+        new VisionAlign(),
+        new Forward(1.0)
+    ),
+    POWER_PORT_NEAR_SHOOT_TRENCH(
+        new VisionAlign(),
+        new Forward(1.0)
+    ),
+    POWER_PORT_FAR_SHOOT_RENDEZVOUS(
+        new VisionAlign(),
+        new Forward(1.0)
+    ),
+    POWER_PORT_NEAR_SHOOT_RENDEZVOUS(
+        new VisionAlign(),
+        new Forward(1.0)
+    ),
+    ALLIANCE_TRENCH_FAR_SHOOT(
+        new VisionAlign(),
+        new Forward(1.0)
+    ),
+    ALLIANCE_TRENCH_NEAR_SHOOT(
+        new VisionAlign(),
+        new Forward(1.0)
+    ),
+    MIDDLE_FIELD_FAR_SHOOT(
+        new VisionAlign(),
+        new Forward(1.0)
+    ),
+    MIDDLE_FIELD_NEAR_SHOOT(
+        new VisionAlign(),
+        new Forward(1.0)
     );
 
     public final Action[] actionArray;
