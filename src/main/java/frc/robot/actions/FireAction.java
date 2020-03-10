@@ -15,6 +15,7 @@ public class FireAction extends Action {
     Position shootingPosition;
     Stage shootingStage;
     double timeOutCounter;
+    boolean buttonReleased;
 
     ShooterController shooterController;
     NMFColorSensorController NMFColorSensor;
@@ -51,6 +52,8 @@ public class FireAction extends Action {
         NMFController = Context.robotController.nmfController;
 
         distanceSensor = Context.robotController.distanceSensor;
+
+        buttonReleased = false;
     }
 
     public void loop() {
@@ -111,7 +114,7 @@ public class FireAction extends Action {
 
                 NMFController.spinOmni();
 
-                if(balls == 0) {
+                if(buttonReleased || balls == 0) {
                     shootingStage = Stage.DECELERATING;
                 } else if(lastBalls < balls) {
                     lastFiredTime = Context.getRelativeTimeSeconds(startTime);
@@ -120,6 +123,7 @@ public class FireAction extends Action {
                 }
                 break;
             case DECELERATING:
+                //Drop the shooter and NMF to unengaged speeds.
 
                 shooterController.setDesiredVelocity(0);
                 NMFController.spinNMFIdle();
@@ -136,6 +140,10 @@ public class FireAction extends Action {
                 shootingStage = Stage.DECELERATING;
                 break;
         }
+    }
+
+    public void buttonReleased() {
+        buttonReleased = true;
     }
 
     private boolean acceptNMFError() {
