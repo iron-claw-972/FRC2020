@@ -5,8 +5,6 @@ import frc.robot.controllers.AutoConfigs;
 import frc.robot.controllers.RobotController;
 import frc.robot.util.*;
 import frc.robot.controllers.*;
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.cscore.VideoMode.PixelFormat;
 import frc.robot.actions.*;
 
 public class Robot extends TimedRobot {
@@ -22,10 +20,8 @@ public class Robot extends TimedRobot {
     //Context.robotController = new RobotController();
     // robotStartTime = System.currentTimeMillis()/1000.0;
     // Context.robotController.compressor.start();
-
-    // camera = edu.wpi.first.cameraserver.CameraServer.getInstance().startAutomaticCapture();
-    // camera.setVideoMode(PixelFormat.kMJPEG, Context.cameraWidth, Context.cameraHeight, Context.cameraFPS);
-    // Dashboard.init(camera);
+    
+    Dashboard.init();
 
     // Context.robotController.driverJoystick.addTriggers(new Trigger[]{
     //   new Trigger(Context.toggleTrack, new VisionAlign()),

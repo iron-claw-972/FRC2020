@@ -1,15 +1,18 @@
 package frc.robot.controllers;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.*;
 import edu.wpi.first.shuffleboard.plugin.base.data.fms.FmsInfo;
-import edu.wpi.first.shuffleboard.plugin.base.widget.*;
+import edu.wpi.first.shuffleboard.plugin.base.data.types.FmsInfoType;
+import edu.wpi.first.shuffleboard.plugin.base.widget.BasicFmsInfoWidget;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.cscore.UsbCamera;
 import frc.robot.controllers.drive.TalonFXDrivetrain.Gear;
 import frc.robot.util.Context;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoMode.PixelFormat;
 
 import edu.wpi.first.wpilibj.DriverStation;
 
@@ -23,16 +26,24 @@ public class Dashboard {
     private static NetworkTableEntry WOFEntryB, WOFEntryG, WOFEntryR, WOFEntryY;
     private static NetworkTableEntry alignFailEntry, aligningEntry, alignSucceedEntry;
 
+    private static NetworkTable fmsTable;
+
     public static SendableChooser<Gear> gearChooser;
     public static SendableChooser<AutoOptions.Start> autoChooser;
+
+    private static UsbCamera camera;
 
     private static final boolean config = true;
     private static ShuffleboardTab configTab;
 
-    public static void init(UsbCamera camera) {
+    public static void init() {
         setChoosers();
 
         tab = Shuffleboard.getTab("Shuffleboard");
+        Shuffleboard.selectTab("Shuffleboard");
+
+        camera = edu.wpi.first.cameraserver.CameraServer.getInstance().startAutomaticCapture();
+        camera.setVideoMode(PixelFormat.kMJPEG, Context.cameraWidth, Context.cameraHeight, Context.cameraFPS);
 
         tab.add("Camera", camera)
             .withWidget(BuiltInWidgets.kCameraStream)
@@ -40,12 +51,13 @@ public class Dashboard {
             .withProperties(Map.of("Show controls", false, "Show crosshair", false))
             .withSize(7,5);
 
-        // fmsEntry = tab.add("FMS", getFmsInfo())
-        //     .withWidget("Basic FMS Info")
-        //     .withPosition(0,0)
-        //     .withSize(3,1)
-        //     .withProperties(Map.of("Show controls", false, "Show crosshair", false))
-        //     .getEntry();
+        fmsTable = NetworkTableInstance.getDefault().getTable("FMSInfo");
+
+        tab.add("FMS", "")
+            .withWidget("Basic FMS Info")
+            .withPosition(7,0)
+            .withSize(3,1)
+            .getEntry();
 
         voltageEntry = tab.add("Voltage", 0)
             .withWidget(BuiltInWidgets.kNumberBar)
@@ -179,7 +191,6 @@ public class Dashboard {
     public static void update() {
         voltageEntry.setDouble(edu.wpi.first.wpilibj.RobotController.getBatteryVoltage());
         currentEntry.setDouble(0.0);
-        // fmsEntry.setValue(getFmsInfo());
 
         WOFEntryB.setBoolean(Context.WOFTargetColor == 'B');
         WOFEntryG.setBoolean(Context.WOFTargetColor == 'G');
@@ -211,22 +222,5 @@ public class Dashboard {
         autoChooser.setDefaultOption("Left", AutoOptions.Start.LEFT);
         autoChooser.addOption("Middle", AutoOptions.Start.MIDDLE);
         autoChooser.addOption("Right", AutoOptions.Start.RIGHT);
-    }
-
-    private static FmsInfo getFmsInfo() {
-        DriverStation ds = DriverStation.getInstance();
-
-        return new FmsInfo(
-            Map.of(
-                "GameSpecificMessage", ds.getGameSpecificMessage(),
-                "EventName", ds.getEventName(),
-                "MatchNumber", ds.getMatchNumber(),
-                "ReplayNumber", ds.getReplayNumber(),
-                "MatchType", ds.getMatchType().ordinal(),
-                "IsRedAlliance", ds.getAlliance() == DriverStation.Alliance.Red,
-                "StationNumber", ds.getLocation(),
-                "FMSControlData", 0
-            )
-        );
     }
 }
