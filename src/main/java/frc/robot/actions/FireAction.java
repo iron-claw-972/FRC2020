@@ -34,7 +34,7 @@ public class FireAction extends Action {
 
     double firingSpeed;
     private final double CALIBRATED_INIT_SPEED = 0;
-    private final double CALIBRATED_TRENCH_SPEED = 0; //calibrate
+    private final double CALIBRATED_TRENCH_SPEED = 5; //calibrate
 
     public FireAction(Position _shootingPosition) {
 
@@ -60,6 +60,7 @@ public class FireAction extends Action {
     }
 
     public void loop() {
+        System.out.println("Running loop " + shootingPosition + " " + shootingStage);
 
         if(shootingPosition == Position.VARIABLE) {
             firingDistance = 100 * distanceSensor.getDistance(); //Conversion from cm to meters
@@ -103,7 +104,11 @@ public class FireAction extends Action {
                         break;
                 }
 
+                System.out.println("Desired: " + firingSpeed);
+
                 shooterController.setDesiredVelocity(firingSpeed);
+                System.out.println("REAL: " + shooterController.getDesiredVelocity());
+                System.out.println("NMF Err: " + NMFController.getNMFError() + " Shooter Err: " + shooterController.getError());
                 NMFController.spinNMFShooting();
 
                 if(acceptNMFError() && acceptShooterError()) {
@@ -116,6 +121,7 @@ public class FireAction extends Action {
                 //Begin to eject balls. Checks if NMF empty (Success) or if the time for a ball fired is too long (Timed out).
 
                 NMFController.spinOmni();
+                System.out.println(balls);
 
                 if(buttonReleased || balls == 0) {
                     shootingStage = Stage.DECELERATING;

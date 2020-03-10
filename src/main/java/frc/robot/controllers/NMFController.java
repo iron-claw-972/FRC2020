@@ -131,7 +131,7 @@ public class NMFController {
         omniSpark.set(omniSetSpeed);
         lastTime = currentTime;
 
-        System.out.println("vel: " + omniCurrentSpeed + ", set: " + omniTargetSpeed + ", pow: " + omniSetSpeed + ", pos: " + omniEncoder.getPosition());
+        //System.out.println("vel: " + omniCurrentSpeed + ", set: " + omniTargetSpeed + ", pow: " + omniSetSpeed + ", pos: " + omniEncoder.getPosition());
     }
 
     public double getNMFcurrentSpeed() {

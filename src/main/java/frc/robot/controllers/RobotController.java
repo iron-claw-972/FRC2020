@@ -102,7 +102,7 @@ public class RobotController {
         climber = new Climber(coilMotor1, coilMotor2, intakeTalon, telescopeMotor);
         sequentialScheduler = new SequentialScheduler();
         parallelScheduler = new ParallelScheduler();
-        shooterController = new ShooterController(12, 13, true);
+        shooterController = new ShooterController(12, 13, false);
 
         driverStation = DriverStation.getInstance();
 

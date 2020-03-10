@@ -51,15 +51,16 @@ public class Robot extends TimedRobot {
     //Context.robotController.drivetrain.resetEncoders();
     Context.robotController.initAll();
     Context.robotController.parallelScheduler.currentActions.clear();
+    Context.robotController.parallelScheduler.add(new NMFSlowSpin());
   }
   
   @Override
 
   public void teleopPeriodic() {
-    Context.robotController.shooterController.setDesiredVelocity(1.5);
+    //Context.robotController.shooterController.setDesiredVelocity(1.5);
     
     Context.robotController.loopAll();
-    
+    /*
     double driverThrottle = Context.robotController.driverJoystick.getThrottle();
     double driverYaw = Context.robotController.driverJoystick.getYaw();
     
@@ -73,6 +74,6 @@ public class Robot extends TimedRobot {
     //System.out.println(String.format("X: 0x%08X, Y:  0x%08X",Context.robotController.opticalLocalization.LeftMovementX, Context.robotController.opticalLocalization.LeftMovementY));
  
     Context.setWOFTargetColor();
-    
+    */
   }
 }
