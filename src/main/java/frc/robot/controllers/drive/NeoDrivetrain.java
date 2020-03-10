@@ -19,12 +19,12 @@ public class NeoDrivetrain extends Drivetrain {
 
         leftMotor1 = leftMotor1_;
         leftMotor1.restoreFactoryDefaults();
-        leftMotor2 = leftMotor2_;
-        leftMotor2.restoreFactoryDefaults();
+        // leftMotor2 = leftMotor2_;
+        // leftMotor2.restoreFactoryDefaults();
         rightMotor1 = rightMotor1_;
         rightMotor1.restoreFactoryDefaults();
-        rightMotor2 = rightMotor2_;
-        rightMotor2.restoreFactoryDefaults();
+        // rightMotor2 = rightMotor2_;
+        // rightMotor2.restoreFactoryDefaults();
     }
 
     public void tankDrive(double leftPower, double rightPower) {

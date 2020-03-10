@@ -11,13 +11,11 @@ public class Robot extends TimedRobot {
   public double origTime;
   public double robotStartTime;
 
-  private UsbCamera camera;
-
   private final AutoConfigs autoConfig = AutoConfigs.POWER_PORT_BASIC;
 
   @Override
   public void robotInit() {
-    //Context.robotController = new RobotController();
+    // Context.robotController = new RobotController();
     // robotStartTime = System.currentTimeMillis()/1000.0;
     // Context.robotController.compressor.start();
     
@@ -31,7 +29,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    //Dashboard.update();
+    Dashboard.update();
   }
 
   @Override
@@ -39,13 +37,13 @@ public class Robot extends TimedRobot {
     //Context.robotController.drivetrain.resetEncoders();
     origTime = System.currentTimeMillis();
 
-    Context.robotController.sequentialScheduler.add(autoConfig.actionArray); 
+    // Context.robotController.sequentialScheduler.add(autoConfig.actionArray); 
     //Context.robotController.autoDrive.startSpline();
   }
 
   @Override
   public void autonomousPeriodic() {
-    Context.robotController.sequentialScheduler.loop();
+    //Context.robotController.sequentialScheduler.loop();
   }
 
   @Override

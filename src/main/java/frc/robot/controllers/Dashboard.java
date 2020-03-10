@@ -29,7 +29,7 @@ public class Dashboard {
     private static NetworkTable fmsTable;
 
     public static SendableChooser<Gear> gearChooser;
-    public static SendableChooser<AutoOptions.Start> autoChooser;
+    public static SendableChooser<AutoConfigs> autoChooser;
 
     private static UsbCamera camera;
 
@@ -218,9 +218,23 @@ public class Dashboard {
         gearChooser.setDefaultOption("Lo", Gear.LOW);
         gearChooser.addOption("Hi", Gear.HIGH);
 
-        autoChooser = new SendableChooser<AutoOptions.Start>();
-        autoChooser.setDefaultOption("Left", AutoOptions.Start.LEFT);
-        autoChooser.addOption("Middle", AutoOptions.Start.MIDDLE);
-        autoChooser.addOption("Right", AutoOptions.Start.RIGHT);
+        autoChooser = new SendableChooser<AutoConfigs>();
+        autoChooser.setDefaultOption("Power Port Basic", AutoConfigs.POWER_PORT_BASIC);
+        autoChooser.addOption("Alliance Trench Basic", AutoConfigs.ALLIANCE_TRENCH_BASIC);
+        autoChooser.addOption("Middle Field Basic", AutoConfigs.MIDDLE_FIELD_BASIC);
+        
+        autoChooser.addOption("Power Port Gather Trench", AutoConfigs.POWER_PORT_GATHER_TRENCH);
+        autoChooser.addOption("Power Port Gather Rendezvous", AutoConfigs.POWER_PORT_GATHER_RENDEZVOUS);
+        autoChooser.addOption("Alliance Trench Gather", AutoConfigs.ALLIANCE_TRENCH_GATHER);
+        autoChooser.addOption("Middle Field Gather", AutoConfigs.MIDDLE_FIELD_GATHER);
+
+        autoChooser.addOption("Power Port Far Shoot Trench", AutoConfigs.POWER_PORT_FAR_SHOOT_TRENCH);
+        autoChooser.addOption("Power Port Near Shoot Trench", AutoConfigs.POWER_PORT_NEAR_SHOOT_TRENCH);
+        autoChooser.addOption("Power Port Far Shoot Rendezvous", AutoConfigs.POWER_PORT_FAR_SHOOT_RENDEZVOUS);
+        autoChooser.addOption("Power Port Near Shoot Rendezvous", AutoConfigs.POWER_PORT_NEAR_SHOOT_RENDEZVOUS);
+        autoChooser.addOption("Alliance Trench Far Shoot", AutoConfigs.ALLIANCE_TRENCH_FAR_SHOOT);
+        autoChooser.addOption("Alliance Trench Near Shoot", AutoConfigs.ALLIANCE_TRENCH_NEAR_SHOOT);
+        autoChooser.addOption("Middle Field Far Shoot", AutoConfigs.MIDDLE_FIELD_FAR_SHOOT);
+        autoChooser.addOption("Middle Field Near Shoot", AutoConfigs.MIDDLE_FIELD_NEAR_SHOOT);
     }
 }

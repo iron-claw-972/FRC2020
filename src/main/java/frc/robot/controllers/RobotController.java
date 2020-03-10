@@ -84,7 +84,7 @@ public class RobotController {
         /* Change this line when using a different drive train. Don't forget to change the motor ids in context */
         // telescopeMotor = new CANSparkMax(Context.climberMotorID, MotorType.kBrushless);
         // coilMotor = new TalonSRX (Context.climberMotorID);
-        drivetrain = new NeoDrivetrain(leftDriveMotor1, rightDriveMotor1);
+        //drivetrain = new NeoDrivetrain(leftDriveMotor1, rightDriveMotor1);
         autoDrive = new AutoDrive();
         // navX = new NavX(new AHRS(SPI.Port.kMXP));
         // ntInterface = new NetworktablesInterface();
