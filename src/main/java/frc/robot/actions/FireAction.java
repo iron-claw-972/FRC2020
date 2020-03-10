@@ -44,6 +44,9 @@ public class FireAction extends Action {
     public void start() {
         super.start();
 
+        Context.robotController.intake.stopIntaking();
+        Context.robotController.intake.flipIn();
+
         shootingStage = Stage.CHECKING;
         timeOutCounter = 0.0;
 
