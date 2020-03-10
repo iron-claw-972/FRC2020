@@ -42,7 +42,7 @@ public class OperatorJoystick implements CompetitionJoystick {
     }
 
     public boolean getAxisReleased(int axisID) {
-        return joystick.getRawAxis(axisID) <= 0.5;
+        return Math.abs(joystick.getRawAxis(axisID)) >= 0.5;
     }
 
     public boolean getDpadPressed(int dpadID) {
