@@ -2,11 +2,14 @@ package frc.robot.controllers;
 
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
- 
+import frc.robot.util.Context;
+import frc.robot.actions.*;
+
 import com.revrobotics.*;
 
 public class NMFColorSensorController {
-    private final I2C.Port i2cPort = I2C.Port.kMXP;
+    // private final I2C.Port i2cPort = I2C.Port.kMXP; // For NavX
+    private final I2C.Port i2cPort = I2C.Port.kOnboard; // For Roborio
     public String previousColor = "None";
     public String currentColor = "None";
     public int currentPosition = 0;
@@ -86,10 +89,15 @@ public class NMFColorSensorController {
             
           }
       }
+
         for(boolean bool : ballPositions) {
           System.out.print(bool + " ");
         }
         System.out.println();
+      }
+
+      if (getBallCount()>=5){
+        Context.robotController.parallelScheduler.add(new FlipInIntake());
       }
       
       previousColor = currentColor;
@@ -97,5 +105,15 @@ public class NMFColorSensorController {
 
     public boolean[] getBallPositions(){
         return ballPositions;
+    }
+
+    public int getBallCount(){
+      int ballCount=0;
+      for(boolean bool : ballPositions) {
+        if (bool){
+          ballCount++;
+        }
+      }
+      return ballCount;
     }
 }

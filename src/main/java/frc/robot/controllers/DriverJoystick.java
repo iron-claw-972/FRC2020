@@ -38,8 +38,36 @@ public class DriverJoystick implements CompetitionJoystick {
         return joystick.getRawButtonPressed(buttonID);
     }
 
+    public boolean getButtonReleased(int buttonID) {
+        return joystick.getRawButtonReleased(buttonID);
+    }
+
     public boolean getAxisPressed(int axisID) {
         return joystick.getRawAxis(axisID) > 0.5;
+    }
+
+    public boolean getAxisReleased(int axisID) {
+        return joystick.getRawAxis(axisID) <=0 ;
+    }
+
+    public boolean getDpadPressed(int dpadID) {
+        int dpadValue = 0;
+        switch (joystick.getPOV()){
+            case 0:
+                dpadValue=1;
+            case 90:
+                dpadValue=2;
+            case 180:
+                dpadValue=3;
+            case 270:
+                dpadValue=4;
+
+        }
+        return dpadID == dpadValue;
+    }
+
+    public boolean getDpadReleased(int dpadID) {
+         return joystick.getPOV()==-1;
     }
 
     public boolean isInUse() {

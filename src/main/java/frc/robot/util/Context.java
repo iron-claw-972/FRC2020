@@ -13,7 +13,7 @@ public class Context {
     //----- Drivetrain Values -----
     public static final double maxDrivingSpeed = 2.0; // m/s
     public static final double maxTheoreticalDrivingSpeed = 3.0; // m/s
-    public static final int leftMotor1ID = 0;
+    public static final int leftMotor1ID = 18;
     public static final int leftMotor2ID = 1;
     public static final int rightMotor1ID = 14;
     public static final int rightMotor2ID = 15;
@@ -34,6 +34,7 @@ public class Context {
     public static final int gearShifterChannelA = 0;
     public static final int gearShifterChannelB = 1;
     public static final int driveTrainCooling = 5;
+    public static final int pcmCanID = 17;
 
     //----- Human Input Device Values -----
     public static final int driverJoystickID = 0;
@@ -54,12 +55,14 @@ public class Context {
     public static final int quickTurnLeftTriggerID = 2;
     public static final int quickTurnRightTriggerID = 3;
     public static final int loopyLoopBreak = 7;
-    public static final int flipOutIntakeButtonID = 5;
-    public static final int flipInIntakeButtonID = 6;
-    public static final int reverseNMFDirectionButtonID = -1;
-    public static final int reverseIntakeDirectionButtonID = -1;
-    public static final int spinIntakeTriggerID = 2;
-    public static final int spinNMFToggleButtonID = 4;
+
+    
+    public static final int flipOutIntakeButtonID = 6;
+    public static final int flipInIntakeTriggerID = 2;
+    public static final int reverseNMFDirectionDpadID = 3;
+    public static final int reverseIntakeDirectionDpadID = 4;
+    public static final int spinNMFToggleButtonID = 2;
+    public static final int nmfSlowSpinDpadID = 1;
     public static final int winchID = 3;
 
 
@@ -77,6 +80,7 @@ public class Context {
     // NMF Values
     public static final int nmfSparkID = 4;
     public static final int omniSparkID = 5;
+    public static final int nmfEncoderInterfaceID = 9;
 
     //----- Climbing System -----
     public static final int climberMotorID = 6;

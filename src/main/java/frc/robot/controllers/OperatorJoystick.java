@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.util.*;
+import frc.robot.actions.*;
 
 /**
  * This class is wrapper class to allow the abstraction of buttons and joysticks (removes the need to specify ports every time you get a button)
@@ -17,6 +18,13 @@ public class OperatorJoystick implements CompetitionJoystick {
         joystick = new Joystick(Context.operatorJoystickID);
 
         addTriggers(new Trigger[]{
+            new Trigger(this, Trigger.Type.BUTTON, Context.flipOutIntakeButtonID, new FlipOutIntake()),
+            new Trigger(this, Trigger.Type.AXIS, Context.flipInIntakeTriggerID, new FlipInIntake()),
+            new Trigger(this, Trigger.Type.DPAD, Context.reverseNMFDirectionDpadID, new ReverseNMF()),
+            new Trigger(this, Trigger.Type.BUTTON, Context.spinNMFToggleButtonID, new StopNMF()),
+            new Trigger(this, Trigger.Type.DPAD, Context.reverseIntakeDirectionDpadID, new ReverseIntake()),
+            new Trigger(this, Trigger.Type.DPAD, Context.nmfSlowSpinDpadID, new NMFSlowSpin()),
+            new Trigger(this, Trigger.Type.AXIS, Context.shoot, new Shoot())
             
         });
     }
@@ -25,9 +33,40 @@ public class OperatorJoystick implements CompetitionJoystick {
         return joystick.getRawButtonPressed(buttonID);
     }
 
+    public boolean getButtonReleased(int buttonID) {
+        return joystick.getRawButtonReleased(buttonID);
+    }
 
     public boolean getAxisPressed(int axisID) {
         return joystick.getRawAxis(axisID) > 0.5;
+    }
+
+    public boolean getAxisReleased(int axisID) {
+        return Math.abs(joystick.getRawAxis(axisID)) >= 0.5;
+    }
+
+    public boolean getDpadPressed(int dpadID) {
+        int dpadValue = 0;
+        switch (joystick.getPOV()){
+            case 0:
+                dpadValue=1;
+                break;
+            case 90:
+                dpadValue=2;
+                break;
+            case 180:
+                dpadValue=3;
+                break;
+            case 270:
+                dpadValue=4;
+                break;
+
+        }
+        return dpadID == dpadValue;
+    }
+
+    public boolean getDpadReleased(int dpadID) {
+         return joystick.getPOV()==-1;
     }
 
     public boolean isInUse() {

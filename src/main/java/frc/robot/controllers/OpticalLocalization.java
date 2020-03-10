@@ -26,7 +26,7 @@ public class OpticalLocalization
     public boolean IsNewLeftData = false;
     public boolean IsNewRightData = false;
 
-    public void Update()
+    public void loop()
     {
         byte[] Data = new byte[ReplyLength]; // incoming byte data buffer
         LeftSensor.readOnly(Data, Data.length); //requesting arduino to send the data, write it into the buffer
