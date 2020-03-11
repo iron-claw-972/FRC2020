@@ -64,8 +64,22 @@ public class ClimberTest
     }
 
     @Test
-    public void telescopeUpTest() {
+    public void telescopeUpBaseTest() {
         climbThing.telescopeMove(climbThing.getPolyMotorPower(0));
         assertEquals(telescopePower, .58, .05);
+    }
+
+    @Test
+    public void telescopeUpToFastTest() {
+        //395 is max lift step before speed returned by getPolyMototPower will be set to a max of 1
+        climbThing.telescopeMove(climbThing.getPolyMotorPower(395));
+        assertEquals(telescopePower, 1, .05);
+    }
+
+    @Test
+    public void telescopeUpTopTest() {
+        climbThing.currentPosition = climbThing.topEncoderHeight + 1;
+        climbThing.telescopeMove(climbThing.getPolyMotorPower(50));
+        assertEquals(telescopePower, 0, .05);
     }
 }
