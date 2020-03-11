@@ -24,6 +24,8 @@ public class Climber
     long pastTime;
     double desiredPosition;
     double currentPosition;
+    long currentTime;
+    double deltaTime;
 
     int topEncoderHeight = 60;
     int bottomEncoderHeight = 5;
@@ -40,7 +42,7 @@ public class Climber
         
     }
     public double  getPolyMotorPower(int step){
-        double output = Math.pow(1.1, step*.27)/100 + .57; //some testing can be done to find the ideal function
+        double output = Math.pow(1.1, step*.1)/100 + .57; //some testing can be done to find the ideal function
         output = output>1 ? 1:output;
         output = currentPosition > topEncoderHeight ? 0:output;
         return output;
@@ -52,8 +54,8 @@ public class Climber
     }
     
     //Moves the telescope
-    public void telescopeMove(double PIDVal) {
-        telescopeMotor.set(PIDVal);
+    public void telescopeMove(double speed) {
+        telescopeMotor.set(speed);
     }
 
     //Spins the motor to coil the winch
@@ -64,8 +66,8 @@ public class Climber
 
     public void up() {
         currentPosition = telescopeMotor.getEncoder().getPosition();
-        long currentTime = System.currentTimeMillis();
-        double deltaTime = currentTime - pastTime;
+        currentTime = System.currentTimeMillis();
+        deltaTime = currentTime - pastTime;
         currentLiftStep++;
         desiredPosition = topEncoderHeight;
         pidVal = liftPID.update(desiredPosition, currentPosition, deltaTime);
@@ -75,8 +77,8 @@ public class Climber
 
     public void down() {
         currentPosition = telescopeMotor.getEncoder().getPosition();
-        long currentTime = System.currentTimeMillis();
-        double deltaTime = currentTime - pastTime;
+        currentTime = System.currentTimeMillis();
+        deltaTime = currentTime - pastTime;
         currentLiftStep--;
         desiredPosition = bottomEncoderHeight;
         pidVal = liftPID.update(desiredPosition, currentPosition, deltaTime);
