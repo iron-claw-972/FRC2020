@@ -21,7 +21,7 @@ public class SequentialSchedulerTest
     public void setup() {
         sequentialScheduler = new SequentialScheduler();
     }
-
+    /*
     @Test
     public void testComplete() {
         Action action0 = new Complete();
@@ -60,4 +60,5 @@ public class SequentialSchedulerTest
 
         assertTrue(sequentialScheduler.isDone());
     }
+    */
 }

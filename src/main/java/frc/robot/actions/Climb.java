@@ -17,6 +17,12 @@ public class Climb extends Action{
         state = state_;
     }
 
+    public void buttonReleased()
+    {
+        state = ClimbActions.IDLE;
+        markComplete();
+    }
+
     @Override
     public void loop() {
         switch (state) {

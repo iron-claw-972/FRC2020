@@ -16,6 +16,12 @@ public class Winch extends Action{
         state = state_;
     }
 
+    public void buttonReleased()
+    {
+        state = WinchState.IDLE;
+        markComplete();
+    }
+
     @Override
     public void loop() {
 
