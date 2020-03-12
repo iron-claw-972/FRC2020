@@ -3,34 +3,30 @@ package frc.robot.controllers;
 import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.Joystick;
-import frc.robot.actions.*;
 import frc.robot.util.*;
+import frc.robot.actions.*;
 
 /**
  * This class is wrapper class to allow the abstraction of buttons and joysticks (removes the need to specify ports every time you get a button)
  */
-public class DriverJoystick implements CompetitionJoystick {
+public class OperatorJoystick implements CompetitionJoystick {
     public Joystick joystick;
     private long inUseStartTime = 0;
     public ArrayList<Trigger> triggers = new ArrayList<Trigger>();
 
-    public DriverJoystick() {
-        joystick = new Joystick(Context.driverJoystickID);
+    public OperatorJoystick() {
+        joystick = new Joystick(Context.operatorJoystickID);
 
         addTriggers(new Trigger[]{
-            new Trigger(this, Trigger.Type.BUTTON, Context.toggleTrack, new VisionAlign()),
-            new Trigger(this, Trigger.Type.BUTTON, Context.shiftGearsButtonID, new ShiftGears()),
-            new Trigger(this, Trigger.Type.BUTTON, Context.climbButtonUp, new Climb(Climb.ClimbActions.UP)),
-            new Trigger(this, Trigger.Type.BUTTON, Context.climbButtonDown, new Climb(Climb.ClimbActions.DOWN))
+            new Trigger(this, Trigger.Type.BUTTON, Context.flipOutIntakeButtonID, new FlipOutIntake()),
+            new Trigger(this, Trigger.Type.AXIS, Context.flipInIntakeTriggerID, new FlipInIntake()),
+            new Trigger(this, Trigger.Type.DPAD, Context.reverseNMFDirectionDpadID, new ReverseNMF()),
+            new Trigger(this, Trigger.Type.BUTTON, Context.spinNMFToggleButtonID, new StopNMF()),
+            new Trigger(this, Trigger.Type.DPAD, Context.reverseIntakeDirectionDpadID, new ReverseIntake()),
+            new Trigger(this, Trigger.Type.DPAD, Context.nmfSlowSpinDpadID, new NMFSlowSpin()),
+            new Trigger(this, Trigger.Type.AXIS, Context.shoot, new Shoot())
+            
         });
-    }
-
-    public double getThrottle() {
-        return getAxisDeadBandManaged(Context.throttleAxisID);
-    }
-
-    public double getYaw() {
-        return getAxisDeadBandManaged(Context.yawAxisID);
     }
 
     public boolean getButtonPressed(int buttonID) {
@@ -46,7 +42,7 @@ public class DriverJoystick implements CompetitionJoystick {
     }
 
     public boolean getAxisReleased(int axisID) {
-        return joystick.getRawAxis(axisID) <=0 ;
+        return Math.abs(joystick.getRawAxis(axisID)) >= 0.5;
     }
 
     public boolean getDpadPressed(int dpadID) {
@@ -54,12 +50,16 @@ public class DriverJoystick implements CompetitionJoystick {
         switch (joystick.getPOV()){
             case 0:
                 dpadValue=1;
+                break;
             case 90:
                 dpadValue=2;
+                break;
             case 180:
                 dpadValue=3;
+                break;
             case 270:
                 dpadValue=4;
+                break;
 
         }
         return dpadID == dpadValue;

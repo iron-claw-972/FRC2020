@@ -23,16 +23,6 @@ public class SequentialScheduler {
 
     public void loop() 
     {
-        System.out.println(pendingActions.size());
-
-        
-
-        if (currentAction == null || currentAction.isComplete) {
-            currentAction = pendingActions.remove(0);
-            actionStart = System.currentTimeMillis();
-            currentAction.start();
-        }
-
         if (currentAction != null) {
             if (!currentAction.isComplete) {
                 currentAction.loop();
@@ -43,7 +33,11 @@ public class SequentialScheduler {
             return;
         }
 
-        
+        if (currentAction == null || currentAction.isComplete) {
+            currentAction = pendingActions.remove(0);
+            actionStart = System.currentTimeMillis();
+            currentAction.start();
+        }
     }
 
     public boolean isDone()

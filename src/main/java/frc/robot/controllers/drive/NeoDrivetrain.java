@@ -6,8 +6,8 @@ import frc.robot.util.*;
 
 public class NeoDrivetrain extends Drivetrain {
     private CANSparkMax leftMotor1, leftMotor2, rightMotor1, rightMotor2;
-    private static PIDF leftDrivePIDF = new PIDF(0.2, 0, 0, 0.4);
-    private static PIDF rightDrivePIDF = new PIDF(0.2, 0, 0, 0.4);
+    private static PIDF leftDrivePIDF = new PIDF(0.1, 0, 0, 0.18);
+    private static PIDF rightDrivePIDF = new PIDF(0.1, 0, 0, 0.18);
 
     // Gearbox Calculations
     private final double neoDriveWheelDiameter = 0.1; // meters
@@ -18,16 +18,20 @@ public class NeoDrivetrain extends Drivetrain {
         super(leftDrivePIDF, rightDrivePIDF);
 
         leftMotor1 = leftMotor1_;
-        // leftMotor2 = leftMotor2_;
+        leftMotor1.restoreFactoryDefaults();
+        leftMotor2 = leftMotor2_;
+        leftMotor2.restoreFactoryDefaults();
         rightMotor1 = rightMotor1_;
-        // rightMotor2 = rightMotor2_;
+        rightMotor1.restoreFactoryDefaults();
+        rightMotor2 = rightMotor2_;
+        rightMotor2.restoreFactoryDefaults();
     }
 
     public void tankDrive(double leftPower, double rightPower) {
         leftMotor1.set(leftPower);
-        // leftMotor2.set(leftPower);
-        rightMotor1.set(rightPower);
-        // rightMotor2.set(rightPower);
+        leftMotor2.set(leftPower);
+        rightMotor1.set(-rightPower);
+        rightMotor2.set(-rightPower);
     }
 
     protected double getLeftTicks() {
@@ -35,7 +39,7 @@ public class NeoDrivetrain extends Drivetrain {
     }
 
     protected double getRightTicks() {
-        return rightMotor1.getEncoder().getPosition();
+        return -rightMotor1.getEncoder().getPosition();
     }
 
     public double getLeftDist() {

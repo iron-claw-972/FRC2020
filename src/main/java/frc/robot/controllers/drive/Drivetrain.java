@@ -27,6 +27,16 @@ public abstract class Drivetrain {
     rightDrivePIDF = rightDrivePIDF_;
   }
 
+  private void chooseDriveMethod(double leftMotorOutput, double rightMotorOutput) {
+    // Drive with pid only when output is > 0.5 and scale tankdrive output to make it bounded by maxDrivingSpeed
+    // if (Math.abs(leftMotorOutput) < 0.5 || Math.abs(rightMotorOutput) < 0.5) {
+    //   tankDrive(leftMotorOutput * Context.maxDrivingSpeed / Context.maxTheoreticalDrivingSpeed, rightMotorOutput * Context.maxDrivingSpeed / Context.maxTheoreticalDrivingSpeed);
+    // } else {
+    //   tankDrivePIDF(leftMotorOutput * Context.maxDrivingSpeed, rightMotorOutput * Context.maxDrivingSpeed);
+    // }
+    tankDrive(leftMotorOutput, rightMotorOutput);
+  }
+
   public void arcadeDrive(double power, double turn) {
     power = MathUtil.clamp(power, -1.0, 1.0);
     turn = MathUtil.clamp(turn, -1.0, 1.0);
@@ -56,7 +66,8 @@ public abstract class Drivetrain {
       }
     }
 
-    tankDrivePIDF(leftMotorOutput * Context.maxDrivingSpeed, rightMotorOutput * Context.maxDrivingSpeed);
+    chooseDriveMethod(leftMotorOutput, rightMotorOutput);
+
   }
 
   public void curvatureDrive(double power, double turn, boolean isQuickTurn) {
@@ -113,7 +124,14 @@ public abstract class Drivetrain {
       rightMotorOutput /= maxMagnitude;
     }
 
-    tankDrivePIDF(leftMotorOutput * Context.maxDrivingSpeed, rightMotorOutput * Context.maxDrivingSpeed);
+    chooseDriveMethod(leftMotorOutput, rightMotorOutput);
+  }
+
+  /**
+   * Quick stop accum messes up unit test. Must be reset to give predictable results
+   */
+  public void resetQuickStopAccum() {
+    m_quickStopAccumulator = 0;
   }
 
   public void tankDrivePIDF(double leftGoalPower, double rightGoalPower) {
@@ -126,19 +144,7 @@ public abstract class Drivetrain {
     double rightDistTraveled = getRightDist() - pastRightDist;
     double rightVelocity = rightDistTraveled/deltaTime;
     double rightPower = rightDrivePIDF.update(rightGoalPower, rightVelocity, deltaTime);
-
-    // Allows robot to coast to a halt on teleop
-    if (leftGoalPower == 0) {
-      tankDrive(0, rightPower);
-    } else {
-      tankDrive(leftPower, rightPower);
-    }
-    if (rightGoalPower == 0) {
-      tankDrive(leftPower, 0);
-    } else {
-      tankDrive(leftPower, rightPower);
-    }
-
+      
     tankDrive(leftPower, rightPower);
 
     pastTime = System.currentTimeMillis();

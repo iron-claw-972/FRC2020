@@ -18,4 +18,8 @@ public abstract class Action{
     public void markComplete() {
         isComplete = true;
     }
+    
+    public void buttonReleased(){
+
+    }
 }

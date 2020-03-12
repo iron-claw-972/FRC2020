@@ -19,16 +19,20 @@ import frc.robot.util.Context;
 import frc.robot.controllers.auto.AutoDrive;
 import frc.robot.controllers.drive.*;
 import frc.robot.execution.ParallelScheduler;
-import frc.robot.execution.SequentialScheduler;;
+import frc.robot.execution.SequentialScheduler;
+import frc.robot.actions.Action;
+import frc.robot.controllers.auto.*;
 
 public class RobotController {
     public CANSparkMax telescopeMotor;
-    public TalonSRX coilMotor;
-    public NeoDrivetrain drivetrain;
+    public CANSparkMax coilMotor1;
+    public CANSparkMax coilMotor2;
+    public TalonFXDrivetrain drivetrain;
     public AutoDrive autoDrive;
     public NavX navX;
     public NetworktablesInterface ntInterface;
     public DriverJoystick driverJoystick;
+    public OperatorJoystick operatorJoystick;
     // public VisionAllignment visionAllignment;
     public Compressor compressor;
     public ShooterController shooterController;
@@ -39,6 +43,7 @@ public class RobotController {
     public SequentialScheduler sequentialScheduler;
     public ParallelScheduler parallelScheduler;
     public NMFController nmfController;
+    public NMFColorSensorController nmfColorSensorController;
 
     public CANSparkMax leftDriveMotor1;
     public CANSparkMax leftDriveMotor2;
@@ -47,6 +52,8 @@ public class RobotController {
 
     public TalonSRX leftDriveEncoderInterface;
     public TalonSRX rightDriveEncoderInterface;
+
+    public TalonSRX nmfEncoderInterface;
     
     public CANSparkMax nmfNeo;
     public CANSparkMax omniNeo;
@@ -55,7 +62,6 @@ public class RobotController {
     public TalonSRX intakeTalon;
 
     public DriverStation driverStation;
-    public PowerDistributionPanel pdp;
     public UsbCamera camera;
 
     public RobotController () {
@@ -94,6 +100,8 @@ public class RobotController {
         // opticalLocalization = new OpticalLocalization();
         // climber = new Climber(coilMotor, telescopeMotor);
         sequentialScheduler = new SequentialScheduler();
+        parallelScheduler = new ParallelScheduler();
+        shooterController = new ShooterController(12, 13, true);
 
         driverStation = DriverStation.getInstance();
 
@@ -101,13 +109,19 @@ public class RobotController {
     }
 
     public void initAll() {
+        climber.resetClimbEncoder();
     }
 
     public void loopAll() {
-
+        // shooterController.loop();
         // ntInterface.loop();
-        // opticalLocalization.Update();
+        // // opticalLocalization.loop();
         // intake.loop();
         // nmfController.loop();
+        // driverJoystick.loop();
+        // operatorJoystick.loop();
+        sequentialScheduler.loop();
+        // parallelScheduler.loop();
+        // nmfColorSensorController.loop();
     }
 }
