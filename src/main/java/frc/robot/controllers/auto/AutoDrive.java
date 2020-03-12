@@ -30,14 +30,21 @@ public class AutoDrive {
         Context.maxTurningJerk
     );
 
-    public AutoDrive() {
+    public AutoDrive(Pose2d startingPose) {
         localizer = new Localizer(Context.TRACK_WIDTH);
-        
     }
 
-    public void generateTrajectory(Pose2d pose) {
-        Path path = new PathBuilder(localizer.getPoseEstimate())
-                .splineTo(pose)
+    public AutoDrive() {
+        this(new Pose2d(0, 0, 0));
+    }
+
+    public void generateAbsoluteTrajectory(Pose2d pose) {
+        generateRelativeTrajectory(pose, localizer.getPoseEstimate());
+    }
+
+    public void generateRelativeTrajectory(Pose2d relativePose, Pose2d currentPose) {
+        Path path = new PathBuilder(currentPose)
+                .splineTo(relativePose)
                 .build();
 
         done = false;

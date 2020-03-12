@@ -58,4 +58,6 @@ public class AdditionalMath
     public static double ftToM(double feet) {
         return ftToM(feet, 0);
     }
+
+    public static Pose2d relativePose(Pose2d targetPose, )
 }

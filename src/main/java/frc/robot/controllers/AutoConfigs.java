@@ -28,6 +28,7 @@ public enum AutoConfigs {
 
     POWER_PORT_BASIC(
         new VisionAlign(),
+        new Shoot(),
         new Forward(1.0)
     ),
     ALLIANCE_TRENCH_BASIC(
