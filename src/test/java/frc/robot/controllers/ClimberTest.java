@@ -17,7 +17,8 @@ public class ClimberTest
 {
     // Declaration of variables used to store inputs to motors
     public double telescopePower = 0;
-    public double coilPower = 0;
+    public double coil1Power = 0;
+    public double coil2Power = 0;
 
     // Creation of mock sparks and putting them into NeoDrivetrain
     public CANSparkMax telescope = mock(CANSparkMax.class);
@@ -40,16 +41,29 @@ public class ClimberTest
 
         doAnswer(invocation -> {
             Double power = invocation.getArgument(0, Double.class);
-            coilPower = power.doubleValue();
+            coil1Power = power.doubleValue();
             return null;
         }).when(coil1).set(any(Double.class));
+
+        doAnswer(invocation -> {
+            Double power = invocation.getArgument(0, Double.class);
+            coil2Power = power.doubleValue();
+            return null;
+        }).when(coil2).set(any(Double.class));
     }
 
     // Test that ensures that coil method increases coil motor power to 0.5
     @Test
-    public void coilUpTest() {
+    public void coil1Test() {
         climb.coil(Context.coilSpeed);
-        double finalValue = coilPower;
+        double finalValue = coil1Power;
+        assertEquals(finalValue, 0.5, 1);
+    }
+
+    @Test
+    public void coil2Test() {
+        climb.coil(Context.coilSpeed);
+        double finalValue = coil2Power;
         assertEquals(finalValue, 0.5, 1);
     }
 
@@ -65,5 +79,25 @@ public class ClimberTest
         //present * pFactor + integral * iFactor + deriv * dFactor
         //-0.00150045
         assertEquals(climb.pidVal, -0.00150045, 0.001);
+    }
+    
+    @Test
+    public void telescopeUpBaseTest() {
+        climb.telescopeMove(climb.getPolyMotorPower(0));
+        assertEquals(telescopePower, .58, .05);
+    }
+
+    @Test
+    public void telescopeUpToFastTest() {
+        //395 is max lift step before speed returned by getPolyMototPower will be set to a max of 1
+        climb.telescopeMove(climb.getPolyMotorPower(395));
+        assertEquals(telescopePower, 1, .05);
+    }
+
+    @Test
+    public void telescopeUpTopTest() {
+        climb.currentPosition = climb.topEncoderHeight + 1;
+        climb.telescopeMove(climb.getPolyMotorPower(50));
+        assertEquals(telescopePower, 0, .05);
     }
 }
