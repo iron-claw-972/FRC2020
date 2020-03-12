@@ -22,7 +22,7 @@ public class ClimberTest
     public CANSparkMax telescope = mock(CANSparkMax.class);
     public CANSparkMax coil1 = mock(CANSparkMax.class);
     public CANSparkMax coil2 = mock(CANSparkMax.class);
-    public Climber climbThing = new Climber(coil1, coil2, telescope);
+    public Climber climb = new Climber(coil1, coil2, telescope);
 
     // @Before allows for the setup() method to be called before any other methods
     @Before
@@ -51,35 +51,35 @@ public class ClimberTest
     // Test that ensures that coil method increases coil motor power to 0.5
     @Test
     public void coil1Test() {
-        climbThing.coil(Context.coilSpeed);
+        climb.coil(Context.coilSpeed);
         double finalValue = coil1Power;
         assertEquals(finalValue, 0.5, 1);
     }
 
     @Test
     public void coil2Test() {
-        climbThing.coil(Context.coilSpeed);
+        climb.coil(Context.coilSpeed);
         double finalValue = coil2Power;
         assertEquals(finalValue, 0.5, 1);
     }
 
     @Test
     public void telescopeUpBaseTest() {
-        climbThing.telescopeMove(climbThing.getPolyMotorPower(0));
+        climb.telescopeMove(climb.getPolyMotorPower(0));
         assertEquals(telescopePower, .58, .05);
     }
 
     @Test
     public void telescopeUpToFastTest() {
         //395 is max lift step before speed returned by getPolyMototPower will be set to a max of 1
-        climbThing.telescopeMove(climbThing.getPolyMotorPower(395));
+        climb.telescopeMove(climb.getPolyMotorPower(395));
         assertEquals(telescopePower, 1, .05);
     }
 
     @Test
     public void telescopeUpTopTest() {
-        climbThing.currentPosition = climbThing.topEncoderHeight + 1;
-        climbThing.telescopeMove(climbThing.getPolyMotorPower(50));
+        climb.currentPosition = climb.topEncoderHeight + 1;
+        climb.telescopeMove(climb.getPolyMotorPower(50));
         assertEquals(telescopePower, 0, .05);
     }
 }
