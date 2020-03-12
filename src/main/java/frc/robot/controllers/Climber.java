@@ -19,6 +19,8 @@ public class Climber
     int currentLiftStep = 0;
     boolean PIDControllerOn = false;
     boolean PolyControllerOn = false;
+    long currentTime;
+    double deltaTime;
 
     PID liftPID;
     long pastTime;
@@ -64,8 +66,8 @@ public class Climber
 
     public void up() {
         currentPosition = telescopeMotor.getEncoder().getPosition();
-        long currentTime = System.currentTimeMillis();
-        double deltaTime = currentTime - pastTime;
+        currentTime = System.currentTimeMillis();
+        deltaTime = currentTime - pastTime;
         currentLiftStep++;
         desiredPosition = topEncoderHeight;
         pidVal = liftPID.update(desiredPosition, currentPosition, deltaTime);
@@ -75,8 +77,8 @@ public class Climber
 
     public void down() {
         currentPosition = telescopeMotor.getEncoder().getPosition();
-        long currentTime = System.currentTimeMillis();
-        double deltaTime = currentTime - pastTime;
+        currentTime = System.currentTimeMillis();
+        deltaTime = currentTime - pastTime;
         currentLiftStep--;
         desiredPosition = bottomEncoderHeight;
         pidVal = liftPID.update(desiredPosition, currentPosition, deltaTime);

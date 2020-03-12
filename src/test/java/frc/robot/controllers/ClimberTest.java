@@ -5,10 +5,12 @@ import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 import org.junit.*;
 
 import frc.robot.util.Context;
 
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 
 public class ClimberTest
@@ -19,6 +21,8 @@ public class ClimberTest
 
     // Creation of mock sparks and putting them into NeoDrivetrain
     public CANSparkMax telescope = mock(CANSparkMax.class);
+    public CANSparkMax telescopeMotor = mock(CANSparkMax.class);
+    public CANEncoder encoder = mock(CANEncoder.class);
     public CANSparkMax coil1 = mock(CANSparkMax.class);
     public CANSparkMax coil2 = mock(CANSparkMax.class);
     public Climber climb = new Climber(coil1, coil2, telescope);
@@ -47,5 +51,19 @@ public class ClimberTest
         climb.coil(Context.coilSpeed);
         double finalValue = coilPower;
         assertEquals(finalValue, 0.5, 1);
+    }
+
+    @Test
+    public void telescopeDownTest() {
+        when(telescopeMotor.getEncoder()).thenReturn(encoder);
+        when(encoder.getPosition()).thenReturn(20.0);
+        climb.pastTime = System.currentTimeMillis()+10000;
+        climb.bottomEncoderHeight = 5;
+        //throws nullpointer, please investigate
+        climb.down();
+        //present = -15 pfactor = .0001 integral = -150000 ifactor = 0 deriv = -15/10000 dfactor = 0.0003
+        //present * pFactor + integral * iFactor + deriv * dFactor
+        //-0.00150045
+        assertEquals(climb.pidVal, -0.00150045, 0.001);
     }
 }
