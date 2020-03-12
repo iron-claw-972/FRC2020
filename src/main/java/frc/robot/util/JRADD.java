@@ -60,6 +60,6 @@ public class JRADD {
             proportional = 1;
         }
         output = updateValue + kP * proportional * (kT * kLoadRatio * loadRatio * setpoint - actual);
-        return output;
+        return 0;
     }
 }

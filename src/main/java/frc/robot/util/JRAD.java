@@ -32,7 +32,7 @@ public class JRAD {
     public double update(double setpoint, double actual, double dt) {
         //JRAD Math
         updateValue = kF * setpoint + updateValue + kI * dt * (kLoadRatio * setpoint - actual);
-        return updateValue;
+        return 0;
     }
 
 
