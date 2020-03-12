@@ -76,4 +76,8 @@ public class Robot extends TimedRobot {
     Context.setWOFTargetColor();
     */
   }
+
+  public void testPeriodic() {
+    
+  }
 }

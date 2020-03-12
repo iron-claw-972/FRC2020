@@ -40,7 +40,7 @@ public class RecursiveMotionProfile {
         this.snapBand = snapBand;
     }
 
-    public void updateParameters(double desiredVel, double currentVel, double currentAccel) {
+    public void updateParameters(double desiredVel, double currentVel, double currentAccel, double deltaTime) {
 
         //Pass current motion states to object
         //Used to update the next state of each derivative 
@@ -48,6 +48,7 @@ public class RecursiveMotionProfile {
         this.currentAccel = currentAccel;
         this.desiredVel = desiredVel;
         this.currentVel = currentVel;
+        this.deltaTime = deltaTime;
 
         decelThreshold = Math.pow(currentAccel, 2)/(2*MAX_JERK);
         error = desiredVel - currentVel;
@@ -70,9 +71,6 @@ public class RecursiveMotionProfile {
     }
 
     private void updateDeltaTime() {
-
-        deltaTime = Context.getRelativeTimeSeconds(startTime) - lastTime;
-        lastTime = Context.getRelativeTimeSeconds(startTime);
 
         averageDeltaTime = (averageDeltaTime * (deltaTimeMemory - 1) + deltaTime)/deltaTimeMemory;
 

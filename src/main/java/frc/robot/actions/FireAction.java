@@ -78,6 +78,10 @@ public class FireAction extends Action {
 
         balls = ballsCounted;
 
+        if(buttonReleased) {
+            shootingStage = Stage.COMPLETE;
+        }
+
         switch(shootingStage) {
             case CHECKING:
                 //Checks if the NMF is empty.
@@ -109,6 +113,7 @@ public class FireAction extends Action {
                 shooterController.setDesiredVelocity(firingSpeed);
                 System.out.println("REAL: " + shooterController.getDesiredVelocity());
                 System.out.println("NMF Err: " + NMFController.getNMFError() + " Shooter Err: " + shooterController.getError());
+                System.out.println("NMF Curr: " + NMFController.getNMFcurrentSpeed() + " Shooter Curr: " + shooterController.getDesiredVelocity());
                 NMFController.spinNMFShooting();
 
                 if(acceptNMFError() && acceptShooterError()) {
@@ -123,7 +128,7 @@ public class FireAction extends Action {
                 NMFController.spinOmni();
                 System.out.println(balls);
 
-                if(buttonReleased || balls == 0) {
+                if(balls == 0) {
                     shootingStage = Stage.DECELERATING;
                 } else if(lastBalls < balls) {
                     lastFiredTime = Context.getRelativeTimeSeconds(startTime);
