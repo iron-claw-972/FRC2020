@@ -77,7 +77,7 @@ public class RobotController {
         omniNeo = new CANSparkMax(Context.omniSparkID, MotorType.kBrushless);
         nmfNeo = new CANSparkMax(Context.nmfSparkID, MotorType.kBrushless);
         intakeTalon = new TalonSRX(Context.intakeMotorId);
-        nmfColorSensorController = new NMFColorSensorController();
+        nmfColorSensorController = new NMFColorSensorController(nmfNeo);
 
         //----- Pneumatics -----
         intakeFlipSolenoid = new DoubleSolenoid(Context.intakeFlipChannelA, Context.intakeFlipChannelB);

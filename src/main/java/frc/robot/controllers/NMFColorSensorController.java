@@ -6,6 +6,7 @@ import frc.robot.util.Context;
 import frc.robot.actions.*;
 
 import com.revrobotics.*;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class NMFColorSensorController {
     // private final I2C.Port i2cPort = I2C.Port.kMXP; // For NavX
@@ -15,6 +16,8 @@ public class NMFColorSensorController {
     public int currentPosition = 0;
     public boolean[] ballPositions = {false, false, false, false, false};
     public boolean currentSectorYellow = false;
+
+    CANEncoder nmfEncoder;
 
     private final ColorSensorV3 m_colorSensor; //sometimes reads as error, still builds. Same issue for other colorsensor references
 
@@ -27,8 +30,14 @@ public class NMFColorSensorController {
      */
     private final ColorMatch m_colorMatcher = new ColorMatch();
 
-    public NMFColorSensorController(){
+    public NMFColorSensorController(CANSparkMax nmfSpark){
       m_colorSensor = new ColorSensorV3(i2cPort);
+      nmfEncoder = nmfSpark.getEncoder();
+
+    }
+
+    public double getDirection(){
+      return nmfEncoder.getVelocity()/Math.abs(nmfEncoder.getVelocity());
     }
 
     public boolean isYellow(double r, double g, double b){
