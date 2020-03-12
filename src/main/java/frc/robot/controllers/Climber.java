@@ -19,8 +19,6 @@ public class Climber
     int currentLiftStep = 0;
     boolean PIDControllerOn = false;
     boolean PolyControllerOn = false;
-    long currentTime;
-    double deltaTime;
 
     PID liftPID;
     long pastTime;
@@ -29,9 +27,9 @@ public class Climber
     long currentTime;
     double deltaTime;
 
-    int topEncoderHeight = 60;
-    int bottomEncoderHeight = 5;
-    double pidVal;
+    public int topEncoderHeight = 60;
+    public int bottomEncoderHeight = 5;
+    double pidVal = 0;
     int topWinchHeight = 10;
 
     //Initializes Climber with Talon SRX motor, CANSparkMax, PID for the telescope, and initial time
@@ -41,10 +39,11 @@ public class Climber
         telescopeMotor = telescopeMotor_;
         liftPID = new PID(.0001, 0, 0.0003);
         pastTime = System.currentTimeMillis(); 
+        currentPosition = 0;
         
     }
     public double  getPolyMotorPower(int step){
-        double output = Math.pow(1.1, step*.1)/100 + .57; //some testing can be done to find the ideal function
+        double output = Math.pow(1.1, step*.27)/100 + .57; //some testing can be done to find the ideal function
         output = output>1 ? 1:output;
         output = currentPosition > topEncoderHeight ? 0:output;
         return output;
