@@ -63,7 +63,8 @@ public class Context {
     public static final int spinNMFToggleButtonID = 2;
     public static final int nmfSlowSpinDpadID = 1;
 
-
+    //oiptical localization
+    public static double sensorSpacing = 50;
 
     //----- Vision Alignment System -----
     public static final double alignmentTimeout = 3000; //after how many milliseconds stop the alignment loop and abort
