@@ -6,8 +6,7 @@ import edu.wpi.first.wpilibj.I2C.Port;
 import frc.robot.util.Context;
 import frc.robot.util.Vector;
 
-public class OpticalLocalization
-{
+public class OpticalLocalization{
     final boolean I2C_DEBUG = true;
 
     final byte LeftAddress = 25;
@@ -36,8 +35,7 @@ public class OpticalLocalization
     public boolean IsNewLeftData = false;
     public boolean IsNewRightData = false;
 
-    public void Update()
-    {
+    public void Update(){
         byte[] Data = new byte[ReplyLength]; // incoming byte data buffer
         LeftSensor.readOnly(Data, Data.length); //requesting arduino to send the data, write it into the buffer
         LeftQuality = Data[0]; // 0th byte is the surface quality
@@ -55,20 +53,16 @@ public class OpticalLocalization
         IsNewRightData = Data[9] >= 1;
         RightMov = new Vector(RightMovementX, RightMovementY, Timer.getFPGATimestamp()); // 3rd argument as data received timestamp, used for interpolation
 
-        if(IsNewLeftData)
-        {
+        if(IsNewLeftData){
             OldLeftMov = LeftMov;
         }
-        else
-        {
+        else{
             LeftMov = OldLeftMov.multiply(Timer.getFPGATimestamp()/(Timer.getFPGATimestamp() - OldLeftMov.z));
         }// if no new data is available interpolate and assume the movement vector based on previous reading
-        if(IsNewRightData)
-        {
+        if(IsNewRightData){
             OldRightMov = RightMov;
         }
-        else
-        {
+        else{
             RightMov = OldRightMov.multiply(Timer.getFPGATimestamp()/(Timer.getFPGATimestamp() - OldRightMov.z));
         }
         TotalMov = RightMov.add(LeftMov).multiply(0.5);
@@ -77,13 +71,11 @@ public class OpticalLocalization
         Position = Position.add(TotalMov.rotateXY(Yaw));
     }
 
-    public boolean IsFreshLeft()
-    {
+    public boolean IsFreshLeft(){
         return IsNewLeftData;
     }
 
-    public boolean IsFreshRight()
-    {
+    public boolean IsFreshRight(){
         return IsNewRightData;
     }
 }
