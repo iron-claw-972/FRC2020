@@ -18,13 +18,11 @@ public class LEDController
     double time = 0;
     double oldtime = 0-20;
 
-    public LEDController(TalonSRX controller)
-    {
+    public LEDController(TalonSRX controller) {
         talon = controller;
     }
 
-    public void loop()
-    {
+    public void loop(){
         time = Timer.getFPGATimestamp();
         double voltage = talon.getMotorOutputVoltage();
         double current = talon.getStatorCurrent();
@@ -36,8 +34,7 @@ public class LEDController
         talon.set(ControlMode.PercentOutput, pidPower);
         oldtime = time;
 
-        if(DEBUG)
-        {
+        if(DEBUG){
             System.out.println("Voltage Output: " + voltage);
             System.out.println("Current Output: " + current);
             System.out.println("Current Power Output: " + output_power);
@@ -45,8 +42,7 @@ public class LEDController
         }
     }
 
-    public void setPower(double power) // power in watts
-    {
+    public void setPower(double power) // power in watts {
         power_set = power;
     }
 }
